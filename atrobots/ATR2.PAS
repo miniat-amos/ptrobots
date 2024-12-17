@@ -535,7 +535,7 @@ begin
         setcolor(8);
         outtextxy(66,56,'None');
        end;
-      lx:=1000-x; ly:=1000-y;
+      lx:=1000-x; ly:=1000-y;   { Should these 1000s be 999s? }
       update_armor(i);
       update_heat(i);
       update_lives(i);
@@ -1223,9 +1223,9 @@ begin
     for i:=0 to num_robots do
      begin
       if robot[i]^.x<0 then robot[i]^.x:=0;
-      if robot[i]^.x>1000 then robot[i]^.x:=1000;
+      if robot[i]^.x>=1000 then robot[i]^.x:=999;
       if robot[i]^.y<0 then robot[i]^.y:=0;
-      if robot[i]^.y>1000 then robot[i]^.y:=1000;
+      if robot[i]^.y>=1000 then robot[i]^.y:=999;
       d:=distance(x,y,robot[i]^.x,robot[i]^.y);
       if (robot[i]^.armor>0) and (i<>n) and (d<dd) then dd:=d;
      end;
@@ -1550,8 +1550,8 @@ begin
  if not (n in [0..num_robots]) then exit;
  with robot[n]^ do
   begin
-   if x>1000 then x:=1000;
-   if y>1000 then y:=1000;
+   if x>=1000 then x:=999;
+   if y>=1000 then y:=999;
    if x<0 then x:=0;
    if y<0 then y:=0;
    {if (lhd=hd) and (lx=x) and (ly=y) then exit;}
@@ -1724,7 +1724,7 @@ begin
   begin
    if (ram[71]>=stack_base) and (ram[71]<(stack_base+stack_size)) then
     begin
-     ram[71]:=v;
+     ram[ram[71]]:=v;
      inc(ram[71]);
     end
    else robot_error(n,1,cstr(ram[71]));
@@ -1776,7 +1776,7 @@ begin
   begin
    k:=-1;
    for i:=0 to max_mines do
-    if ((mine[i].x<0) or (mine[i].x>1000) or (mine[i].y<0) or (mine[i].y>1000)
+    if ((mine[i].x<0) or (mine[i].x>=1000) or (mine[i].y<0) or (mine[i].y>=1000)
        or (mine[i].yield<=0)) and (k<0) then k:=i;
    if k>=0 then
     begin
@@ -2070,7 +2070,7 @@ begin
         k:=0;
         for i:=0 to max_mines do
          with mine[i] do
-          if (x>=0) and (x<=1000) and (y>=0) and (y<=1000) and (yield>0) then inc(k);
+          if (x>=0) and (x<1000) and (y>=0) and (y<1000) and (yield>0) then inc(k);
         v:=k;
        end else v:=0;
     24:if config.shield>0 then
@@ -2155,8 +2155,8 @@ begin
        end;
     07:begin
         j:=ram[69]; k:=ram[70];
-        if j<0 then j:=0; if j>1000 then j:=1000;
-        if k<0 then k:=0; if k>1000 then k:=1000;
+        if j<0 then j:=0; if j>=1000 then j:=999;
+        if k<0 then k:=0; if k>=1000 then k:=999;
         ram[65]:=round(find_angle(round(x),round(y),j,k)/pi*128+256) and 255;
         time_used:=32;
        end;
@@ -2558,7 +2558,7 @@ begin
         setcolor(8);
         outtextxy(66,56,'None');
        end;
-      lx:=1000-x; ly:=1000-y;
+      lx:=1000-x; ly:=1000-y;   { Should these 1000s be 999s? }
       update_armor(i);
       update_heat(i);
       update_lives(i);
@@ -3081,7 +3081,7 @@ begin
    if (hd=64) or (hd=192) then yv:=0;
    if xv<>0 then ttx:=x+xv else ttx:=x;
    if yv<>0 then tty:=y+yv else tty:=y;
-   if (ttx<0) or (tty<0) or (ttx>1000) or (tty>1000) then
+   if (ttx<0) or (tty<0) or (ttx>=1000) or (tty>=1000) then
       begin inc(ram[8]); tspd:=0; if abs(speed)>=max_vel/2 then damage(n,1,true); spd:=0; {ttx:=x; tty:=y;} end;
    for i:=0 to num_robots do
     if (i<>n) and (robot[i]^.armor>0) and (distance(ttx,tty,robot[i]^.x,robot[i]^.y)<crash_range)
@@ -3093,8 +3093,8 @@ begin
             end;
    if ttx<0 then ttx:=0;
    if tty<0 then tty:=0;
-   if ttx>1000 then ttx:=1000;
-   if tty>1000 then tty:=1000;
+   if ttx>=1000 then ttx:=999;
+   if tty>=1000 then tty:=999;
    meters:=meters+distance(x,y,ttx,tty);
    if meters>=maxint then meters:=meters-maxint;
    ram[9]:=trunc(meters);
@@ -3124,7 +3124,7 @@ var
  source_alive:boolean;
 begin
  with robot[n]^.mine[m] do
-  if (x>=0) and (x<=1000) and (y>=0) and (y<=1000) and (yield>0) then
+  if (x>=0) and (x<1000) and (y>=0) and (y<1000) and (yield>0) then
    begin
     for i:=0 to num_robots do
      if (robot[i]^.armor>0) and (i<>n) then
