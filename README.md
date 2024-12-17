@@ -24,6 +24,12 @@ but it's time this gem is ported so it can be enjoyed without a
 DOS emulator and my students encouraged to explore its code,
 rewritten in a language they're confident using.
 
+As a final note, I know AT-Robots is short for "Advanced T-Robots", but
+I've never seen a definitive reference for what the 'T' stands for,
+if anything.  In my mind, I've always liked the notion it was really
+"Advanced Technical Robots" (because it's just too corny), so that's
+why this project is named what it is.
+
 Goodness gracious... have some fun!!! :nerd_face:
 
 -- luv, Amos
