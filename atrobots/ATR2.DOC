@@ -2190,7 +2190,16 @@ REVISION HISTORY:
          -  Fixed a bug in SAR and SAL commands that made them more or less
               ignore the second operand.
 
-
+  2.11   -  Fix sources to compile on TP6
+         -  Fix code-ghosting error in debugger
+         -  Fix error where SAL and SAR produced incorrect results when the
+              shift amount was 0
+         -  Move stack into RAM to support pass-by-stack argument passing
+         -  Add a demo bot, STACK.AT2, to show how to pass function
+              arguments via the stack
+         -  Fix long standing bug where bots and mines could reach an
+              X or Y coordinate of 1000 when it should have been constrained
+              to values between 0 and 999
 
 ----------------------------------------------------------------------------
 
