@@ -2381,9 +2381,8 @@ begin
    {debugger window}
    viewport(480,4,635,410);
    {code}
-   {setfillstyle(1,0);
-   for i:=0 to 6 do bar(003,332+(i*10),152,340+(i*10));}
-   {Commented out the black bars, and switched to 'textxy' -Bones}
+   setfillstyle(1,0);
+   for i:=0 to 6 do bar(003,332+(i*10),152,340+(i*10));
    setcolor(7);
    for i:=0 to 6 do
     if (ip+i-3)>=0 then
