@@ -398,9 +398,12 @@ begin
  asm
   cld
   mov   cx,     k
+  cmp   cx,     0
+  jle   @2
 @1:
   sal   n,      1
   loop  @1
+@2:
  end;
  sal:=n;
 end;
@@ -410,9 +413,12 @@ begin
  asm
   cld
   mov   cx,     k
+  cmp   cx,     0
+  jle   @2
 @1:
   sar   n,      1
   loop  @1
+@2:
  end;
  sar:=n;
 end;
