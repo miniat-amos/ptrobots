@@ -92,7 +92,8 @@ const
  max_robots     =31;    {starts at 0, so total is max_robots+1}
  max_code       =1023;  {same here}
  max_op         =3;     {etc...}
- max_stack      =256;   {but not here (it's a power of two, get the idea?)}
+ stack_size     =256;   {but not here (it's a power of two, get the idea?)}
+ stack_base     =768;
  max_ram        =1023;  {but this does start at 0 (odd #, 2^n-1)}
  max_vars       =256;
  max_labels     =256;
@@ -158,7 +159,6 @@ type
                    fn:string[255];
                    shields_up,lshields,overburn,keepshift,cooling,won:boolean;
                    code:prog_type;
-                   stack:array[1..max_stack] of integer;
                    ram:array[0..max_ram] of integer;
                    mine:array[0..max_mines] of mine_rec;
                    errorlog:text;
@@ -1197,7 +1197,7 @@ begin
  with robot[n]^ do
   begin
    for i:=0 to max_ram do ram[i]:=0;
-   for i:=1 to max_stack do stack[i]:=0;
+   ram[71]:=768;   {SP start at low stack memory}
    thd:=hd;  tspd:=0;
    scanarc:=8; shift:=0; err:=0;
    overburn:=false; keepshift:=false;
@@ -1284,7 +1284,7 @@ begin
      mines:=0;
     end;
    for i:=0 to max_ram do ram[i]:=0;
-   for i:=1 to max_stack do stack[i]:=0;
+   ram[71]:=768;   {SP start at low stack memory}
    for i:=0 to max_code do
     for k:=0 to max_op do
      code[i].op[k]:=0;
@@ -1722,10 +1722,10 @@ procedure push(n,v:integer);
 begin
  with robot[n]^ do
   begin
-   if (ram[71]>=0) and (ram[71]<max_stack) then
+   if (ram[71]>=stack_base) and (ram[71]<(stack_base+stack_size)) then
     begin
+     ram[71]:=v;
      inc(ram[71]);
-     stack[ram[71]]:=v;
     end
    else robot_error(n,1,cstr(ram[71]));
   end;
@@ -1737,10 +1737,10 @@ var
 begin
  with robot[n]^ do
   begin
-   if (ram[71]>0) and (ram[71]<=max_stack) then
+   if (ram[71]>stack_base) and (ram[71]<=(stack_base+stack_size)) then
     begin
-     k:=stack[ram[71]];
      dec(ram[71]);
+     k := ram[ram[71]];
     end
    else robot_error(n,5,cstr(ram[71]));
   end;

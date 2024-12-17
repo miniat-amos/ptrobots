@@ -4,6 +4,7 @@
                                    (ATR2)
 
                      Copyright (C) 1997, Ed T. Toton III
+             Additional Modifications 2024 William "Amos" Confer
                             All Rights Reserved.
 
                      http://www.necrobones.com/atrobots/
@@ -1270,7 +1271,7 @@ Memory map:
 128-384      var         variable space
 385-511      user        user space
 512-767      com-queue   Communications receiving queue
-768-1023     res         Reserved space
+768-1023     stack       System stack
 1024...      code        Robot program (code segment) (ROM)
 
   Please note that the first 4 memory locations make for an easy and
