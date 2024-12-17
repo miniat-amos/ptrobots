@@ -1840,7 +1840,7 @@ begin
          repeat until keypressed; flushkey; end;
       end;
    end;
- (*The following was to see if teh missile array is big enough*)
+ (*The following was to see if the missile array is big enough*)
   {else
    begin
     sound:=sound_on;
