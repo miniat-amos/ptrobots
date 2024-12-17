@@ -1,5 +1,6 @@
 (*
 Copyright (c) 1999, Ed T. Toton III. All rights reserved.
+Additional changes, 2024, by Willam "Amos" Confer
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -44,7 +45,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {$M 32768,0,655360}
 program atrlock;
 
-uses stuff, filelib;
+uses dos, atr2func, filelib;
 
 const
  locktype = 3;
@@ -54,6 +55,7 @@ var
  f1,f2:text;
  s,s1,s2,lock_code:string;
  i,j,k,lock_pos,lock_dat,this_dat:integer;
+ year, month, day, day_of_week : word;
 
 function encode(s:string):string;
 var
@@ -145,7 +147,8 @@ begin
 
  {--lock header--}
  writeln(f2,';------------------------------------------------------------------------------');
- writeln(f2,'; ',no_path(base_name(fn1)),' Locked on ',date);
+ GetDate(year, month, day, day_of_week);
+ writeln(f2,'; ',no_path(base_name(fn1)),' Locked on ', month, '/', day, '/', year);
  writeln(f2,';------------------------------------------------------------------------------');
  lock_code:='';
  k:=random(21)+20;

@@ -1,5 +1,6 @@
 (*
 Copyright (c) 1999, Ed T. Toton III. All rights reserved.
+Additional changes, 2024, by Willam "Amos" Confer
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -44,13 +45,14 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {$M 12288,0,0}
 program AT_Robots_tournament;
 
-uses stuff, filelib, myfile, crt, dos;
+uses atr2func, filelib, myfile, crt, dos;
 
 const
- progname       ='ATR-Tournament';
- version        ='1.05';
+ progname       ='ATR-Tournament (unofficial)';
+ version        ='1.06-ish';
  cnotice1       ='Copyright (C) 1997, Ed T. Toton III';
  cnotice2       ='All Rights Reserved.';
+ cnotice3       ='Additional changes, 2024, by Willam "Amos" Confer';
  main_filename  ='ATR2';
  prog_ext       ='.EXE';
  robot_ext      ='.AT2';
@@ -88,7 +90,8 @@ var
  bestkiller,bestsurvivor,mostdead,triggerhappy,bestmarksman,
  mostdestructive,longestlived,mosterrors,haphazard,conservative,
  leasteffective,biggestloser,shortestlived,longestreign,newestcontender:integer;
-
+ year, month, day, day_of_week : word;
+ hour, minute, second, sec100 : word;
 
 
 function divide(r1,r2:real):real;
@@ -165,6 +168,7 @@ begin
    write  (progname,' ',version,' ');
    writeln(cnotice1);
    writeln(cnotice2);
+   writeln(cnotice3);
    textcolor(7);
    writeln;
   end;
@@ -537,8 +541,9 @@ begin
    writeln(f,'Total matches per robot:  ',addfront(cstr((num_robots-1)*matches),5));
   end;
  writeln(f);
- s:=time; s:=lstr(s,length(s)-5);
- writeln(f,'Results completed: ',s,', ',date);
+ GetTime(hour, minute, second, sec100);
+ GetDate(year, month, day, day_of_week);
+ writeln(f,'Results completed: ', hour, ':', minute, ', ', month, '/', day, '/', year);
  writeln(f);
  {--HTML file header--}
  writeln(f2,'<HTML>');
@@ -569,8 +574,7 @@ begin
  writeln(f2);
  writeln(f2,'<BR>');
  writeln(f2,'<CENTER><TABLE align=center border=3>');
- s:=time; s:=lstr(s,length(s)-5);
- writeln(f2,'<TD align=center>Results completed: ',s,', ',date,'</TD>');
+ writeln(f2,'<TD align=center>Results completed: ', hour, ':', minute, ', ', month, '/', day, '/', year, '</TD>');
  writeln(f2,'</TABLE></CENTER>');
  writeln(f2,'<BR>');
 
@@ -858,7 +862,9 @@ begin
  assign(log_file,tname+log_ext);
  if exist(tname+log_ext) then append(log_file) else rewrite(log_file);
 
- writeln(log_file,'Tournament started: ',time,' ',date);
+ GetTime(hour, minute, second, sec100);
+ GetDate(year, month, day, day_of_week);
+ writeln(log_file,'Tournament started: ', hour, ':', minute, ', ', month, '/', day, '/', year);
  writeln(log_file);
 
  abort:=false;
@@ -902,7 +908,9 @@ begin
    close(f);
   end else delete_file(tname+data_ext);
  writeln(log_file);
- writeln(log_file,'Tournament stopped: ',time,' ',date);
+ GetTime(hour, minute, second, sec100);
+ GetDate(year, month, day, day_of_week);
+ writeln(log_file,'Tournament stopped: ', hour, ':', minute, ', ', month, '/', day, '/', year);
  close(log_file);
  if (n1>=num_robots) or (n2>num_robots) then complete:=true else complete:=false;
  if complete then writeln('Tournament complete!');

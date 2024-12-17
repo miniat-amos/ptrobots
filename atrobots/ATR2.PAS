@@ -19,6 +19,7 @@
 
 (*
 Copyright (c) 1999, Ed T. Toton III. All rights reserved.
+Additional changes, 2024, by Willam "Amos" Confer
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -62,13 +63,14 @@ Program Advanced_T_Robots_2;
 
 uses dos, crt, graph, egavga, filelib, myfile, atr2func;
 
-{’á} {err}
+{err}
 
 const
- progname       ='AT-Robots';
- version        ='2.10';
+ progname       ='AT-Robots (unofficial)';
+ version        ='2.11-ish';
  cnotice1       ='Copyright 1997 ''99, Ed T. Toton III';
  cnotice2       ='All Rights Reserved.';
+ cnotice3       ='Additional changes, 2024, by Willam "Amos" Confer';
  main_filename  ='ATR2';
  robot_ext      ='.AT2';
  locked_ext     ='.ATL';
@@ -1330,6 +1332,7 @@ begin
    write  (progname,' ',version,' ');
    writeln(cnotice1);
    writeln(cnotice2);
+   writeln(cnotice3);
   end;
  textcolor(7);
  if not registered then begin textcolor(4); writeln('Unregistered version'); end
