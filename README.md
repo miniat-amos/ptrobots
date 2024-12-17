@@ -1,7 +1,5 @@
 # PT-Robots (Python Technical Robots)
 
-**_A quick note..._**
-
 PT-Robots is a Python port of the fantastic programming game, 
 [AT-Robots 2](http://necrobones.com/atrobots/) 
 written by 
@@ -18,7 +16,7 @@ control flow programming in the Computer Organization class I've taught
 since 2005.
 
 Learning to program AT-Robots assembly, and subsequently reading and
-modifying its sources has had a serious impact on my
+modifying its sources in my younger days has had a serious impact on my
 life and professional career... weird to admit that, but it's true.
 :rolling_on_the_floor_laughing:
 I always look forward to introducing my students to this 25 year addication,
@@ -29,6 +27,12 @@ rewritten in a language they're confident using.
 Goodness gracious... have some fun!!! :nerd_face:
 
 -- luv, Amos
+
+## A Work In Progress
+
+This project is in its infancy.  For the time being, the only truly working
+thing is the actual AT-Robots program we've fixed up and embedded within
+this project.
 
 ## AT-Robots 2.10
 
