@@ -1,4 +1,5 @@
 { Portions Copyright (c) 1985, 1990 by Borland International, Inc. }
+
 (*
 Copyright (c) 1999, Ed T. Toton III. All rights reserved.
 
@@ -39,9 +40,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *)
 {$G+}{$N+}{$E+}{$X+}{$D-}
+
 unit egavga;
+
 { This unit links the EGA/VGA BGI graphics driver into a single TPU file.
   This makes it easy to link the driver files directly into an .EXE file. }
+
 interface
 
 uses graph;
@@ -49,37 +53,40 @@ uses graph;
 
 procedure egavgaProc;
 procedure graph_Abort(Msg : string);
-Procedure Graph_VGA;
+procedure Graph_VGA;
 
 implementation
 
 
-procedure egavgaProc; external;
+procedure egavgaProc;
+external;
 {$L egavga.OBJ }
 
 procedure graph_Abort(Msg : string);
 begin
-  Writeln(Msg, ': ', GraphErrorMsg(GraphResult));
-  Halt(1);
+   Writeln(Msg, ': ', GraphErrorMsg(GraphResult));
+   Halt(1);
 end;
 
-Procedure Graph_VGA;
-var
- driver, mode:integer;
- i:integer;
+procedure Graph_VGA;
+
+var 
+   driver, mode:  integer;
+   i:  integer;
 begin
    if RegisterBGIdriver(@EGAVGAProc) < 0 then
-     graph_Abort('EGA/VGA');
+      graph_Abort('EGA/VGA');
 
-      driver:=VGA; mode:=VGAHI;
-      initgraph(driver,mode,'');
-      i:=graphresult;
-      if (i<>0) then
-       begin
-        writeln('Graphics Error: ',GraphErrorMsg(i));
-	writeln('You must have a VGA to use 640x480x16 mode');
-	halt;
-       end;
+   driver := VGA;
+   mode := VGAHI;
+   initgraph(driver,mode,'');
+   i := graphresult;
+   if (i<>0) then
+      begin
+         writeln('Graphics Error: ',GraphErrorMsg(i));
+         writeln('You must have a VGA to use 640x480x16 mode');
+         halt;
+      end;
 end;
 
 end.

@@ -43,142 +43,189 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 {$G+}{$N+}{$E+}{$X+}{$D-}
 {$M 32768,0,655360}
+
 program atrlock;
 
 uses dos, atr2func, filelib;
 
-const
- locktype = 3;
+const 
+   locktype =  3;
 
-var
- fn1,fn2:string;
- f1,f2:text;
- s,s1,s2,lock_code:string;
- i,j,k,lock_pos,lock_dat,this_dat:integer;
- year, month, day, day_of_week : word;
+var 
+   fn1,fn2:  string;
+   f1,f2:  text;
+   s,s1,s2,lock_code:  string;
+   i,j,k,lock_pos,lock_dat,this_dat:  integer;
+   year, month, day, day_of_week :  word;
 
-function encode(s:string):string;
-var
- i,j,k:integer;
+function encode(s:string):  string;
+
+var 
+   i,j,k:  integer;
 begin
  {k:=0;}
- if lock_code<>'' then
-  for i:=1 to length(s) do
-   begin
-    inc(lock_pos); if lock_pos>length(lock_code) then lock_pos:=1;
-    if ord(s[i]) in [0..31,128..255] then s[i]:=' ';
-    this_dat:=ord(s[i]) and 15;
-    s[i]:=char((ord(s[i]) xor (ord(lock_code[lock_pos]) xor lock_dat))+1);
-    lock_dat:=this_dat;
-   end;
- encode:=s;
+   if lock_code<>'' then
+      for i:=1 to length(s) do
+         begin
+            inc(lock_pos);
+
+            if lock_pos>length(lock_code) then
+               lock_pos := 1;
+
+            if ord(s[i]) in [0..31,128..255] then
+               s[i] := ' ';
+
+            this_dat := ord(s[i]) and 15;
+            s[i] := char((ord(s[i]) xor (ord(lock_code[lock_pos]) xor lock_dat))+1);
+            lock_dat := this_dat;
+         end;
+   encode := s;
 end;
 
-function prepare(s,s1:string):string;
-var
- i,j,k,l:integer;
- s2:string;
+function prepare(s,s1:string):  string;
+
+var 
+   i,j,k,l:  integer;
+   s2:  string;
 begin
    {--remove comments--}
-   if (length(s1)=0) or (s1[1]=';') then s1:=''
-    else
-     begin
-      k:=0;
-      for i:=length(s1) downto 1 do
-         if s1[i]=';' then k:=i;
-      if k>0 then s1:=lstr(s1,k-1);
-     end;
+   if (length(s1)=0) or (s1[1]=';') then
+      s1 := ''
+   else
+      begin
+         k := 0;
+         for i:=length(s1) downto 1 do
+            if s1[i]=';' then
+               k := i;
+         if k>0 then
+            s1 := lstr(s1,k-1);
+      end;
 
    {--remove excess spaces--}
-   s2:='';
+   s2 := '';
    for i:=1 to length(s1) do
-    if not (s1[i] in [' ',#8,#9,#10,',']) then s2:=s2+s1[i]
-     else begin if s2<>'' then s:=s+s2+' '; s2:=''; end;
+      if not (s1[i] in [' ',#8,#9,#10,',']) then
+         s2 := s2+s1[i]
+      else
+         begin
+            if s2<>'' then
+               s := s+s2+' ';
+            s2 := '';
+         end;
 
-   if s2<>'' then s:=s+s2;
+   if s2<>'' then
+      s := s+s2;
 
-   prepare:=s;
+   prepare := s;
 end;
 
 procedure write_line(s,s1:string);
 begin
-   s:=prepare(s,s1);
+   s := prepare(s,s1);
 
    {--write line!--}
    if length(s)>0 then
-    begin
-     s:=encode(s);
-     writeln(f2,s);
-    end;
+      begin
+         s := encode(s);
+         writeln(f2,s);
+      end;
 end;
 
 begin
- randomize;
- lock_pos:=0;
- lock_dat:=0;
- if (paramcount<1) or (paramcount>2) then
-  begin
-   writeln('Usage: ATRLOCK <robot[.at2]> [locked[.atl]]');
-   halt;
-  end;
- fn1:=btrim(ucase(paramstr(1)));
- if fn1=base_name(fn1) then fn1:=fn1+'.AT2';
- if not exist(fn1) then
-  begin writeln('Robot "',fn1,'" not found!'); halt; end;
- if paramcount=2 then
-    fn2:=btrim(ucase(paramstr(2))) else fn2:=base_name(fn1)+'.ATL';
- if fn2=base_name(fn2) then fn2:=fn2+'.ATL';
- if not valid(fn2) then
-  begin writeln('Output name "',fn1,'" not valid!'); halt; end;
- if fn1=fn2 then
-  begin writeln('Filenames can not be the same!'); halt; end;
- assign(f1,fn1); reset(f1);
- assign(f2,fn2); rewrite(f2);
+   randomize;
+   lock_pos := 0;
+   lock_dat := 0;
+   if (paramcount<1) or (paramcount>2) then
+      begin
+         writeln('Usage: ATRLOCK <robot[.at2]> [locked[.atl]]');
+         halt;
+      end;
+
+   fn1 := btrim(ucase(paramstr(1)));
+   if fn1=base_name(fn1) then
+      fn1 := fn1+'.AT2';
+
+   if not exist(fn1) then
+      begin
+         writeln('Robot "',fn1,'" not found!');
+         halt;
+      end;
+
+   if paramcount=2 then
+      fn2 := btrim(ucase(paramstr(2)))
+   else
+      fn2 := base_name(fn1)+'.ATL';
+
+   if fn2=base_name(fn2) then
+      fn2 := fn2+'.ATL';
+
+   if not valid(fn2) then
+      begin
+         writeln('Output name "',fn1,'" not valid!');
+         halt;
+      end;
+
+   if fn1=fn2 then
+      begin
+         writeln('Filenames can not be the same!');
+         halt;
+      end;
+
+   assign(f1,fn1);
+   reset(f1);
+   assign(f2,fn2);
+   rewrite(f2);
 
  {--copy comment header--}
- writeln(f2,';------------------------------------------------------------------------------');
- s:='';
- while (not eof(f1)) and (s='') do
-  begin
-   readln(f1,s);
-   s:=btrim(s);
-   if s[1]=';' then begin writeln(f2,s); s:=''; end;
-  end;
+   writeln(f2,';------------------------------------------------------------------------------');
+   s := '';
+   while (not eof(f1)) and (s='') do
+      begin
+         readln(f1,s);
+         s := btrim(s);
+         if s[1]=';' then
+            begin
+               writeln(f2,s);
+               s := '';
+            end;
+      end;
 
  {--lock header--}
- writeln(f2,';------------------------------------------------------------------------------');
- GetDate(year, month, day, day_of_week);
- writeln(f2,'; ',no_path(base_name(fn1)),' Locked on ', month, '/', day, '/', year);
- writeln(f2,';------------------------------------------------------------------------------');
- lock_code:='';
- k:=random(21)+20;
- for i:=1 to k do
-  lock_code:=lock_code+char(random(32)+65);
- writeln(f2,'#LOCK',locktype,' ',lock_code);
+   writeln(f2,';------------------------------------------------------------------------------');
+   GetDate(year, month, day, day_of_week);
+   writeln(f2,'; ',no_path(base_name(fn1)),' Locked on ', month, '/', day, '/', year);
+   writeln(f2,';------------------------------------------------------------------------------');
+   lock_code := '';
+   k := random(21)+20;
+   for i:=1 to k do
+      lock_code := lock_code+char(random(32)+65);
+   writeln(f2,'#LOCK',locktype,' ',lock_code);
 
  {--decode lock-code--}
- for i:=1 to length(lock_code) do
-  lock_code[i]:=char(ord(lock_code[i])-65);
+   for i:=1 to length(lock_code) do
+      lock_code[i] := char(ord(lock_code[i])-65);
 
- write('Encoding "',fn1,'"...');
+   write('Encoding "',fn1,'"...');
 
  {--encode robot--}
- s:=btrim(s);
- if length(s)>0 then
-  write_line('',ucase(s));
- while not eof(f1) do
-  begin
+   s := btrim(s);
+   if length(s)>0 then
+      write_line('',ucase(s));
+
+   while not eof(f1) do
+      begin
    {--read line!--}
-   readln(f1,s1); s:='';
-   s1:=btrim(ucase(s1));
+         readln(f1,s1);
+         s := '';
+         s1 := btrim(ucase(s1));
 
    {--write line!--}
-   write_line(s,s1);
-  end;
- writeln('Done. Used LOCK Format #',locktype,'.');
- writeln('Only ATR2 v2.08 or later can decode.');
- writeln('LOCKed robot saved as "',fn2,'"');
+         write_line(s,s1);
+      end;
+   writeln('Done. Used LOCK Format #',locktype,'.');
+   writeln('Only ATR2 v2.08 or later can decode.');
+   writeln('LOCKed robot saved as "',fn2,'"');
 
- close(f1); close(f2);
+   close(f1);
+   close(f2);
 end.
-
