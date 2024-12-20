@@ -18,7 +18,6 @@ since 2005.
 Learning to program AT-Robots assembly, and subsequently reading and
 modifying its sources in my younger days has had a serious impact on my
 life and professional career... weird to admit that, but it's true.
-:rolling_on_the_floor_laughing:
 I always look forward to introducing my students to this 25 year addication,
 but it's time this gem is ported so it can be enjoyed without a
 DOS emulator and my students encouraged to explore its code,
