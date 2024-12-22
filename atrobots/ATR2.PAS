@@ -4399,7 +4399,7 @@ begin
                         main_viewport;
                         setcolor(0);
                         line(round(llx*screen_scale)+screen_x,round(lly*screen_scale)+screen_y,
-                        round(lx*screen_scale)+screen_x,round(ly*screen_scale)+screen_y);
+                             round(lx*screen_scale)+screen_x,round(ly*screen_scale)+screen_y);
                         if a=1 then
                            begin
                               if mult>robot[source]^.shotstrength then
@@ -4408,7 +4408,7 @@ begin
                                  setcolor(15);
 
                               line(round(x*screen_scale)+screen_x,round(y*screen_scale)+screen_y,
-                              round(lx*screen_scale)+screen_x,round(ly*screen_scale)+screen_y);
+                                   round(lx*screen_scale)+screen_x,round(ly*screen_scale)+screen_y);
                            end;
                      end;
                end;
