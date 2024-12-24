@@ -131,28 +131,28 @@ const
 
 type 
    op_rec =    record
-                  op : array[0..max_op] of integer;
-               end;
+      op : array[0..max_op] of integer;
+   end;
    prog_type =  array[0..max_code] of op_rec;
    config_rec =   record
-                     scanner,
-                     weapon,
-                     armor,
-                     engine,
-                     heatsinks,
-                     shield,
-                     mines : integer;
-                  end;
+      scanner,
+      weapon,
+      armor,
+      engine,
+      heatsinks,
+      shield,
+      mines : integer;
+   end;
    mine_rec =  record
-                  x,y : real;
-                  detect,yield : integer;
-                  detonate : boolean;
-               end;
+      x,y : real;
+      detect,yield : integer;
+      detonate : boolean;
+   end;
    robot_rec = record
-                  {FIFI}
-                  is_locked : boolean;  {used to determine wether to allow debugger}
-                  mem_watch : integer;  {current base of memory view for debugger}
-                  {/FIFI}
+      {FIFI}
+      is_locked : boolean;  {used to determine wether to allow debugger}
+      mem_watch : integer;  {current base of memory view for debugger}
+      {/FIFI}
       x, y, lx, ly,
       xv, yv,
       speed,
