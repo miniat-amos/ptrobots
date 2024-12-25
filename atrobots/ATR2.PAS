@@ -153,8 +153,8 @@ type
       is_locked : boolean;  {used to determine wether to allow debugger}
       mem_watch : integer;  {current base of memory view for debugger}
       {/FIFI}
-      x, y, lx, ly,
-      xv, yv,
+      x, y, lx, ly,  {current and last (previous) coordinates}
+      xv, yv,  {velocities}
       speed,
       shotstrength,
       damageadj,
