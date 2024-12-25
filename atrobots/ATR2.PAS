@@ -2906,19 +2906,19 @@ begin
    with robot[n]^ do
       begin
          case int_num of 
-            00 :  damage(n,1000,true);
-            01 : 
+            I_DESTRUCT :  damage(n,1000,true);
+            I_RESET : 
                begin
                   reset_software(n);
                   time_used := 10;
                end;
-            02 : 
+            I_LOCATE : 
                begin
                   time_used := 5;
                   ram[69] := round(x);
                   ram[70] := round(y);
                end;
-            03 : 
+            I_KEEPSHIFT : 
                begin
                   time_used := 2;
                   if ram[65]=0 then
@@ -2927,25 +2927,25 @@ begin
                      keepshift := true;
                   ram[70] := shift and 255;
                end;
-            04 : 
+            I_OVERBURN : 
                begin
                   if ram[65]=0 then
                      overburn := false
                   else
                      overburn := true;
                end;
-            05 : 
+            I_ID : 
                begin
                   time_used := 2;
                   ram[70] := transponder;
                end;
-            06 : 
+            I_TIMER : 
                begin
                   time_used := 2;
                   ram[69] := game_cycle shr 16;
                   ram[70] := game_cycle and 65535;
                end;
-            07 : 
+            I_ANGLE : 
                begin
                   j := ram[69];
                   k := ram[70];
@@ -2963,18 +2963,18 @@ begin
                   ram[65] := round(find_angle(round(x),round(y),j,k)/pi*128+256) and 255;
                   time_used := 32;
                end;
-            08 : 
+            I_TARGETID : 
                begin
                   ram[70] := ram[5];
                   time_used := 1;
                end;
-            09 : 
+            I_TARGETINFO : 
                begin
                   ram[69] := ram[6];
                   ram[70] := ram[7];
                   time_used := 2;
                end;
-            10 : 
+            I_GAMEINFO : 
                begin
                   k := 0;
                   for i:=0 to num_robots do
@@ -2985,29 +2985,29 @@ begin
                   ram[70] := matches;
                   time_used := 4;
                end;
-            11 : 
+            I_ROBOTINFO : 
                begin
                   ram[68] := round(speed*100);
                   ram[69] := last_damage;
                   ram[70] := last_hit;
                   time_used := 5;
                end;
-            12 : 
+            I_COLLISIONS : 
                begin
                   ram[70] := ram[8];
                   time_used := 1;
                end;
-            13 : 
+            I_RESETCOLCNT : 
                begin
                   ram[8] := 0;
                   time_used := 1;
                end;
-            14 : 
+            I_TRANSMIT : 
                begin
                   com_transmit(n,channel,ram[65]);
                   time_used := 1;
                end;
-            15 : 
+            I_RECEIVE : 
                begin
                   if (ram[10]<>ram[11]) then
                      ram[70] := com_receive(n)
@@ -3016,7 +3016,7 @@ begin
 
                   time_used := 1;
                   end;
-            16 : 
+            I_DATAREADY : 
                begin
                   if (ram[11]>=ram[10]) then
                      ram[70] := ram[11]-ram[10]
@@ -3026,20 +3026,20 @@ begin
                      end;
                   time_used := 1;
                end;
-            17 : 
+            I_CLEARCOM : 
                begin
                   ram[10] := 0;
                   ram[11] := 0;
                   time_used := 1;
                end;
-            18 : 
+            I_KILLS : 
                begin
                   ram[68] := kills;
                   ram[69] := kills-startkills;
                   ram[70] := deaths;
                   time_used := 3;
                end;
-            19 : 
+            I_CLEARMETERS : 
                begin
                   ram[9] := 0;
                   meters := 0;

@@ -69,6 +69,28 @@ const
    P_MINETRIGGER = 23;
    P_SHIELD      = 24;
 
+   { Interrupt Constant Identifiers }
+   I_DESTRUCT    =  0;
+   I_RESET       =  1;
+   I_LOCATE      =  2;
+   I_KEEPSHIFT   =  3;
+   I_OVERBURN    =  4;
+   I_ID          =  5;
+   I_TIMER       =  6;
+   I_ANGLE       =  7;
+   I_TARGETID    =  8;
+   I_TARGETINFO  =  9;
+   I_GAMEINFO    = 10;
+   I_ROBOTINFO   = 11;
+   I_COLLISIONS  = 12;
+   I_RESETCOLCNT = 13;
+   I_TRANSMIT    = 14;
+   I_RECEIVE     = 15;
+   I_DATAREADY   = 16;
+   I_CLEARCOM    = 17;
+   I_KILLS       = 18;
+   I_CLEARMETERS = 19;
+
 implementation
 
 end.
