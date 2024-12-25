@@ -9,3 +9,8 @@ venv.bak/
 
 # Mac OS specific
 .DS_Store
+
+# DOS stuff for testing AT-Robot code in DOSBox-x
+atrobots/TP
+atrobots/INSTALL
+atrobots/*.$$$
