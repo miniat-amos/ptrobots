@@ -63,7 +63,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 program Advanced_T_Robots_2;
 
-uses dos, crt, graph, egavga, filelib, myfile, atr2func;
+uses dos, crt, graph, egavga, filelib, myfile, atr2func, atr2defs;
 
 {err}
 
@@ -2713,25 +2713,25 @@ begin
    with robot[n]^ do
       begin
          case p of 
-            01 :  v := spd;
-            02 :  v := heat;
-            03 :  v := hd;
-            04 :  v := shift;
-            05 :  v := (shift+hd) and 255;
-            06 :  v := armor;
-            07 : 
+            P_SPEDOMETER :  v := spd;
+            P_HEAT :  v := heat;
+            P_COMPASS :  v := hd;
+            P_TURRET_OFS :  v := shift;
+            P_TURRET_ABS :  v := (shift+hd) and 255;
+            P_ARMOR :  v := armor;
+            P_SCAN : 
                begin
                   v := scan(n);
                   inc(time_used);
                   if show_arcs then
                      arc_count := 2;
                end;
-            08 : 
+            P_ACCURACY : 
                begin
                   v := accuracy;
                   inc(time_used);
                end;
-            09 : 
+            P_RADAR : 
                begin
                   nn := -1;
                   inc(time_used,3);
@@ -2750,8 +2750,8 @@ begin
                   if nn in [0..num_robots] then
                      ram[5] := robot[nn]^.transponder;
                end;
-            10 :  v := random(65535)+random(2);
-            16 : 
+            P_RANDOM :  v := random(65535)+random(2);
+            P_SONAR : 
                begin
                   nn := -1;
                   if show_arcs then
@@ -2781,17 +2781,17 @@ begin
                   if nn in [0..num_robots] then
                      ram[5] := robot[nn]^.transponder;
                end;
-            17 :  v := scanarc;
-            18 :  
+            P_SCANARC :  v := scanarc;
+            P_OVERBURN :  
                if overburn then
                   v := 1
                else
                   v := 0;
-            19 :  v := transponder;
-            20 :  v := shutdown;
-            21 :  v := channel;
-            22 :  v := mines;
-            23 :  
+            P_TRANSPONDER :  v := transponder;
+            P_SHUTDOWN :  v := shutdown;
+            P_CHANNEL :  v := channel;
+            P_MINELAYER :  v := mines;
+            P_MINETRIGGER :  
                if config.mines>=0 then
                   begin
                      k := 0;
@@ -2803,7 +2803,7 @@ begin
                   end
                else
                   v := 0;
-            24 :  
+            P_SHIELD :  
                if config.shield>0 then
                   begin
                      if shields_up then
@@ -2831,11 +2831,11 @@ begin
    with robot[n]^ do
       begin
          case p of 
-            11 :  tspd := v;
-            12 :  shift := (shift+v+1024) and 255;
-            13 :  shift := (v+1024) and 255;
-            14 :  thd := (thd+v+1024) and 255;
-            15 : 
+            P_THROTTLE :  tspd := v;
+            P_TROTATE :  shift := (shift+v+1024) and 255;
+            P_TAIM :  shift := (v+1024) and 255;
+            P_STEERING :  thd := (thd+v+1024) and 255;
+            P_WEAPON : 
                begin
                   inc(time_used,3);
                   if v>4 then
@@ -2844,16 +2844,16 @@ begin
                      v := -4;
                   init_missile(x,y,xv,yv,(hd+shift+v) and 255,n,0,overburn);
                end;
-            17 :  scanarc := v;
-            18 :  
+            P_SCANARC :  scanarc := v;
+            P_OVERBURN :  
                if v=0 then
                   overburn := false
                else
                   overburn := true;
-            19 :  transponder := v;
-            20 :  shutdown := v;
-            21 :  channel := v;
-            22 :  
+            P_TRANSPONDER :  transponder := v;
+            P_SHUTDOWN :  shutdown := v;
+            P_CHANNEL :  channel := v;
+            P_MINELAYER :  
                if config.mines>=0 then
                   begin
                      if mines>0 then
@@ -2866,7 +2866,7 @@ begin
                   end
                else
                   robot_error(n,13,'');
-            23 :  
+            P_MINETRIGGER :  
                if config.mines>=0 then
                   begin
                      for i:=0 to max_mines do
@@ -2874,7 +2874,7 @@ begin
                   end
                else
                   robot_error(n,13,'');
-            24 :  
+            P_SHIELD :  
                if config.shield>=3 then
                   begin
                      if v=0 then
