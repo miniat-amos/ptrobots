@@ -2,6 +2,7 @@ unit atr2func;
 
 (*
 Copyright (c) 1999, Ed T. Toton III. All rights reserved.
+Additional changes, 2024, by Willam "Amos" Confer
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
