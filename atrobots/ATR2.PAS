@@ -406,20 +406,20 @@ begin
          else
             writeln(errorlog);
 
-         write(errorlog,' AX=',addrear(cstr(ram[65])+',',7));
-         write(errorlog,' BX=',addrear(cstr(ram[66])+',',7));
-         write(errorlog,' CX=',addrear(cstr(ram[67])+',',7));
-         write(errorlog,' DX=',addrear(cstr(ram[68])+',',7));
-         write(errorlog,' EX=',addrear(cstr(ram[69])+',',7));
-         write(errorlog,' FX=',addrear(cstr(ram[70])+',',7));
-         writeln(errorlog,' Flags=',ram[64]);
-         write(errorlog,' AX=',addrear(hex(ram[65])+',',7));
-         write(errorlog,' BX=',addrear(hex(ram[66])+',',7));
-         write(errorlog,' CX=',addrear(hex(ram[67])+',',7));
-         write(errorlog,' DX=',addrear(hex(ram[68])+',',7));
-         write(errorlog,' EX=',addrear(hex(ram[69])+',',7));
-         write(errorlog,' FX=',addrear(hex(ram[70])+',',7));
-         writeln(errorlog,' Flags=',hex(ram[64]));
+         write(errorlog,' AX=',addrear(cstr(ram[M_AX])+',',7));
+         write(errorlog,' BX=',addrear(cstr(ram[M_BX])+',',7));
+         write(errorlog,' CX=',addrear(cstr(ram[M_CX])+',',7));
+         write(errorlog,' DX=',addrear(cstr(ram[M_DX])+',',7));
+         write(errorlog,' EX=',addrear(cstr(ram[M_EX])+',',7));
+         write(errorlog,' FX=',addrear(cstr(ram[M_FX])+',',7));
+         writeln(errorlog,' Flags=',ram[M_FLAGS]);
+         write(errorlog,' AX=',addrear(hex(ram[M_AX])+',',7));
+         write(errorlog,' BX=',addrear(hex(ram[M_BX])+',',7));
+         write(errorlog,' CX=',addrear(hex(ram[M_CX])+',',7));
+         write(errorlog,' DX=',addrear(hex(ram[M_DX])+',',7));
+         write(errorlog,' EX=',addrear(hex(ram[M_EX])+',',7));
+         write(errorlog,' FX=',addrear(hex(ram[M_FX])+',',7));
+         writeln(errorlog,' Flags=',hex(ram[M_FLAGS]));
          writeln(errorlog);
       end;
 end;
@@ -1458,7 +1458,7 @@ begin
       begin
          for i:=0 to max_ram do
             ram[i] := 0;
-         ram[71] := 768;   {SP starts at low stack memory}
+         ram[M_SP] := 768;   {SP starts at low stack memory}
          thd := hd;
          tspd := 0;
          scanarc := 8;
@@ -1595,7 +1595,7 @@ begin
 
          for i:=0 to max_ram do
             ram[i] := 0;
-         ram[71] := 768;   {SP start at low stack memory}
+         ram[M_SP] := 768;   {SP start at low stack memory}
 
          for i:=0 to max_code do
             for k:=0 to max_op do
@@ -2266,13 +2266,13 @@ procedure push(n,v:integer);
 begin
    with robot[n]^ do
       begin
-         if (ram[71]>=stack_base) and (ram[71]<(stack_base+stack_size)) then
+         if (ram[M_SP]>=stack_base) and (ram[M_SP]<(stack_base+stack_size)) then
             begin
-               ram[ram[71]] := v;
-               inc(ram[71]);
+               ram[ram[M_SP]] := v;
+               inc(ram[M_SP]);
             end
          else
-            robot_error(n,1,cstr(ram[71]));
+            robot_error(n,1,cstr(ram[M_SP]));
       end;
 end;
 
@@ -2283,13 +2283,13 @@ var
 begin
    with robot[n]^ do
       begin
-         if (ram[71]>stack_base) and (ram[71]<=(stack_base+stack_size)) then
+         if (ram[M_SP]>stack_base) and (ram[M_SP]<=(stack_base+stack_size)) then
             begin
-               dec(ram[71]);
-               k := ram[ram[71]];
+               dec(ram[M_SP]);
+               k := ram[ram[M_SP]];
             end
          else
-            robot_error(n,5,cstr(ram[71]));
+            robot_error(n,5,cstr(ram[M_SP]));
       end;
    pop := k;
 end;
@@ -2645,10 +2645,10 @@ begin
 
          if nn in [0..num_robots] then
             begin
-               ram[5] := robot[nn]^.transponder;
-               ram[6] := (robot[nn]^.hd-(hd+shift)+1024) and 255;
-               ram[7] := robot[nn]^.spd;
-               ram[13] := round(robot[nn]^.speed*100);
+               ram[M_TRID] := robot[nn]^.transponder;
+               ram[M_TRDIR] := (robot[nn]^.hd-(hd+shift)+1024) and 255;
+               ram[M_TRSPD] := robot[nn]^.spd;
+               ram[M_TRVEL] := round(robot[nn]^.speed*100);
             end;
       end;
 
@@ -2664,18 +2664,18 @@ begin
       with robot[i]^ do
          if (armor>0) and (i<>n) and (channel=chan) then
             begin
-               if (ram[10]<0) or (ram[10]>max_queue) then
-                  ram[10] := 0;
-               if (ram[11]<0) or (ram[11]>max_queue) then
-                  ram[11] := 0;
-               ram[ram[11]+com_queue] := data;
-               inc(ram[11]);
-               if (ram[11]>max_queue) then
-                  ram[11] := 0;
-               if (ram[11]=ram[10]) then
-                  inc(ram[10]);
-               if (ram[10]>max_queue) then
-                  ram[10] := 0;
+               if (ram[M_COMBASE]<0) or (ram[M_COMBASE]>max_queue) then
+                  ram[M_COMBASE] := 0;
+               if (ram[M_COMEND]<0) or (ram[M_COMEND]>max_queue) then
+                  ram[M_COMEND] := 0;
+               ram[ram[M_COMEND]+com_queue] := data;
+               inc(ram[M_COMEND]);
+               if (ram[M_COMEND]>max_queue) then
+                  ram[M_COMEND] := 0;
+               if (ram[M_COMEND]=ram[M_COMBASE]) then
+                  inc(ram[M_COMBASE]);
+               if (ram[M_COMBASE]>max_queue) then
+                  ram[M_COMBASE] := 0;
             end;
 end;
 
@@ -2687,16 +2687,16 @@ begin
    k := 0;
    with robot[n]^ do
       begin
-         if (ram[10]<>ram[11]) then
+         if (ram[M_COMBASE]<>ram[M_COMEND]) then
             begin
-               if (ram[10]<0) or (ram[10]>max_queue) then
-                  ram[10] := 0;
-               if (ram[11]<0) or (ram[11]>max_queue) then
-                  ram[11] := 0;
-               k := ram[ram[10]+com_queue];
-               inc(ram[10]);
-               if (ram[10]>max_queue) then
-                  ram[10] := 0;
+               if (ram[M_COMBASE]<0) or (ram[M_COMBASE]>max_queue) then
+                  ram[M_COMBASE] := 0;
+               if (ram[M_COMEND]<0) or (ram[M_COMEND]>max_queue) then
+                  ram[M_COMEND] := 0;
+               k := ram[ram[M_COMBASE]+com_queue];
+               inc(ram[M_COMBASE]);
+               if (ram[M_COMBASE]>max_queue) then
+                  ram[M_COMBASE] := 0;
             end
          else
             robot_error(n,12,'');
@@ -2748,7 +2748,7 @@ begin
                      end;
                   v := k;
                   if nn in [0..num_robots] then
-                     ram[5] := robot[nn]^.transponder;
+                     ram[M_TRID] := robot[nn]^.transponder;
                end;
             P_RANDOM :  v := random(65535)+random(2);
             P_SONAR : 
@@ -2779,7 +2779,7 @@ begin
                      v := minint;
 
                   if nn in [0..num_robots] then
-                     ram[5] := robot[nn]^.transponder;
+                     ram[M_TRID] := robot[nn]^.transponder;
                end;
             P_SCANARC :  v := scanarc;
             P_OVERBURN :  
@@ -2915,21 +2915,21 @@ begin
             I_LOCATE : 
                begin
                   time_used := 5;
-                  ram[69] := round(x);
-                  ram[70] := round(y);
+                  ram[M_EX] := round(x);
+                  ram[M_FX] := round(y);
                end;
             I_KEEPSHIFT : 
                begin
                   time_used := 2;
-                  if ram[65]=0 then
+                  if ram[M_AX]=0 then
                      keepshift := false
                   else
                      keepshift := true;
-                  ram[70] := shift and 255;
+                  ram[M_FX] := shift and 255;
                end;
             I_OVERBURN : 
                begin
-                  if ram[65]=0 then
+                  if ram[M_AX]=0 then
                      overburn := false
                   else
                      overburn := true;
@@ -2937,18 +2937,18 @@ begin
             I_ID : 
                begin
                   time_used := 2;
-                  ram[70] := transponder;
+                  ram[M_FX] := transponder;
                end;
             I_TIMER : 
                begin
                   time_used := 2;
-                  ram[69] := game_cycle shr 16;
-                  ram[70] := game_cycle and 65535;
+                  ram[M_EX] := game_cycle shr 16;
+                  ram[M_FX] := game_cycle and 65535;
                end;
             I_ANGLE : 
                begin
-                  j := ram[69];
-                  k := ram[70];
+                  j := ram[M_EX];
+                  k := ram[M_FX];
 
                   if j<0 then
                      j := 0;
@@ -2960,18 +2960,18 @@ begin
                   if k>=1000 then
                      k := 999;
 
-                  ram[65] := round(find_angle(round(x),round(y),j,k)/pi*128+256) and 255;
+                  ram[M_AX] := round(find_angle(round(x),round(y),j,k)/pi*128+256) and 255;
                   time_used := 32;
                end;
             I_TARGETID : 
                begin
-                  ram[70] := ram[5];
+                  ram[M_FX] := ram[M_TRID];
                   time_used := 1;
                end;
             I_TARGETINFO : 
                begin
-                  ram[69] := ram[6];
-                  ram[70] := ram[7];
+                  ram[M_EX] := ram[M_TRDIR];
+                  ram[M_FX] := ram[M_TRSPD];
                   time_used := 2;
                end;
             I_GAMEINFO : 
@@ -2980,37 +2980,37 @@ begin
                   for i:=0 to num_robots do
                      if robot[i]^.armor>0 then
                         inc(k);
-                  ram[68] := k;
-                  ram[69] := played;
-                  ram[70] := matches;
+                  ram[M_DX] := k;
+                  ram[M_EX] := played;
+                  ram[M_FX] := matches;
                   time_used := 4;
                end;
             I_ROBOTINFO : 
                begin
-                  ram[68] := round(speed*100);
-                  ram[69] := last_damage;
-                  ram[70] := last_hit;
+                  ram[M_DX] := round(speed*100);
+                  ram[M_EX] := last_damage;
+                  ram[M_FX] := last_hit;
                   time_used := 5;
                end;
             I_COLLISIONS : 
                begin
-                  ram[70] := ram[8];
+                  ram[M_FX] := ram[M_COLCNT];
                   time_used := 1;
                end;
             I_RESETCOLCNT : 
                begin
-                  ram[8] := 0;
+                  ram[M_COLCNT] := 0;
                   time_used := 1;
                end;
             I_TRANSMIT : 
                begin
-                  com_transmit(n,channel,ram[65]);
+                  com_transmit(n,channel,ram[M_AX]);
                   time_used := 1;
                end;
             I_RECEIVE : 
                begin
-                  if (ram[10]<>ram[11]) then
-                     ram[70] := com_receive(n)
+                  if (ram[M_COMBASE]<>ram[M_COMEND]) then
+                     ram[M_FX] := com_receive(n)
                   else
                      robot_error(n,12,'');
 
@@ -3018,30 +3018,30 @@ begin
                   end;
             I_DATAREADY : 
                begin
-                  if (ram[11]>=ram[10]) then
-                     ram[70] := ram[11]-ram[10]
+                  if (ram[M_COMEND]>=ram[M_COMBASE]) then
+                     ram[M_FX] := ram[M_COMEND]-ram[M_COMBASE]
                   else
                      begin
-                        ram[70] := max_queue+1-ram[10]+ram[11];
+                        ram[M_FX] := max_queue+1-ram[M_COMBASE]+ram[M_COMEND];
                      end;
                   time_used := 1;
                end;
             I_CLEARCOM : 
                begin
-                  ram[10] := 0;
-                  ram[11] := 0;
+                  ram[M_COMBASE] := 0;
+                  ram[M_COMEND] := 0;
                   time_used := 1;
                end;
             I_KILLS : 
                begin
-                  ram[68] := kills;
-                  ram[69] := kills-startkills;
-                  ram[70] := deaths;
+                  ram[M_DX] := kills;
+                  ram[M_EX] := kills-startkills;
+                  ram[M_FX] := deaths;
                   time_used := 3;
                end;
             I_CLEARMETERS : 
                begin
-                  ram[9] := 0;
+                  ram[M_METERS] := 0;
                   meters := 0;
                end;
             else
@@ -3117,21 +3117,21 @@ begin
                end;}
             
             setcolor(robot_color(0));
-            textxy(039,32,hex(ram[0]));
-            textxy(039,42,hex(ram[1]));
-            textxy(039,52,hex(ram[2]));
-            textxy(039,62,hex(ram[3]));
-            textxy(039,72,hex(ram[4]));
-            textxy(039,82,hex(ram[5]));
-            textxy(039,92,hex(ram[6]));
+            textxy(039,32,hex(ram[M_DSPD]));
+            textxy(039,42,hex(ram[M_DHD]));
+            textxy(039,52,hex(ram[M_TPOS]));
+            textxy(039,62,hex(ram[M_ACC]));
+            textxy(039,72,hex(ram[M_SWAP]));
+            textxy(039,82,hex(ram[M_TRID]));
+            textxy(039,92,hex(ram[M_TRDIR]));
 
-            textxy(110,32,hex(ram[7]));
-            textxy(110,42,hex(ram[8]));
-            textxy(110,52,hex(ram[9]));
-            textxy(110,62,hex(ram[10]));
-            textxy(110,72,hex(ram[11]));
-            textxy(110,82,hex(ram[12]));
-            textxy(110,92,hex(ram[13]));
+            textxy(110,32,hex(ram[M_TRSPD]));
+            textxy(110,42,hex(ram[M_COLCNT]));
+            textxy(110,52,hex(ram[M_METERS]));
+            textxy(110,62,hex(ram[M_COMBASE]));
+            textxy(110,72,hex(ram[M_COMEND]));
+            textxy(110,82,hex(ram[12]));  { What is ram[12]??? }
+            textxy(110,92,hex(ram[M_TRVEL]));
          end;
 end;
 {/FIFI}
@@ -3156,16 +3156,16 @@ begin
                   bar(110,122+(i*10),141,129+(i*10));
                end;}
             setcolor(robot_color(0));
-            textxy(039,122,hex(ram[65]));
-            textxy(039,132,hex(ram[66]));
-            textxy(039,142,hex(ram[67]));
-            textxy(039,152,hex(ram[68]));
+            textxy(039,122,hex(ram[M_AX]));
+            textxy(039,132,hex(ram[M_BX]));
+            textxy(039,142,hex(ram[M_CX]));
+            textxy(039,152,hex(ram[M_DX]));
 
-            textxy(110,122,hex(ram[69]));
-            textxy(110,132,hex(ram[70]));
+            textxy(110,122,hex(ram[M_EX]));
+            textxy(110,132,hex(ram[M_FX]));
 
             { SP }
-            textxy(110,152,hex(ram[71]));
+            textxy(110,152,hex(ram[M_SP]));
          end;
 end;
 {/FIFI}
@@ -3182,7 +3182,7 @@ begin
          begin
             {debugger window}
             viewport(480,4,635,410);
-            bin_string := bin(ram[64]);
+            bin_string := bin(ram[M_FLAGS]);
             if bin_string[13]='1' then
                setcolor(robot_color(0))
             else
@@ -3216,7 +3216,7 @@ begin
             bar(015,182,142,189);
             setcolor(robot_color(0));}
 
-            textxy(015,182,bin(ram[64]));
+            textxy(015,182,bin(ram[M_FLAGS]));
          end;
 end;
 {/FIFI}
@@ -3569,10 +3569,10 @@ begin
    with robot[n]^ do
       begin
          {--update system variables--}
-         ram[000] := tspd;
-         ram[001] := thd;
-         ram[002] := shift;
-         ram[003] := accuracy;
+         ram[M_DSPD] := tspd;
+         ram[M_DHD] := thd;
+         ram[M_TPOS] := shift;
+         ram[M_ACC] := accuracy;
 
          time_used := 1;
          inc_ip := true;
@@ -3756,61 +3756,61 @@ begin
                   inc(executed);
                   end;
                13:begin (*JLS,JB*)
-                  if ram[64] and 2>0 then
+                  if ram[M_FLAGS] and 2>0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                14:begin (*JGR,JA*)
-                  if ram[64] and 4>0 then
+                  if ram[M_FLAGS] and 4>0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                15:begin (*JNE*)
-                  if ram[64] and 1=0 then
+                  if ram[M_FLAGS] and 1=0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                16:begin (*JEQ,JE*)
-                  if ram[64] and 1>0 then
+                  if ram[M_FLAGS] and 1>0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                17:begin (*SWAP, XCHG*)
-                  ram[4]:=get_val(n,ip,1);
+                  ram[M_SWAP]:=get_val(n,ip,1);
                   put_val(n,ip,1,get_val(n,ip,2));
-                  put_val(n,ip,2,ram[4]);
+                  put_val(n,ip,2,ram[M_SWAP]);
                   time_used:=3;
                   inc(executed);
                   end;
                18:begin (*DO*)
-                  ram[67]:=get_val(n,ip,1);
+                  ram[M_CX]:=get_val(n,ip,1);
                   inc(executed);
                   end;
                19:begin (*LOOP*)
-                  dec(ram[67]);
-                  if ram[67]>0 then
+                  dec(ram[M_CX]);
+                  if ram[M_CX]>0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                20:begin (*CMP*)
                   k:=get_val(n,ip,1)-get_val(n,ip,2);
-                  ram[64]:=ram[64] and $FFF0;
-                  if k=0 then ram[64]:=ram[64] or 1;
-                  if k<0 then ram[64]:=ram[64] or 2;
-                  if k>0 then ram[64]:=ram[64] or 4;
+                  ram[M_FLAGS]:=ram[M_FLAGS] and $FFF0;
+                  if k=0 then ram[M_FLAGS]:=ram[M_FLAGS] or 1;
+                  if k<0 then ram[M_FLAGS]:=ram[M_FLAGS] or 2;
+                  if k>0 then ram[M_FLAGS]:=ram[M_FLAGS] or 4;
                   if (get_val(n,ip,2)=0) and (k=0) then
-                              ram[64]:=ram[64] or 8;
+                              ram[M_FLAGS]:=ram[M_FLAGS] or 8;
                   inc(executed);
                   end;
                21:begin (*TEST*)
                   k:=get_val(n,ip,1) and get_val(n,ip,2);
-                  ram[64]:=ram[64] and $FFF0;
-                  if k=get_val(n,ip,2) then ram[64]:=ram[64] or 1;
-                  if k=0               then ram[64]:=ram[64] or 8;
+                  ram[M_FLAGS]:=ram[M_FLAGS] and $FFF0;
+                  if k=get_val(n,ip,2) then ram[M_FLAGS]:=ram[M_FLAGS] or 1;
+                  if k=0               then ram[M_FLAGS]:=ram[M_FLAGS] or 8;
                   inc(executed);
                   end;
                22:begin (*MOV, SET*)
@@ -3900,24 +3900,24 @@ begin
                   end;
                39:begin (*JZ*)
                   time_used:=0;
-                  if ram[64] and 8>0 then
+                  if ram[M_FLAGS] and 8>0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                40:begin (*JNZ*)
                   time_used:=0;
-                  if ram[64] and 8=0 then
+                  if ram[M_FLAGS] and 8=0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                41:begin (*JAE,JGE*)
-                  if (ram[64] and 1>0) or (ram[64] and 4>0) then
+                  if (ram[M_FLAGS] and 1>0) or (ram[M_FLAGS] and 4>0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                42:begin (*JBE,JLE*)
-                  if (ram[64] and 1>0) or (ram[64] and 2>0) then
+                  if (ram[M_FLAGS] and 1>0) or (ram[M_FLAGS] and 2>0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
@@ -4139,7 +4139,7 @@ begin
 
          if (ttx<0) or (tty<0) or (ttx>=1000) or (tty>=1000) then
             begin
-               inc(ram[8]);
+               inc(ram[M_COLCNT]);
                tspd := 0;
                if abs(speed)>=max_vel/2 then
                   damage(n,1,true);
@@ -4157,8 +4157,8 @@ begin
                   tty := y;
                   robot[i]^.tspd := 0;
                   robot[i]^.spd := 0;
-                  inc(ram[8]);
-                  inc(robot[i]^.ram[8]);
+                  inc(ram[M_COLCNT]);
+                  inc(robot[i]^.ram[M_COLCNT]);
                   if abs(speed)>=max_vel/2 then
                      begin
                         damage(n,1,true);
@@ -4179,7 +4179,7 @@ begin
          meters := meters+distance(x,y,ttx,tty);
          if meters>=maxint then
             meters := meters-maxint;
-         ram[9] := trunc(meters);
+         ram[M_METERS] := trunc(meters);
 
          x := ttx;
          y := tty;

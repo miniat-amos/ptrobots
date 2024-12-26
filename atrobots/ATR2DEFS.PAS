@@ -69,6 +69,7 @@ const
    P_MINETRIGGER = 23;
    P_SHIELD      = 24;
 
+
    { Interrupt Constant Identifiers }
    I_DESTRUCT    =  0;
    I_RESET       =  1;
@@ -91,30 +92,39 @@ const
    I_KILLS       = 18;
    I_CLEARMETERS = 19;
 
+
+   { Memory Constant Identifiers }
+   M_DSPD    =  0;  { Desired speed robot is trying to achieve. }
+   M_DHD     =  1;  { Desired heading robot is trying to achieve. }
+   M_TPOS    =  2;  { Current turret offset }
+   M_ACC     =  3;  { accuracy value from last scan }
+   M_SWAP    =  4;  { temporary swap space used by swap/xchg instruction }
+   M_TRID    =  5;  { ID of last target scanned (by any scan). }
+   M_TRDIR   =  6;  { Relative heading of last target scanned. }
+   M_TRSPD   =  7;  { Throttle of last target scanned. }
+   M_COLCNT  =  8;  { Collision count. }
+   M_METERS  =  9;  { Meters travelled. 15 bits used.. (32767+1)=0 }
+   M_COMBASE = 10;  { Current base of the communications queue }
+   M_COMEND  = 11;  { Current end-point of the communications queue }
+   { 12     What is this, if anything?  It's printed in ATR2.PAS }
+   M_TRVEL   = 13;  { Absolute speed (cm/cycle) of last target scanned }
+   { 14-63       res         reserved }
+   M_FLAGS   = 64;  { flags register }
+   M_AX      = 65;  { ax register }
+   M_BX      = 66;  { bx register }
+   M_CX      = 67;  { cx register }
+   M_DX      = 68;  { dx register }
+   M_EX      = 69;  { ex register }
+   M_FX      = 70;  { fx register }
+   M_SP      = 71;  { stack pointer }
+   {  72-95       res         reserved for future registers }
+   {  96-127      res         reserved }
+   { 128-384      var         variable space }
+   { 385-511      user        user space }
+   { 512-767      com-queue   Communications receiving queue }
+   { 768-1023     stack       System stack }
+   { 1024...      code        Robot program (code segment) (ROM) }
+ 
 implementation
 
 end.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
