@@ -286,7 +286,7 @@ begin
         4 = !label (resolved)
        8h mask = inderect addressing (enclosed in [])
    *)
-   case m and 7 of 
+   case m and BM_LOW_3 of 
       1 :  s := '@' + s;
       2 :  s := ':' + s;
       3 :  s := '$' + s;
@@ -295,7 +295,7 @@ begin
          s := cstr(n);
    end;
 
-   if m and 8>0 then
+   if m and BM_BIT_3 > 0 then
       s := '['+s+']';
    operand := s;
 end;
@@ -397,9 +397,9 @@ begin
          end;
 
          writeln(errorlog,'<',i,'> ',s,' (Line #',ip,') [Cycle: ',game_cycle,', Match: ',played,'/',matches,']');
-         write(errorlog,' ',mnemonic(code[ip].op[0],code[ip].op[3] and 15),'  ',
-                           operand(code[ip].op[1],(code[ip].op[3] shr 4) and 15),', ',
-                           operand(code[ip].op[2],(code[ip].op[3] shr 8) and 15));
+         write(errorlog,' ',mnemonic(code[ip].op[0],code[ip].op[3] and BM_LOW_NYBBLE),'  ',
+                           operand(code[ip].op[1],(code[ip].op[3] shr 4) and BM_LOW_NYBBLE),', ',
+                           operand(code[ip].op[2],(code[ip].op[3] shr 8) and BM_LOW_NYBBLE));
 
          if ov<>'' then
             writeln(errorlog,'    (Values: ',ov,')')
@@ -628,7 +628,7 @@ begin
                            end;
                         2 : 
                            begin
-                              setcolor(robot_color(i) and 7);
+                              setcolor(robot_color(i) and BM_LOW_3);
                               outtextxy(080,02,'A');
                               outtextxy(118,02,'H');
                            end;
@@ -650,7 +650,7 @@ begin
                      if stats_mode=0 then
                         begin
                            outtextxy(003,56,' Error:');
-                           setcolor(robot_color(i) and 7);
+                           setcolor(robot_color(i) and BM_LOW_3);
                            outtextxy(003,12,name);
                            setcolor(8);
                            outtextxy(66,56,'None');
@@ -1004,7 +1004,7 @@ begin
                   begin
                      code[p].op[i] := opcode;
                      if indirect then
-                        microcode := microcode or 8;
+                        microcode := microcode or BM_BIT_3;
                      code[p].op[max_op] := code[p].op[max_op] or (microcode shl (i*4));
                   end
                else
@@ -1080,12 +1080,12 @@ begin
 
                         case locktype of 
                            3 :  s[i] := char((ord(s[i])-1) xor (ord(lock_code[lock_pos]) xor lock_dat));
-                           2 :  s[i] := char(ord(s[i]) xor (ord(lock_code[lock_pos]) xor 1));
+                           2 :  s[i] := char(ord(s[i]) xor (ord(lock_code[lock_pos]) xor BM_BIT_0));
                            else
                               s[i] := char(ord(s[i]) xor ord(lock_code[lock_pos]));
                         end;
 
-                        lock_dat := ord(s[i]) and 15;
+                        lock_dat := ord(s[i]) and BM_LOW_NYBBLE;
                      end;
 
                s := btrim(s);
@@ -2064,44 +2064,44 @@ begin
          {--set up for erase--}
 
          {xx:=lx*screen_scale; yy:=ly*screen_scale;
-         lhd:=(lhd+1024) and 255;
+         lhd:=(lhd+1024) and BM_LOW_BYTE;
          ltx[1]:=round(xx+sint[lhd]*robot_scale);
          lty[1]:=round(yy-cost[lhd]*robot_scale);
-         ltx[2]:=round(xx+sint[(lhd+$68) and 255]*robot_scale);
-         lty[2]:=round(yy-cost[(lhd+$68) and 255]*robot_scale);
-         ltx[3]:=round(xx+sint[(lhd+$98) and 255]*robot_scale);
-         lty[3]:=round(yy-cost[(lhd+$98) and 255]*robot_scale);
-         t:=(lhd+(lshift and 255)+1024) and 255;
-         ltx[4]:=round(xx+sint[t and 255]*robot_scale);
-         lty[4]:=round(yy-cost[t and 255]*robot_scale);}
+         ltx[2]:=round(xx+sint[(lhd+$68) and BM_LOW_BYTE]*robot_scale);
+         lty[2]:=round(yy-cost[(lhd+$68) and BM_LOW_BYTE]*robot_scale);
+         ltx[3]:=round(xx+sint[(lhd+$98) and BM_LOW_BYTE]*robot_scale);
+         lty[3]:=round(yy-cost[(lhd+$98) and BM_LOW_BYTE]*robot_scale);
+         t:=(lhd+(lshift and BM_LOW_BYTE)+1024) and BM_LOW_BYTE;
+         ltx[4]:=round(xx+sint[t and BM_LOW_BYTE]*robot_scale);
+         lty[4]:=round(yy-cost[t and BM_LOW_BYTE]*robot_scale);}
 
          {--set up for draw--}
          xx := x*screen_scale+screen_x;
          yy := y*screen_scale+screen_y;
 
-         hd := (hd+1024) and 255;
+         hd := (hd+1024) and BM_LOW_BYTE;
 
          tx[1] := round(xx+sint[hd]*5);
          ty[1] := round(yy-cost[hd]*5);
-         tx[2] := round(xx+sint[(hd+$68) and 255]*robot_scale);
-         ty[2] := round(yy-cost[(hd+$68) and 255]*robot_scale);
-         tx[3] := round(xx+sint[(hd+$98) and 255]*robot_scale);
-         ty[3] := round(yy-cost[(hd+$98) and 255]*robot_scale);
+         tx[2] := round(xx+sint[(hd+$68) and BM_LOW_BYTE]*robot_scale);
+         ty[2] := round(yy-cost[(hd+$68) and BM_LOW_BYTE]*robot_scale);
+         tx[3] := round(xx+sint[(hd+$98) and BM_LOW_BYTE]*robot_scale);
+         ty[3] := round(yy-cost[(hd+$98) and BM_LOW_BYTE]*robot_scale);
 
-         t := (hd+(shift and 255)+1024) and 255;
+         t := (hd+(shift and BM_LOW_BYTE)+1024) and BM_LOW_BYTE;
 
          tx[4] := round(xx);
          ty[4] := round(yy);
          tx[5] := round(xx+sint[t]*robot_scale*0.8);
          ty[5] := round(yy-cost[t]*robot_scale*0.8);
-         tx[6] := round(xx+sint[(t+scanarc+1024) and 255]*scanrange*screen_scale);
-         ty[6] := round(yy-cost[(t+scanarc+1024) and 255]*scanrange*screen_scale);
-         tx[7] := round(xx+sint[(t-scanarc+1024) and 255]*scanrange*screen_scale);
-         ty[7] := round(yy-cost[(t-scanarc+1024) and 255]*scanrange*screen_scale);
+         tx[6] := round(xx+sint[(t+scanarc+1024) and BM_LOW_BYTE]*scanrange*screen_scale);
+         ty[6] := round(yy-cost[(t+scanarc+1024) and BM_LOW_BYTE]*scanrange*screen_scale);
+         tx[7] := round(xx+sint[(t-scanarc+1024) and BM_LOW_BYTE]*scanrange*screen_scale);
+         ty[7] := round(yy-cost[(t-scanarc+1024) and BM_LOW_BYTE]*scanrange*screen_scale);
 
-         startarc := round(((256-((t+scanarc+1024) and 255))/256*360)+90);
+         startarc := round(((256-((t+scanarc+1024) and BM_LOW_BYTE))/256*360)+90);
 
-         endarc := round(((256-((t-scanarc+1024) and 255))/256*360)+90);
+         endarc := round(((256-((t-scanarc+1024) and BM_LOW_BYTE))/256*360)+90);
 
          if graphix then
             begin
@@ -2143,7 +2143,7 @@ begin
                if graphix then
                   begin
                      {--draw--}
-                     setcolor(robot_color(n) and 7);
+                     setcolor(robot_color(n) and BM_LOW_3);
                      if shields_up then
                         circle(tx[4],ty[4],robot_scale);
                      setcolor(robot_color(n));
@@ -2200,7 +2200,7 @@ begin
                else
                   begin
                      l := i-max_ram-1;
-                     k := code[l shr 2].op[l and 3];
+                     k := code[l shr 2].op[l and BM_LOW_2];
                   end;
             end;
       end;
@@ -2215,16 +2215,16 @@ begin
    k := 0;
    with robot[n]^ do
       begin
-         j := (code[c].op[max_op] shr (4*o)) and 15;
+         j := (code[c].op[max_op] shr (4*o)) and BM_LOW_NYBBLE;
          i := code[c].op[o];
-         if (j and 7)=1 then
+         if (j and BM_LOW_3)=1 then
             begin
                k := get_from_ram(n,i,j);
             end
          else
             k := i;
 
-         if (j and 8)>0 then
+         if (j and BM_BIT_3)>0 then
             k := get_from_ram(n,k,j);
       end;
    get_val := k;
@@ -2240,13 +2240,13 @@ begin
    j := 0;
    with robot[n]^ do
       begin
-         j := (code[c].op[max_op] shr (4*o)) and 15;
+         j := (code[c].op[max_op] shr (4*o)) and BM_LOW_NYBBLE;
          i := code[c].op[o];
-         if (j and 7)=1 then
+         if (j and BM_LOW_3)=1 then
             begin
                if (i<0) or (i>max_ram) then
                   robot_error(n,4,cstr(i))
-               else if (j and 8)>0 then
+               else if (j and BM_BIT_3)>0 then
                   begin
                      i := ram[i];
                      if (i<0) or (i>max_ram) then
@@ -2310,7 +2310,7 @@ begin
             else
                for i:=plen downto 0 do
                   begin
-                     j := code[i].op[max_op] and 15;
+                     j := code[i].op[max_op] and BM_LOW_NYBBLE;
                      if (j=2) and (code[i].op[0]=l) then
                         k := i;
                   end;
@@ -2564,7 +2564,7 @@ begin
 
          accuracy := 0;
          nn := -1;
-         dir := (shift+hd) and 255;
+         dir := (shift+hd) and BM_LOW_BYTE;
 
          if debug_info then
             writeln('<SCAN Arc=',scanarc,', Dir=',dir,'>');
@@ -2578,7 +2578,7 @@ begin
                   if (k<range) and (k<=scanrange) and ((abs(j-dir)<=abs(scanarc)) or (abs(j-dir)>=
                      256-abs(scanarc))) then
                      begin
-                        dir := (dir+1024) and 255;
+                        dir := (dir+1024) and BM_LOW_BYTE;
                         xx := round( sint[dir]*d+x);
                         yy := round(-cost[dir]*d+y);
                         r := distance(xx,yy,robot[i]^.x,robot[i]^.y);
@@ -2598,8 +2598,8 @@ begin
                               accuracy := 0;
                               if scanarc>0 then
                                  begin
-                                    j := (j+1024) and 255;
-                                    dir := (dir+1024) and 255;
+                                    j := (j+1024) and BM_LOW_BYTE;
+                                    dir := (dir+1024) and BM_LOW_BYTE;
 
                                     if (j<dir) then
                                        sign := -1;
@@ -2646,7 +2646,7 @@ begin
          if nn in [0..num_robots] then
             begin
                ram[M_TRID] := robot[nn]^.transponder;
-               ram[M_TRDIR] := (robot[nn]^.hd-(hd+shift)+1024) and 255;
+               ram[M_TRDIR] := (robot[nn]^.hd-(hd+shift)+1024) and BM_LOW_BYTE;
                ram[M_TRSPD] := robot[nn]^.spd;
                ram[M_TRVEL] := round(robot[nn]^.speed*100);
             end;
@@ -2717,7 +2717,7 @@ begin
             P_HEAT :  v := heat;
             P_COMPASS :  v := hd;
             P_TURRET_OFS :  v := shift;
-            P_TURRET_ABS :  v := (shift+hd) and 255;
+            P_TURRET_ABS :  v := (shift+hd) and BM_LOW_BYTE;
             P_ARMOR :  v := armor;
             P_SCAN : 
                begin
@@ -2774,7 +2774,7 @@ begin
 
                   if l>=0 then
                      v := (round(find_angle(x,y,robot[l]^.x,robot[l]^.y)/pi*128+
-                           1024+random(65)-32) and 255)
+                           1024+random(65)-32) and BM_LOW_BYTE)
                   else
                      v := minint;
 
@@ -2832,9 +2832,9 @@ begin
       begin
          case p of 
             P_THROTTLE :  tspd := v;
-            P_TROTATE :  shift := (shift+v+1024) and 255;
-            P_TAIM :  shift := (v+1024) and 255;
-            P_STEERING :  thd := (thd+v+1024) and 255;
+            P_TROTATE :  shift := (shift+v+1024) and BM_LOW_BYTE;
+            P_TAIM :  shift := (v+1024) and BM_LOW_BYTE;
+            P_STEERING :  thd := (thd+v+1024) and BM_LOW_BYTE;
             P_WEAPON : 
                begin
                   inc(time_used,3);
@@ -2842,7 +2842,7 @@ begin
                      v := 4;
                   if v<-4 then
                      v := -4;
-                  init_missile(x,y,xv,yv,(hd+shift+v) and 255,n,0,overburn);
+                  init_missile(x,y,xv,yv,(hd+shift+v) and BM_LOW_BYTE,n,0,overburn);
                end;
             P_SCANARC :  scanarc := v;
             P_OVERBURN :  
@@ -2925,7 +2925,7 @@ begin
                      keepshift := false
                   else
                      keepshift := true;
-                  ram[M_FX] := shift and 255;
+                  ram[M_FX] := shift and BM_LOW_BYTE;
                end;
             I_OVERBURN : 
                begin
@@ -2943,7 +2943,7 @@ begin
                begin
                   time_used := 2;
                   ram[M_EX] := game_cycle shr 16;
-                  ram[M_FX] := game_cycle and 65535;
+                  ram[M_FX] := game_cycle and BM_LOW_16;
                end;
             I_ANGLE : 
                begin
@@ -2960,7 +2960,7 @@ begin
                   if k>=1000 then
                      k := 999;
 
-                  ram[M_AX] := round(find_angle(round(x),round(y),j,k)/pi*128+256) and 255;
+                  ram[M_AX] := round(find_angle(round(x),round(y),j,k)/pi*128+256) and BM_LOW_BYTE;
                   time_used := 32;
                end;
             I_TARGETID : 
@@ -3274,9 +3274,9 @@ begin
                         setcolor(robot_color(0));
 
                      textxy(003,332+(i*10),decimal(ip+i-3,4)+': '
-                            +mnemonic(code[ip+i-3].op[0],code[ip+i-3].op[3] and 15)+' '
-                            +operand(code[ip+i-3].op[1],(code[ip+i-3].op[3] shr 4) and 15)+','
-                            +operand(code[ip+i-3].op[2],(code[ip+i-3].op[3] shr 8) and 15));
+                            +mnemonic(code[ip+i-3].op[0],code[ip+i-3].op[3] and BM_LOW_NYBBLE)+' '
+                            +operand(code[ip+i-3].op[1],(code[ip+i-3].op[3] shr 4) and BM_LOW_NYBBLE)+','
+                            +operand(code[ip+i-3].op[2],(code[ip+i-3].op[3] shr 8) and BM_LOW_NYBBLE));
 
                      if i=3 then
                         setcolor(7);
@@ -3429,7 +3429,7 @@ begin
                                    end;
                               2 : 
                                    begin
-                                      setcolor(robot_color(i) and 7);
+                                      setcolor(robot_color(i) and BM_LOW_3);
                                       outtextxy(080,02,'A');
                                       outtextxy(118,02,'H');
                                    end;
@@ -3451,7 +3451,7 @@ begin
                            if stats_mode=0 then
                               begin
                                  outtextxy(003,56,' Error:');
-                                 setcolor(robot_color(i) and 7);
+                                 setcolor(robot_color(i) and BM_LOW_3);
                                  outtextxy(003,12,name);
                                  setcolor(8);
                                  outtextxy(66,56,'None');
@@ -3485,7 +3485,7 @@ begin
          exit;
       end;
 
-   if game_cycle and 31=0 then
+   if game_cycle and BM_LOW_5=0 then
       begin
          k := 0;
          for n:=0 to num_robots do
@@ -3523,7 +3523,7 @@ begin
    invalid := false;
    for i:=0 to 2 do
       begin
-         k := (robot[n]^.code[ip].op[max_op] shr (i shl 2)) and 7;
+         k := (robot[n]^.code[ip].op[max_op] shr (i shl 2)) and BM_LOW_3;
          if not (k in [0,1,2,4]) then
             invalid := true;
       end;
@@ -3688,7 +3688,7 @@ begin
                end;
             {/FIFI}
 
-         if (not ((code[ip].op[max_op] and 7) in [0,1])) then
+         if (not ((code[ip].op[max_op] and BM_LOW_3) in [0,1])) then
             begin
                time_used := 0;
             end
@@ -3756,25 +3756,25 @@ begin
                   inc(executed);
                   end;
                13:begin (*JLS,JB*)
-                  if ram[M_FLAGS] and 2>0 then
+                  if ram[M_FLAGS] and BM_BIT_1>0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                14:begin (*JGR,JA*)
-                  if ram[M_FLAGS] and 4>0 then
+                  if ram[M_FLAGS] and BM_BIT_2>0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                15:begin (*JNE*)
-                  if ram[M_FLAGS] and 1=0 then
+                  if ram[M_FLAGS] and BM_BIT_0=0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                16:begin (*JEQ,JE*)
-                  if ram[M_FLAGS] and 1>0 then
+                  if ram[M_FLAGS] and BM_BIT_0>0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
@@ -3798,19 +3798,19 @@ begin
                   end;
                20:begin (*CMP*)
                   k:=get_val(n,ip,1)-get_val(n,ip,2);
-                  ram[M_FLAGS]:=ram[M_FLAGS] and $FFF0;
-                  if k=0 then ram[M_FLAGS]:=ram[M_FLAGS] or 1;
-                  if k<0 then ram[M_FLAGS]:=ram[M_FLAGS] or 2;
-                  if k>0 then ram[M_FLAGS]:=ram[M_FLAGS] or 4;
+                  ram[M_FLAGS]:=ram[M_FLAGS] and BM_INV_LOW_NIBBLE;
+                  if k=0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_0;
+                  if k<0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_1;
+                  if k>0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_2;
                   if (get_val(n,ip,2)=0) and (k=0) then
-                              ram[M_FLAGS]:=ram[M_FLAGS] or 8;
+                              ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_3;
                   inc(executed);
                   end;
                21:begin (*TEST*)
                   k:=get_val(n,ip,1) and get_val(n,ip,2);
-                  ram[M_FLAGS]:=ram[M_FLAGS] and $FFF0;
-                  if k=get_val(n,ip,2) then ram[M_FLAGS]:=ram[M_FLAGS] or 1;
-                  if k=0               then ram[M_FLAGS]:=ram[M_FLAGS] or 8;
+                  ram[M_FLAGS]:=ram[M_FLAGS] and BM_INV_LOW_NIBBLE;
+                  if k=get_val(n,ip,2) then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_0;
+                  if k=0               then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_3;
                   inc(executed);
                   end;
                22:begin (*MOV, SET*)
@@ -3829,7 +3829,7 @@ begin
                      else if (k>max_ram) and (k<=(Max_ram+1)+(((max_code+1) shl 3)-1)) then
                      begin
                         j:=k-max_ram-1;
-                        put_val(n,ip,1,code[j shr 2].op[j and 3]);
+                        put_val(n,ip,1,code[j shr 2].op[j and BM_LOW_2]);
                      end
                      else robot_error(n,4,cstr(k));
                   time_used:=2;
@@ -3900,24 +3900,24 @@ begin
                   end;
                39:begin (*JZ*)
                   time_used:=0;
-                  if ram[M_FLAGS] and 8>0 then
+                  if ram[M_FLAGS] and BM_BIT_3>0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                40:begin (*JNZ*)
                   time_used:=0;
-                  if ram[M_FLAGS] and 8=0 then
+                  if ram[M_FLAGS] and BM_BIT_3=0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                41:begin (*JAE,JGE*)
-                  if (ram[M_FLAGS] and 1>0) or (ram[M_FLAGS] and 4>0) then
+                  if (ram[M_FLAGS] and BM_BIT_0>0) or (ram[M_FLAGS] and BM_BIT_2>0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                42:begin (*JBE,JLE*)
-                  if (ram[M_FLAGS] and 1>0) or (ram[M_FLAGS] and 2>0) then
+                  if (ram[M_FLAGS] and BM_BIT_0>0) or (ram[M_FLAGS] and BM_BIT_1>0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
@@ -4002,9 +4002,9 @@ begin
             end;
 
          {--fix up variables--}
-         thd := (thd+1024) and 255;
-         hd := (hd+1024) and 255;
-         shift := (shift+1024) and 255;
+         thd := (thd+1024) and BM_LOW_BYTE;
+         hd := (hd+1024) and BM_LOW_BYTE;
+         shift := (shift+1024) and BM_LOW_BYTE;
 
          if tspd<-75 then
             tspd := -75;
@@ -4026,19 +4026,19 @@ begin
             inc(last_hit);
 
          {--update heat--}
-         if shields_up and (game_cycle and 3=0) then
+         if shields_up and (game_cycle and BM_LOW_2=0) then
             inc(heat);
 
          if not shields_up then
             begin
                if heat>0 then {--heat adjustments--}
                   case config.heatsinks of 
-                     5: if game_cycle and 1=0 then dec(heat);
+                     5: if game_cycle and BM_BIT_0=0 then dec(heat);
                      4: if game_cycle mod 3=0 then dec(heat);
-                     3: if game_cycle and 3=0 then dec(heat);
-                     2: if game_cycle and 7=0 then dec(heat);
+                     3: if game_cycle and BM_LOW_2=0 then dec(heat);
+                     2: if game_cycle and BM_LOW_3=0 then dec(heat);
                      1: begin {Do nothing, no adjustment needed} end;
-                     else if game_cycle and 3=0 then inc(heat);
+                     else if game_cycle and BM_LOW_2=0 then inc(heat);
                   end;
 
                if overburn and (game_cycle mod 3=0) then
@@ -4046,7 +4046,7 @@ begin
 
                if (heat>0) then
                   dec(heat);
-               if (heat>0) and (game_cycle and 7=0) and (abs(tspd)<=25) then
+               if (heat>0) and (game_cycle and BM_LOW_3=0) and (abs(tspd)<=25) then
                   dec(heat);
 
                if (heat<=shutdown-50) or (heat<=0) then
@@ -4070,15 +4070,15 @@ begin
          if overburn then
             heat_mult := heat_mult*1.30;
 
-         if (heat>=475) and (game_cycle and 03=0) then
+         if (heat>=475) and (game_cycle and BM_LOW_2=0) then
             damage(n,1,true)
-         else if (heat>=450) and (game_cycle and 07=0) then
+         else if (heat>=450) and (game_cycle and BM_LOW_3=0) then
             damage(n,1,true)
-         else if (heat>=400) and (game_cycle and 15=0) then
+         else if (heat>=400) and (game_cycle and BM_LOW_NYBBLE=0) then
             damage(n,1,true)
-         else if (heat>=350) and (game_cycle and 31=0) then
+         else if (heat>=350) and (game_cycle and BM_LOW_5=0) then
             damage(n,1,true)
-         else if (heat>=300) and (game_cycle and 63=0) then
+         else if (heat>=300) and (game_cycle and BM_LOW_6=0) then
             damage(n,1,true);
 
          {--update robot in physical world--}
@@ -4106,15 +4106,15 @@ begin
                         k := 1;
 
                   if k=1 then
-                     hd := (hd+turn_rate) and 255
+                     hd := (hd+turn_rate) and BM_LOW_BYTE
                   else
-                     hd := (hd+256-turn_rate) and 255;
+                     hd := (hd+256-turn_rate) and BM_LOW_BYTE;
                end;
 
-         hd := hd and 255;
+         hd := hd and BM_LOW_BYTE;
 
          if keepshift then
-            shift := (tthd-hd+1024) and 255;
+            shift := (tthd-hd+1024) and BM_LOW_BYTE;
 
          {-moving-}
          speed := spd/100*(max_vel*heat_mult*speedadj);
@@ -4270,7 +4270,7 @@ begin
             else
                begin
                   { Draw mine }
-                  if graphix and (game_cycle and 1=0) then
+                  if graphix and (game_cycle and BM_BIT_0=0) then
                      begin
                         main_viewport;
                         setcolor(robot_color(n));
@@ -4310,7 +4310,7 @@ begin
 
                   if a>0 then
                      begin
-                        hd := (hd+256) and 255;
+                        hd := (hd+256) and BM_LOW_BYTE;
                         xv := sint[hd]*mspd;
                         yv := -cost[hd]*mspd;
                         x := x+xv;
@@ -4327,9 +4327,9 @@ begin
                            d := distance(lx,ly,robot[i]^.x,robot[i]^.y);
 
                            {dir:=find_angle(lx,ly,robot[i]^.x,robot[i]^.y);
-                           j:=(round(dir/pi*128)+1024) and 255;}
+                           j:=(round(dir/pi*128)+1024) and BM_LOW_BYTE;}
 
-                           hd := hd and 255;
+                           hd := hd and BM_LOW_BYTE;
                            xx := round( sint[hd]*d+lx);
                            yy := round(-cost[hd]*d+ly);
                            r := distance(xx,yy,robot[i]^.x,robot[i]^.y);
@@ -4403,7 +4403,7 @@ begin
                         if a=1 then
                            begin
                               if mult>robot[source]^.shotstrength then
-                                 setcolor(14+(game_cycle and 1))
+                                 setcolor(14+(game_cycle and BM_BIT_0))
                               else
                                  setcolor(15);
 
@@ -4425,7 +4425,7 @@ begin
                         setcolor(0);
                         circle(round(x*screen_scale)+screen_x,round(y*screen_scale)+screen_y,lrad);
                         if mult>1 then
-                           setcolor(14+(game_cycle and 1))
+                           setcolor(14+(game_cycle and BM_BIT_0))
                         else
                            setcolor(15);
 

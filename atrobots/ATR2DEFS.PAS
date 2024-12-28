@@ -125,6 +125,29 @@ const
    { 768-1023     stack       System stack }
    { 1024...      code        Robot program (code segment) (ROM) }
  
+
+   {* 
+    * Bit-Masking Constants
+    *}
+
+   { Single Bits }
+   BM_BIT_0 = $0001;
+   BM_BIT_1 = $0002;
+   BM_BIT_2 = $0004;
+   BM_BIT_3 = $0008;
+
+   { 1-Runs }
+   BM_LOW_2      = $0003;
+   BM_LOW_3      = $0007;
+   BM_LOW_NYBBLE = $000F;
+   BM_LOW_5      = $001F;
+   BM_LOW_6      = $003F;
+   BM_LOW_BYTE   = $00FF;
+   BM_LOW_16     = $0000FFFF;
+
+   { 0-Runs}
+   BM_INV_LOW_NIBBLE = $FFF0;
+
 implementation
 
 end.
