@@ -295,7 +295,7 @@ begin
          s := cstr(n);
    end;
 
-   if m and BM_BIT_3 > 0 then
+   if (m and BM_BIT_3) > 0 then
       s := '['+s+']';
    operand := s;
 end;
@@ -3485,7 +3485,7 @@ begin
          exit;
       end;
 
-   if game_cycle and BM_LOW_5 = 0 then
+   if (game_cycle and BM_LOW_5) = 0 then
       begin
          k := 0;
          for n:=0 to num_robots do
@@ -3756,25 +3756,25 @@ begin
                   inc(executed);
                   end;
                13:begin (*JLS,JB*)
-                  if ram[M_FLAGS] and BM_BIT_1 > 0 then
+                  if (ram[M_FLAGS] and BM_BIT_1) > 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                14:begin (*JGR,JA*)
-                  if ram[M_FLAGS] and BM_BIT_2 > 0 then
+                  if (ram[M_FLAGS] and BM_BIT_2) > 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                15:begin (*JNE*)
-                  if ram[M_FLAGS] and BM_BIT_0 = 0 then
+                  if (ram[M_FLAGS] and BM_BIT_0) = 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                16:begin (*JEQ,JE*)
-                  if ram[M_FLAGS] and BM_BIT_0 > 0 then
+                  if (ram[M_FLAGS] and BM_BIT_0) > 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
@@ -3900,24 +3900,24 @@ begin
                   end;
                39:begin (*JZ*)
                   time_used:=0;
-                  if ram[M_FLAGS] and BM_BIT_3 > 0 then
+                  if (ram[M_FLAGS] and BM_BIT_3) > 0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                40:begin (*JNZ*)
                   time_used:=0;
-                  if ram[M_FLAGS] and BM_BIT_3 = 0 then
+                  if (ram[M_FLAGS] and BM_BIT_3) = 0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                41:begin (*JAE,JGE*)
-                  if (ram[M_FLAGS] and BM_BIT_0 > 0) or (ram[M_FLAGS] and BM_BIT_2 > 0) then
+                  if ((ram[M_FLAGS] and BM_BIT_0) > 0) or ((ram[M_FLAGS] and BM_BIT_2) > 0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                42:begin (*JBE,JLE*)
-                  if (ram[M_FLAGS] and BM_BIT_0 > 0) or (ram[M_FLAGS] and BM_BIT_1 > 0) then
+                  if ((ram[M_FLAGS] and BM_BIT_0) > 0) or ((ram[M_FLAGS] and BM_BIT_1) > 0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
@@ -4026,19 +4026,19 @@ begin
             inc(last_hit);
 
          {--update heat--}
-         if shields_up and (game_cycle and BM_LOW_2 = 0) then
+         if shields_up and ((game_cycle and BM_LOW_2) = 0) then
             inc(heat);
 
          if not shields_up then
             begin
                if heat > 0 then {--heat adjustments--}
                   case config.heatsinks of 
-                     5: if game_cycle and BM_BIT_0 = 0 then dec(heat);
-                     4: if game_cycle mod 3 = 0 then dec(heat);
-                     3: if game_cycle and BM_LOW_2 = 0 then dec(heat);
-                     2: if game_cycle and BM_LOW_3 = 0 then dec(heat);
+                     5: if (game_cycle and BM_BIT_0) = 0 then dec(heat);
+                     4: if (game_cycle mod 3)        = 0 then dec(heat);
+                     3: if (game_cycle and BM_LOW_2) = 0 then dec(heat);
+                     2: if (game_cycle and BM_LOW_3) = 0 then dec(heat);
                      1: begin {Do nothing, no adjustment needed} end;
-                     else if game_cycle and BM_LOW_2 = 0 then inc(heat);
+                     else if (game_cycle and BM_LOW_2) = 0 then inc(heat);
                   end;
 
                if overburn and (game_cycle mod 3 = 0) then
@@ -4046,7 +4046,7 @@ begin
 
                if heat > 0 then
                   dec(heat);
-               if (heat > 0) and (game_cycle and BM_LOW_3 = 0) and (abs(tspd) <= 25) then
+               if (heat > 0) and ((game_cycle and BM_LOW_3) = 0) and (abs(tspd) <= 25) then
                   dec(heat);
 
                if (heat <= shutdown-50) or (heat <= 0) then
@@ -4070,15 +4070,15 @@ begin
          if overburn then
             heat_mult := heat_mult*1.30;
 
-         if (heat >= 475) and (game_cycle and BM_LOW_2 = 0) then
+         if (heat >= 475) and ((game_cycle and BM_LOW_2) = 0) then
             damage(n,1,true)
-         else if (heat >= 450) and (game_cycle and BM_LOW_3 = 0) then
+         else if (heat >= 450) and ((game_cycle and BM_LOW_3) = 0) then
             damage(n,1,true)
-         else if (heat >= 400) and (game_cycle and BM_LOW_NYBBLE = 0) then
+         else if (heat >= 400) and ((game_cycle and BM_LOW_NYBBLE) = 0) then
             damage(n,1,true)
-         else if (heat >= 350) and (game_cycle and BM_LOW_5 = 0) then
+         else if (heat >= 350) and ((game_cycle and BM_LOW_5) = 0) then
             damage(n,1,true)
-         else if (heat >= 300) and (game_cycle and BM_LOW_6 = 0) then
+         else if (heat >= 300) and ((game_cycle and BM_LOW_6) = 0) then
             damage(n,1,true);
 
          {--update robot in physical world--}
@@ -4270,7 +4270,7 @@ begin
             else
                begin
                   { Draw mine }
-                  if graphix and (game_cycle and BM_BIT_0 = 0) then
+                  if graphix and ((game_cycle and BM_BIT_0) = 0) then
                      begin
                         main_viewport;
                         setcolor(robot_color(n));
