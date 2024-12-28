@@ -1458,7 +1458,7 @@ begin
       begin
          for i:=0 to max_ram do
             ram[i] := 0;
-         ram[M_SP] := 768;   {SP starts at low stack memory}
+         ram[M_SP] := stack_base;   {SP starts at low stack memory}
          thd := hd;
          tspd := 0;
          scanarc := 8;
@@ -1595,7 +1595,7 @@ begin
 
          for i:=0 to max_ram do
             ram[i] := 0;
-         ram[M_SP] := 768;   {SP start at low stack memory}
+         ram[M_SP] := stack_base;   {SP start at low stack memory}
 
          for i:=0 to max_code do
             for k:=0 to max_op do
