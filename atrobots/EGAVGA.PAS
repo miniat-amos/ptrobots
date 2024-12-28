@@ -81,7 +81,7 @@ begin
    mode := VGAHI;
    initgraph(driver,mode,'');
    i := graphresult;
-   if (i<>0) then
+   if i <> 0 then
       begin
          writeln('Graphics Error: ',GraphErrorMsg(i));
          writeln('You must have a VGA to use 640x480x16 mode');

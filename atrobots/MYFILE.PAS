@@ -77,7 +77,7 @@ implementation
 
 function lstr(s1:string; l:integer):  string;
 begin
-   if length(s1)<=l then
+   if length(s1) <= l then
       lstr := s1
    else
       lstr := copy(s1,1,l);
@@ -251,7 +251,7 @@ begin
       mov   ll,     ax
    end;
    len := ll;
-   if w<>0 then
+   if w <> 0 then
       begin
          writeln(' ****** ',w,' ****** '); {pausescr;}
       end;
@@ -315,7 +315,7 @@ begin
          mov   ll,     ax
    end;
    len := ll;
-   if w<>0 then
+   if w <> 0 then
       begin
          writeln(' ****** ',w,' ****** '); {pausescr;}
       end;

@@ -96,7 +96,7 @@ end;
 
 function lstr(s1:string; l:integer):  string;
 begin
-   if length(s1)<=l then
+   if length(s1) <= l then
       lstr := s1
    else
       lstr := copy(s1,1,l);
@@ -104,7 +104,7 @@ end;
 
 function rstr(s1:string; l:integer):  string;
 begin
-   if length(s1)<=l then
+   if length(s1) <= l then
       rstr := s1
    else
       rstr := copy(s1,length(s1)-l+1,l);
@@ -159,20 +159,20 @@ begin
    s1 := '';
    s2 := '';
    k := 1;
-   if (name='.') or (name='..') then
+   if (name = '.') or (name = '..') then
       begin
          name_form := addrear(name,12);
          exit;
       end;
-   while (k<=length(name)) and (name[k]<>'.') do
+   while (k <= length(name)) and (name[k] <> '.') do
       begin
          s1 := s1+name[k];
          inc(k);
       end;
-   if k<length(name) then
+   if k < length(name) then
       begin
          inc(k);
-         while (k<=length(name)) and (name[k]<>'.') do
+         while (k <= length(name)) and (name[k] <> '.') do
             begin
                s2 := s2+name[k];
                inc(k);
@@ -190,15 +190,15 @@ begin
    s1 := '';
    s2 := '';
    k := 1;
-   while (k<=length(name)) and (name[k]<>'.') do
+   while (k <= length(name)) and (name[k] <> '.') do
       begin
          s1 := s1+name[k];
          inc(k);
       end;
-   if k<length(name) then
+   if k < length(name) then
       begin
          inc(k);
-         while (k<=length(name)) and (name[k]<>'.') do
+         while (k <= length(name)) and (name[k] <> '.') do
             begin
                s2 := s2+name[k];
                inc(k);
@@ -217,7 +217,7 @@ begin
    s1 := '';
    s2 := '';
    k := 1;
-   while (k<=length(name)) and (name[k]<>'.') do
+   while (k <= length(name)) and (name[k] <> '.') do
       begin
          s1 := s1+name[k];
          inc(k);
@@ -253,12 +253,12 @@ var
    i,k:  integer;
 begin
    k := 0;
-   for i:=length(fn) downto 1 do
+   for i := length(fn) downto 1 do
       begin
-         if ((fn[i]='\') or (fn[i]=':')) and (k<i) then
+         if ((fn[i] = '\') or (fn[i] = ':')) and (k<i) then
             k := i;
       end;
-   if k<>0 then
+   if k <> 0 then
       path := lstr(fn,k)
    else
       path := '';
@@ -270,12 +270,12 @@ var
    i,k:  integer;
 begin
    k := 0;
-   for i:=length(fn) downto 1 do
+   for i := length(fn) downto 1 do
       begin
-         if ((fn[i]='\') or (fn[i]=':')) and (k<i) then
+         if ((fn[i] = '\') or (fn[i] = ':')) and (k < i) then
             k := i;
       end;
-   if k<>0 then
+   if k <> 0 then
       no_path := rstr(fn,length(fn)-k)
    else
       no_path := fn;
@@ -287,7 +287,7 @@ var
    sr:  searchrec;
 begin
    findfirst(fn,archive,sr);
-   if doserror=0 then
+   if doserror = 0 then
       file_length := sr.size
    else
    file_length := 0;

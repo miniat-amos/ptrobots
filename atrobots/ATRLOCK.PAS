@@ -63,13 +63,13 @@ function encode(s:string):  string;
 var 
    i,j,k:  integer;
 begin
- {k:=0;}
-   if lock_code<>'' then
-      for i:=1 to length(s) do
+   {k := 0;}
+   if lock_code <> '' then
+      for i := 1 to length(s) do
          begin
             inc(lock_pos);
 
-            if lock_pos>length(lock_code) then
+            if lock_pos > length(lock_code) then
                lock_pos := 1;
 
             if ord(s[i]) in [0..31,128..255] then
@@ -89,31 +89,31 @@ var
    s2:  string;
 begin
    {--remove comments--}
-   if (length(s1)=0) or (s1[1]=';') then
+   if (length(s1) = 0) or (s1[1] = ';') then
       s1 := ''
    else
       begin
          k := 0;
-         for i:=length(s1) downto 1 do
-            if s1[i]=';' then
+         for i := length(s1) downto 1 do
+            if s1[i] = ';' then
                k := i;
-         if k>0 then
+         if k > 0 then
             s1 := lstr(s1,k-1);
       end;
 
    {--remove excess spaces--}
    s2 := '';
-   for i:=1 to length(s1) do
+   for i := 1 to length(s1) do
       if not (s1[i] in [' ',#8,#9,#10,',']) then
          s2 := s2+s1[i]
       else
          begin
-            if s2<>'' then
+            if s2 <> '' then
                s := s+s2+' ';
             s2 := '';
          end;
 
-   if s2<>'' then
+   if s2 <> '' then
       s := s+s2;
 
    prepare := s;
@@ -124,7 +124,7 @@ begin
    s := prepare(s,s1);
 
    {--write line!--}
-   if length(s)>0 then
+   if length(s) > 0 then
       begin
          s := encode(s);
          writeln(f2,s);
@@ -135,14 +135,14 @@ begin
    randomize;
    lock_pos := 0;
    lock_dat := 0;
-   if (paramcount<1) or (paramcount>2) then
+   if (paramcount < 1) or (paramcount > 2) then
       begin
          writeln('Usage: ATRLOCK <robot[.at2]> [locked[.atl]]');
          halt;
       end;
 
    fn1 := btrim(ucase(paramstr(1)));
-   if fn1=base_name(fn1) then
+   if fn1 = base_name(fn1) then
       fn1 := fn1+'.AT2';
 
    if not exist(fn1) then
@@ -151,12 +151,12 @@ begin
          halt;
       end;
 
-   if paramcount=2 then
+   if paramcount = 2 then
       fn2 := btrim(ucase(paramstr(2)))
    else
       fn2 := base_name(fn1)+'.ATL';
 
-   if fn2=base_name(fn2) then
+   if fn2 = base_name(fn2) then
       fn2 := fn2+'.ATL';
 
    if not valid(fn2) then
@@ -165,7 +165,7 @@ begin
          halt;
       end;
 
-   if fn1=fn2 then
+   if fn1 = fn2 then
       begin
          writeln('Filenames can not be the same!');
          halt;
@@ -179,11 +179,11 @@ begin
  {--copy comment header--}
    writeln(f2,';------------------------------------------------------------------------------');
    s := '';
-   while (not eof(f1)) and (s='') do
+   while (not eof(f1)) and (s = '') do
       begin
          readln(f1,s);
          s := btrim(s);
-         if s[1]=';' then
+         if s[1] = ';' then
             begin
                writeln(f2,s);
                s := '';
@@ -197,19 +197,19 @@ begin
    writeln(f2,';------------------------------------------------------------------------------');
    lock_code := '';
    k := random(21)+20;
-   for i:=1 to k do
+   for i := 1 to k do
       lock_code := lock_code+char(random(32)+65);
    writeln(f2,'#LOCK',locktype,' ',lock_code);
 
  {--decode lock-code--}
-   for i:=1 to length(lock_code) do
+   for i := 1 to length(lock_code) do
       lock_code[i] := char(ord(lock_code[i])-65);
 
    write('Encoding "',fn1,'"...');
 
  {--encode robot--}
    s := btrim(s);
-   if length(s)>0 then
+   if length(s) > 0 then
       write_line('',ucase(s));
 
    while not eof(f1) do

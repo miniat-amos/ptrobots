@@ -306,7 +306,7 @@ var
    s :  string;
 begin
    s := cstr(n);
-   if m=0 then
+   if m = 0 then
       case n of 
          00 :  s := 'NOP';
          01 :  s := 'ADD';
@@ -401,7 +401,7 @@ begin
                            operand(code[ip].op[1],(code[ip].op[3] shr 4) and BM_LOW_NYBBLE),', ',
                            operand(code[ip].op[2],(code[ip].op[3] shr 8) and BM_LOW_NYBBLE));
 
-         if ov<>'' then
+         if ov <> '' then
             writeln(errorlog,'    (Values: ',ov,')')
          else
             writeln(errorlog);
@@ -440,7 +440,7 @@ var
    ok :  boolean;
 begin
    ok := true;
-   if (not graphix) or (n<0) or (n>num_robots) or (n>=max_shown) then
+   if (not graphix) or (n < 0) or (n > num_robots) or (n >= max_shown) then
       ok := false;
    graph_check := ok;
 end;
@@ -473,11 +473,11 @@ end;
 
 procedure update_armor(n:integer);
 begin
-   if graph_check(n) {FIFI} and (step_mode<=0) {/FIFI} then
+   if graph_check(n) {FIFI} and (step_mode <= 0) {/FIFI} then
       with robot[n]^ do
          begin
             robot_graph(n);
-            if armor>0 then
+            if armor > 0 then
                case stats_mode of 
                   1 :  bar(30,13,29+armor,18);
                   2 :  bar(88,03,87+(armor shr 2),08);
@@ -487,7 +487,7 @@ begin
 
             setfillstyle(1,8);
 
-            if armor<100 then
+            if armor < 100 then
                case stats_mode of 
                   1 :  bar(30+armor,13,129,18);
                   2 :  bar(88+(armor shr 2),03,111,08);
@@ -499,12 +499,12 @@ end;
 
 procedure update_heat(n:integer);
 begin
-   if graph_check(n) {FIFI} and (step_mode<=0) {/FIFI} then
+   if graph_check(n) {FIFI} and (step_mode <= 0) {/FIFI} then
       with robot[n]^ do
          begin
             robot_graph(n);
 
-            if heat>5 then
+            if heat > 5 then
                case stats_mode of 
                   1 :  bar(030,23,029+(heat div 5),28);
                   2 :  bar(127,03,126+(heat div 20),08);
@@ -514,7 +514,7 @@ begin
 
             setfillstyle(1,8);
 
-            if heat<500 then
+            if heat < 500 then
                case stats_mode of 
                   1 :  bar(030+(heat div 5),23,129,28);
                   2 :  bar(127+(heat div 20),03,151,08);
@@ -526,10 +526,10 @@ end;
 
 procedure robot_error(n,i:integer;ov:string);
 begin
-   if graph_check(n) {FIFI} and (step_mode<=0) {/FIFI} then
+   if graph_check(n) {FIFI} and (step_mode <= 0) {/FIFI} then
       with robot[n]^ do
          begin
-            if (stats_mode=0) then
+            if stats_mode = 0 then
                begin
                   robot_graph(n);
                   setfillstyle(1,0);
@@ -548,7 +548,7 @@ end;
 
 procedure update_lives(n:integer);
 begin
-   if graph_check(n) and (stats_mode=0) {FIFI} and (step_mode<=0) {/FIFI} then
+   if graph_check(n) and (stats_mode = 0) {FIFI} and (step_mode <= 0) {/FIFI} then
       with robot[n]^ do
          begin
             robot_graph(n);
@@ -611,12 +611,12 @@ begin
 
  {--robot windows--}
    for i:=0 to max_robots do
-      if i<max_shown then
+      if i < max_shown then
          with robot[i]^ do
             begin
                robot_graph(i);
                hole(0,0,max_gx,max_gy);
-               if i<=num_robots then
+               if i <= num_robots then
                   begin
                      setcolor(robot_color(i));
                      outtextxy(003,02,base_name(no_path(fn)));
@@ -641,13 +641,13 @@ begin
 
                      setcolor(robot_color(i));
 
-                     if stats_mode<=1 then
+                     if stats_mode <= 1 then
                         begin
                            outtextxy(080,02,'Wins:');
                            outtextxy(122,02,zero_pad(wins,4));
                         end;
 
-                     if stats_mode=0 then
+                     if stats_mode = 0 then
                         begin
                            outtextxy(003,56,' Error:');
                            setcolor(robot_color(i) and BM_LOW_3);
@@ -779,30 +779,30 @@ begin
                8h mask = inderect addressing (enclosed in [])
                *)
 
-               if s[i]='' then
+               if s[i] = '' then
                   begin
                      opcode := 0;
                      microcode := 0;
                      found := true;
                   end;
 
-               if (lstr(s[i],1)='[') and (rstr(s[i],1)=']') then
+               if (lstr(s[i],1) = '[') and (rstr(s[i],1) = ']') then
                   begin
                      s[i] := copy(s[i],2,length(s[i])-2);
                      indirect := true;
                   end;
 
                {!labels}
-               if (not found) and (s[i][1]='!') then
+               if (not found) and (s[i][1] = '!') then
                   begin
                      ss := s[i];
                      ss := btrim(rstr(ss,length(ss)-1));
-                     if numlabels>0 then
+                     if numlabels > 0 then
                         for j:=1 to numlabels do
-                           if ss=labelname[j] then
+                           if ss = labelname[j] then
                               begin
                                  found := true;
-                                 if labelnum[j]>=0 then
+                                 if labelnum[j] >= 0 then
                                     begin
                                        opcode := labelnum[j];
                                        microcode := 4; {resolved !label}
@@ -817,7 +817,7 @@ begin
                      if not found then
                         begin
                            inc(numlabels);
-                           if numlabels>max_labels then
+                           if numlabels > max_labels then
                               prog_error(15,'')
                            else
                               begin
@@ -831,9 +831,9 @@ begin
                   end;
 
                {variables}
-               if (numvars>0) and (not found) then
+               if (numvars > 0) and (not found) then
                   for j:=1 to numvars do
-                     if s[i]=varname[j] then
+                     if s[i] = varname[j] then
                         begin
                            opcode := varloc[j];
                            microcode := 1; {variable}
@@ -841,153 +841,153 @@ begin
                         end;
 
                {instructions}
-               if s[i]='NOP'     then begin opcode:=000; found:=true; end;
-               if s[i]='ADD'     then begin opcode:=001; found:=true; end;
-               if s[i]='SUB'     then begin opcode:=002; found:=true; end;
-               if s[i]='OR'      then begin opcode:=003; found:=true; end;
-               if s[i]='AND'     then begin opcode:=004; found:=true; end;
-               if s[i]='XOR'     then begin opcode:=005; found:=true; end;
-               if s[i]='NOT'     then begin opcode:=006; found:=true; end;
-               if s[i]='MPY'     then begin opcode:=007; found:=true; end;
-               if s[i]='DIV'     then begin opcode:=008; found:=true; end;
-               if s[i]='MOD'     then begin opcode:=009; found:=true; end;
-               if s[i]='RET'     then begin opcode:=010; found:=true; end;
-               if s[i]='RETURN'  then begin opcode:=010; found:=true; end;
-               if s[i]='GSB'     then begin opcode:=011; found:=true; end;
-               if s[i]='GOSUB'   then begin opcode:=011; found:=true; end;
-               if s[i]='CALL'    then begin opcode:=011; found:=true; end;
-               if s[i]='JMP'     then begin opcode:=012; found:=true; end;
-               if s[i]='JUMP'    then begin opcode:=012; found:=true; end;
-               if s[i]='GOTO'    then begin opcode:=012; found:=true; end;
-               if s[i]='JLS'     then begin opcode:=013; found:=true; end;
-               if s[i]='JB'      then begin opcode:=013; found:=true; end;
-               if s[i]='JGR'     then begin opcode:=014; found:=true; end;
-               if s[i]='JA'      then begin opcode:=014; found:=true; end;
-               if s[i]='JNE'     then begin opcode:=015; found:=true; end;
-               if s[i]='JEQ'     then begin opcode:=016; found:=true; end;
-               if s[i]='JE'      then begin opcode:=016; found:=true; end;
-               if s[i]='XCHG'    then begin opcode:=017; found:=true; end;
-               if s[i]='SWAP'    then begin opcode:=017; found:=true; end;
-               if s[i]='DO'      then begin opcode:=018; found:=true; end;
-               if s[i]='LOOP'    then begin opcode:=019; found:=true; end;
-               if s[i]='CMP'     then begin opcode:=020; found:=true; end;
-               if s[i]='TEST'    then begin opcode:=021; found:=true; end;
-               if s[i]='SET'     then begin opcode:=022; found:=true; end;
-               if s[i]='MOV'     then begin opcode:=022; found:=true; end;
-               if s[i]='LOC'     then begin opcode:=023; found:=true; end;
-               if s[i]='ADDR'    then begin opcode:=023; found:=true; end;
-               if s[i]='GET'     then begin opcode:=024; found:=true; end;
-               if s[i]='PUT'     then begin opcode:=025; found:=true; end;
-               if s[i]='INT'     then begin opcode:=026; found:=true; end;
-               if s[i]='IPO'     then begin opcode:=027; found:=true; end;
-               if s[i]='IN'      then begin opcode:=027; found:=true; end;
-               if s[i]='OPO'     then begin opcode:=028; found:=true; end;
-               if s[i]='OUT'     then begin opcode:=028; found:=true; end;
-               if s[i]='DEL'     then begin opcode:=029; found:=true; end;
-               if s[i]='DELAY'   then begin opcode:=029; found:=true; end;
-               if s[i]='PUSH'    then begin opcode:=030; found:=true; end;
-               if s[i]='POP'     then begin opcode:=031; found:=true; end;
-               if s[i]='ERR'     then begin opcode:=032; found:=true; end;
-               if s[i]='ERROR'   then begin opcode:=032; found:=true; end;
-               if s[i]='INC'     then begin opcode:=033; found:=true; end;
-               if s[i]='DEC'     then begin opcode:=034; found:=true; end;
-               if s[i]='SHL'     then begin opcode:=035; found:=true; end;
-               if s[i]='SHR'     then begin opcode:=036; found:=true; end;
-               if s[i]='ROL'     then begin opcode:=037; found:=true; end;
-               if s[i]='ROR'     then begin opcode:=038; found:=true; end;
-               if s[i]='JZ'      then begin opcode:=039; found:=true; end;
-               if s[i]='JNZ'     then begin opcode:=040; found:=true; end;
-               if s[i]='JAE'     then begin opcode:=041; found:=true; end;
-               if s[i]='JGE'     then begin opcode:=041; found:=true; end;
-               if s[i]='JLE'     then begin opcode:=042; found:=true; end;
-               if s[i]='JBE'     then begin opcode:=042; found:=true; end;
-               if s[i]='SAL'     then begin opcode:=043; found:=true; end;
-               if s[i]='SAR'     then begin opcode:=044; found:=true; end;
-               if s[i]='NEG'     then begin opcode:=045; found:=true; end;
-               if s[i]='JTL'     then begin opcode:=046; found:=true; end;
+               if s[i] = 'NOP'     then begin opcode:=000; found:=true; end;
+               if s[i] = 'ADD'     then begin opcode:=001; found:=true; end;
+               if s[i] = 'SUB'     then begin opcode:=002; found:=true; end;
+               if s[i] = 'OR'      then begin opcode:=003; found:=true; end;
+               if s[i] = 'AND'     then begin opcode:=004; found:=true; end;
+               if s[i] = 'XOR'     then begin opcode:=005; found:=true; end;
+               if s[i] = 'NOT'     then begin opcode:=006; found:=true; end;
+               if s[i] = 'MPY'     then begin opcode:=007; found:=true; end;
+               if s[i] = 'DIV'     then begin opcode:=008; found:=true; end;
+               if s[i] = 'MOD'     then begin opcode:=009; found:=true; end;
+               if s[i] = 'RET'     then begin opcode:=010; found:=true; end;
+               if s[i] = 'RETURN'  then begin opcode:=010; found:=true; end;
+               if s[i] = 'GSB'     then begin opcode:=011; found:=true; end;
+               if s[i] = 'GOSUB'   then begin opcode:=011; found:=true; end;
+               if s[i] = 'CALL'    then begin opcode:=011; found:=true; end;
+               if s[i] = 'JMP'     then begin opcode:=012; found:=true; end;
+               if s[i] = 'JUMP'    then begin opcode:=012; found:=true; end;
+               if s[i] = 'GOTO'    then begin opcode:=012; found:=true; end;
+               if s[i] = 'JLS'     then begin opcode:=013; found:=true; end;
+               if s[i] = 'JB'      then begin opcode:=013; found:=true; end;
+               if s[i] = 'JGR'     then begin opcode:=014; found:=true; end;
+               if s[i] = 'JA'      then begin opcode:=014; found:=true; end;
+               if s[i] = 'JNE'     then begin opcode:=015; found:=true; end;
+               if s[i] = 'JEQ'     then begin opcode:=016; found:=true; end;
+               if s[i] = 'JE'      then begin opcode:=016; found:=true; end;
+               if s[i] = 'XCHG'    then begin opcode:=017; found:=true; end;
+               if s[i] = 'SWAP'    then begin opcode:=017; found:=true; end;
+               if s[i] = 'DO'      then begin opcode:=018; found:=true; end;
+               if s[i] = 'LOOP'    then begin opcode:=019; found:=true; end;
+               if s[i] = 'CMP'     then begin opcode:=020; found:=true; end;
+               if s[i] = 'TEST'    then begin opcode:=021; found:=true; end;
+               if s[i] = 'SET'     then begin opcode:=022; found:=true; end;
+               if s[i] = 'MOV'     then begin opcode:=022; found:=true; end;
+               if s[i] = 'LOC'     then begin opcode:=023; found:=true; end;
+               if s[i] = 'ADDR'    then begin opcode:=023; found:=true; end;
+               if s[i] = 'GET'     then begin opcode:=024; found:=true; end;
+               if s[i] = 'PUT'     then begin opcode:=025; found:=true; end;
+               if s[i] = 'INT'     then begin opcode:=026; found:=true; end;
+               if s[i] = 'IPO'     then begin opcode:=027; found:=true; end;
+               if s[i] = 'IN'      then begin opcode:=027; found:=true; end;
+               if s[i] = 'OPO'     then begin opcode:=028; found:=true; end;
+               if s[i] = 'OUT'     then begin opcode:=028; found:=true; end;
+               if s[i] = 'DEL'     then begin opcode:=029; found:=true; end;
+               if s[i] = 'DELAY'   then begin opcode:=029; found:=true; end;
+               if s[i] = 'PUSH'    then begin opcode:=030; found:=true; end;
+               if s[i] = 'POP'     then begin opcode:=031; found:=true; end;
+               if s[i] = 'ERR'     then begin opcode:=032; found:=true; end;
+               if s[i] = 'ERROR'   then begin opcode:=032; found:=true; end;
+               if s[i] = 'INC'     then begin opcode:=033; found:=true; end;
+               if s[i] = 'DEC'     then begin opcode:=034; found:=true; end;
+               if s[i] = 'SHL'     then begin opcode:=035; found:=true; end;
+               if s[i] = 'SHR'     then begin opcode:=036; found:=true; end;
+               if s[i] = 'ROL'     then begin opcode:=037; found:=true; end;
+               if s[i] = 'ROR'     then begin opcode:=038; found:=true; end;
+               if s[i] = 'JZ'      then begin opcode:=039; found:=true; end;
+               if s[i] = 'JNZ'     then begin opcode:=040; found:=true; end;
+               if s[i] = 'JAE'     then begin opcode:=041; found:=true; end;
+               if s[i] = 'JGE'     then begin opcode:=041; found:=true; end;
+               if s[i] = 'JLE'     then begin opcode:=042; found:=true; end;
+               if s[i] = 'JBE'     then begin opcode:=042; found:=true; end;
+               if s[i] = 'SAL'     then begin opcode:=043; found:=true; end;
+               if s[i] = 'SAR'     then begin opcode:=044; found:=true; end;
+               if s[i] = 'NEG'     then begin opcode:=045; found:=true; end;
+               if s[i] = 'JTL'     then begin opcode:=046; found:=true; end;
 
                {registers}
-               if s[i]='COLCNT'  then begin opcode:=008; microcode:=01; found:=true; end;
-               if s[i]='METERS'  then begin opcode:=009; microcode:=01; found:=true; end;
-               if s[i]='COMBASE' then begin opcode:=010; microcode:=01; found:=true; end;
-               if s[i]='COMEND'  then begin opcode:=011; microcode:=01; found:=true; end;
-               if s[i]='FLAGS'   then begin opcode:=064; microcode:=01; found:=true; end;
-               if s[i]='AX'      then begin opcode:=065; microcode:=01; found:=true; end;
-               if s[i]='BX'      then begin opcode:=066; microcode:=01; found:=true; end;
-               if s[i]='CX'      then begin opcode:=067; microcode:=01; found:=true; end;
-               if s[i]='DX'      then begin opcode:=068; microcode:=01; found:=true; end;
-               if s[i]='EX'      then begin opcode:=069; microcode:=01; found:=true; end;
-               if s[i]='FX'      then begin opcode:=070; microcode:=01; found:=true; end;
-               if s[i]='SP'      then begin opcode:=071; microcode:=01; found:=true; end;
+               if s[i] = 'COLCNT'  then begin opcode:=008; microcode:=01; found:=true; end;
+               if s[i] = 'METERS'  then begin opcode:=009; microcode:=01; found:=true; end;
+               if s[i] = 'COMBASE' then begin opcode:=010; microcode:=01; found:=true; end;
+               if s[i] = 'COMEND'  then begin opcode:=011; microcode:=01; found:=true; end;
+               if s[i] = 'FLAGS'   then begin opcode:=064; microcode:=01; found:=true; end;
+               if s[i] = 'AX'      then begin opcode:=065; microcode:=01; found:=true; end;
+               if s[i] = 'BX'      then begin opcode:=066; microcode:=01; found:=true; end;
+               if s[i] = 'CX'      then begin opcode:=067; microcode:=01; found:=true; end;
+               if s[i] = 'DX'      then begin opcode:=068; microcode:=01; found:=true; end;
+               if s[i] = 'EX'      then begin opcode:=069; microcode:=01; found:=true; end;
+               if s[i] = 'FX'      then begin opcode:=070; microcode:=01; found:=true; end;
+               if s[i] = 'SP'      then begin opcode:=071; microcode:=01; found:=true; end;
 
                {constants}
-               if s[i]='MAXINT'    then begin opcode:=32767;  microcode:=0; found:=true; end;
-               if s[i]='MININT'    then begin opcode:=-32768; microcode:=0; found:=true; end;
-               if s[i]='P_SPEDOMETER'  then begin opcode:=01; microcode:=0; found:=true; end;
-               if s[i]='P_HEAT'        then begin opcode:=02; microcode:=0; found:=true; end;
-               if s[i]='P_COMPASS'     then begin opcode:=03; microcode:=0; found:=true; end;
-               if s[i]='P_TANGLE'      then begin opcode:=04; microcode:=0; found:=true; end;
-               if s[i]='P_TURRET_OFS'  then begin opcode:=04; microcode:=0; found:=true; end;
-               if s[i]='P_THEADING'    then begin opcode:=05; microcode:=0; found:=true; end;
-               if s[i]='P_TURRET_ABS'  then begin opcode:=05; microcode:=0; found:=true; end;
-               if s[i]='P_ARMOR'       then begin opcode:=06; microcode:=0; found:=true; end;
-               if s[i]='P_DAMAGE'      then begin opcode:=06; microcode:=0; found:=true; end;
-               if s[i]='P_SCAN'        then begin opcode:=07; microcode:=0; found:=true; end;
-               if s[i]='P_ACCURACY'    then begin opcode:=08; microcode:=0; found:=true; end;
-               if s[i]='P_RADAR'       then begin opcode:=09; microcode:=0; found:=true; end;
-               if s[i]='P_RANDOM'      then begin opcode:=10; microcode:=0; found:=true; end;
-               if s[i]='P_RAND'        then begin opcode:=10; microcode:=0; found:=true; end;
-               if s[i]='P_THROTTLE'    then begin opcode:=11; microcode:=0; found:=true; end;
-               if s[i]='P_TROTATE'     then begin opcode:=12; microcode:=0; found:=true; end;
-               if s[i]='P_OFS_TURRET'  then begin opcode:=12; microcode:=0; found:=true; end;
-               if s[i]='P_TAIM'        then begin opcode:=13; microcode:=0; found:=true; end;
-               if s[i]='P_ABS_TURRET'  then begin opcode:=13; microcode:=0; found:=true; end;
-               if s[i]='P_STEERING'    then begin opcode:=14; microcode:=0; found:=true; end;
-               if s[i]='P_WEAP'        then begin opcode:=15; microcode:=0; found:=true; end;
-               if s[i]='P_WEAPON'      then begin opcode:=15; microcode:=0; found:=true; end;
-               if s[i]='P_FIRE'        then begin opcode:=15; microcode:=0; found:=true; end;
-               if s[i]='P_SONAR'       then begin opcode:=16; microcode:=0; found:=true; end;
-               if s[i]='P_ARC'         then begin opcode:=17; microcode:=0; found:=true; end;
-               if s[i]='P_SCANARC'     then begin opcode:=17; microcode:=0; found:=true; end;
-               if s[i]='P_OVERBURN'    then begin opcode:=18; microcode:=0; found:=true; end;
-               if s[i]='P_TRANSPONDER' then begin opcode:=19; microcode:=0; found:=true; end;
-               if s[i]='P_SHUTDOWN'    then begin opcode:=20; microcode:=0; found:=true; end;
-               if s[i]='P_CHANNEL'     then begin opcode:=21; microcode:=0; found:=true; end;
-               if s[i]='P_MINELAYER'   then begin opcode:=22; microcode:=0; found:=true; end;
-               if s[i]='P_MINETRIGGER' then begin opcode:=23; microcode:=0; found:=true; end;
-               if s[i]='P_SHIELD'      then begin opcode:=24; microcode:=0; found:=true; end;
-               if s[i]='P_SHIELDS'     then begin opcode:=24; microcode:=0; found:=true; end;
-               if s[i]='I_DESTRUCT'    then begin opcode:=00; microcode:=0; found:=true; end;
-               if s[i]='I_RESET'       then begin opcode:=01; microcode:=0; found:=true; end;
-               if s[i]='I_LOCATE'      then begin opcode:=02; microcode:=0; found:=true; end;
-               if s[i]='I_KEEPSHIFT'   then begin opcode:=03; microcode:=0; found:=true; end;
-               if s[i]='I_OVERBURN'    then begin opcode:=04; microcode:=0; found:=true; end;
-               if s[i]='I_ID'          then begin opcode:=05; microcode:=0; found:=true; end;
-               if s[i]='I_TIMER'       then begin opcode:=06; microcode:=0; found:=true; end;
-               if s[i]='I_ANGLE'       then begin opcode:=07; microcode:=0; found:=true; end;
-               if s[i]='I_TID'         then begin opcode:=08; microcode:=0; found:=true; end;
-               if s[i]='I_TARGETID'    then begin opcode:=08; microcode:=0; found:=true; end;
-               if s[i]='I_TINFO'       then begin opcode:=09; microcode:=0; found:=true; end;
-               if s[i]='I_TARGETINFO'  then begin opcode:=09; microcode:=0; found:=true; end;
-               if s[i]='I_GINFO'       then begin opcode:=10; microcode:=0; found:=true; end;
-               if s[i]='I_GAMEINFO'    then begin opcode:=10; microcode:=0; found:=true; end;
-               if s[i]='I_RINFO'       then begin opcode:=11; microcode:=0; found:=true; end;
-               if s[i]='I_ROBOTINFO'   then begin opcode:=11; microcode:=0; found:=true; end;
-               if s[i]='I_COLLISIONS'  then begin opcode:=12; microcode:=0; found:=true; end;
-               if s[i]='I_RESETCOLCNT' then begin opcode:=13; microcode:=0; found:=true; end;
-               if s[i]='I_TRANSMIT'    then begin opcode:=14; microcode:=0; found:=true; end;
-               if s[i]='I_RECEIVE'     then begin opcode:=15; microcode:=0; found:=true; end;
-               if s[i]='I_DATAREADY'   then begin opcode:=16; microcode:=0; found:=true; end;
-               if s[i]='I_CLEARCOM'    then begin opcode:=17; microcode:=0; found:=true; end;
-               if s[i]='I_KILLS'       then begin opcode:=18; microcode:=0; found:=true; end;
-               if s[i]='I_DEATHS'      then begin opcode:=18; microcode:=0; found:=true; end;
-               if s[i]='I_CLEARMETERS' then begin opcode:=19; microcode:=0; found:=true; end;
+               if s[i] = 'MAXINT'    then begin opcode:=32767;  microcode:=0; found:=true; end;
+               if s[i] = 'MININT'    then begin opcode:=-32768; microcode:=0; found:=true; end;
+               if s[i] = 'P_SPEDOMETER'  then begin opcode:=01; microcode:=0; found:=true; end;
+               if s[i] = 'P_HEAT'        then begin opcode:=02; microcode:=0; found:=true; end;
+               if s[i] = 'P_COMPASS'     then begin opcode:=03; microcode:=0; found:=true; end;
+               if s[i] = 'P_TANGLE'      then begin opcode:=04; microcode:=0; found:=true; end;
+               if s[i] = 'P_TURRET_OFS'  then begin opcode:=04; microcode:=0; found:=true; end;
+               if s[i] = 'P_THEADING'    then begin opcode:=05; microcode:=0; found:=true; end;
+               if s[i] = 'P_TURRET_ABS'  then begin opcode:=05; microcode:=0; found:=true; end;
+               if s[i] = 'P_ARMOR'       then begin opcode:=06; microcode:=0; found:=true; end;
+               if s[i] = 'P_DAMAGE'      then begin opcode:=06; microcode:=0; found:=true; end;
+               if s[i] = 'P_SCAN'        then begin opcode:=07; microcode:=0; found:=true; end;
+               if s[i] = 'P_ACCURACY'    then begin opcode:=08; microcode:=0; found:=true; end;
+               if s[i] = 'P_RADAR'       then begin opcode:=09; microcode:=0; found:=true; end;
+               if s[i] = 'P_RANDOM'      then begin opcode:=10; microcode:=0; found:=true; end;
+               if s[i] = 'P_RAND'        then begin opcode:=10; microcode:=0; found:=true; end;
+               if s[i] = 'P_THROTTLE'    then begin opcode:=11; microcode:=0; found:=true; end;
+               if s[i] = 'P_TROTATE'     then begin opcode:=12; microcode:=0; found:=true; end;
+               if s[i] = 'P_OFS_TURRET'  then begin opcode:=12; microcode:=0; found:=true; end;
+               if s[i] = 'P_TAIM'        then begin opcode:=13; microcode:=0; found:=true; end;
+               if s[i] = 'P_ABS_TURRET'  then begin opcode:=13; microcode:=0; found:=true; end;
+               if s[i] = 'P_STEERING'    then begin opcode:=14; microcode:=0; found:=true; end;
+               if s[i] = 'P_WEAP'        then begin opcode:=15; microcode:=0; found:=true; end;
+               if s[i] = 'P_WEAPON'      then begin opcode:=15; microcode:=0; found:=true; end;
+               if s[i] = 'P_FIRE'        then begin opcode:=15; microcode:=0; found:=true; end;
+               if s[i] = 'P_SONAR'       then begin opcode:=16; microcode:=0; found:=true; end;
+               if s[i] = 'P_ARC'         then begin opcode:=17; microcode:=0; found:=true; end;
+               if s[i] = 'P_SCANARC'     then begin opcode:=17; microcode:=0; found:=true; end;
+               if s[i] = 'P_OVERBURN'    then begin opcode:=18; microcode:=0; found:=true; end;
+               if s[i] = 'P_TRANSPONDER' then begin opcode:=19; microcode:=0; found:=true; end;
+               if s[i] = 'P_SHUTDOWN'    then begin opcode:=20; microcode:=0; found:=true; end;
+               if s[i] = 'P_CHANNEL'     then begin opcode:=21; microcode:=0; found:=true; end;
+               if s[i] = 'P_MINELAYER'   then begin opcode:=22; microcode:=0; found:=true; end;
+               if s[i] = 'P_MINETRIGGER' then begin opcode:=23; microcode:=0; found:=true; end;
+               if s[i] = 'P_SHIELD'      then begin opcode:=24; microcode:=0; found:=true; end;
+               if s[i] = 'P_SHIELDS'     then begin opcode:=24; microcode:=0; found:=true; end;
+               if s[i] = 'I_DESTRUCT'    then begin opcode:=00; microcode:=0; found:=true; end;
+               if s[i] = 'I_RESET'       then begin opcode:=01; microcode:=0; found:=true; end;
+               if s[i] = 'I_LOCATE'      then begin opcode:=02; microcode:=0; found:=true; end;
+               if s[i] = 'I_KEEPSHIFT'   then begin opcode:=03; microcode:=0; found:=true; end;
+               if s[i] = 'I_OVERBURN'    then begin opcode:=04; microcode:=0; found:=true; end;
+               if s[i] = 'I_ID'          then begin opcode:=05; microcode:=0; found:=true; end;
+               if s[i] = 'I_TIMER'       then begin opcode:=06; microcode:=0; found:=true; end;
+               if s[i] = 'I_ANGLE'       then begin opcode:=07; microcode:=0; found:=true; end;
+               if s[i] = 'I_TID'         then begin opcode:=08; microcode:=0; found:=true; end;
+               if s[i] = 'I_TARGETID'    then begin opcode:=08; microcode:=0; found:=true; end;
+               if s[i] = 'I_TINFO'       then begin opcode:=09; microcode:=0; found:=true; end;
+               if s[i] = 'I_TARGETINFO'  then begin opcode:=09; microcode:=0; found:=true; end;
+               if s[i] = 'I_GINFO'       then begin opcode:=10; microcode:=0; found:=true; end;
+               if s[i] = 'I_GAMEINFO'    then begin opcode:=10; microcode:=0; found:=true; end;
+               if s[i] = 'I_RINFO'       then begin opcode:=11; microcode:=0; found:=true; end;
+               if s[i] = 'I_ROBOTINFO'   then begin opcode:=11; microcode:=0; found:=true; end;
+               if s[i] = 'I_COLLISIONS'  then begin opcode:=12; microcode:=0; found:=true; end;
+               if s[i] = 'I_RESETCOLCNT' then begin opcode:=13; microcode:=0; found:=true; end;
+               if s[i] = 'I_TRANSMIT'    then begin opcode:=14; microcode:=0; found:=true; end;
+               if s[i] = 'I_RECEIVE'     then begin opcode:=15; microcode:=0; found:=true; end;
+               if s[i] = 'I_DATAREADY'   then begin opcode:=16; microcode:=0; found:=true; end;
+               if s[i] = 'I_CLEARCOM'    then begin opcode:=17; microcode:=0; found:=true; end;
+               if s[i] = 'I_KILLS'       then begin opcode:=18; microcode:=0; found:=true; end;
+               if s[i] = 'I_DEATHS'      then begin opcode:=18; microcode:=0; found:=true; end;
+               if s[i] = 'I_CLEARMETERS' then begin opcode:=19; microcode:=0; found:=true; end;
 
               {memory addresses}
-               if (not found) and (s[i][1]='@') and (s[i][2] in ['0'..'9'])  then
+               if (not found) and (s[i][1] = '@') and (s[i][2] in ['0'..'9'])  then
                   begin
                      opcode := str2int(rstr(s[i],length(s[i])-1));
-                     if (opcode<0) or (opcode>(max_ram+1)+(((max_code+1) shl 3)-1)) then
+                     if (opcode < 0) or (opcode > (max_ram+1)+(((max_code+1) shl 3)-1)) then
                         prog_error(3,s[i]);
                      microcode := 1; {variable}
                      found := true;
@@ -1008,7 +1008,7 @@ begin
                      code[p].op[max_op] := code[p].op[max_op] or (microcode shl (i*4));
                   end
                else
-                  if s[i]<>'' then
+                  if s[i] <> '' then
                      prog_error(2,s[i]);
             end;
       end;
@@ -1022,7 +1022,7 @@ end;
 
 procedure check_plen(plen:integer);
 begin
-   if plen>maxcode then
+   if plen > maxcode then
       prog_error(16,#13#10+'Maximum program length exceeded, (Limit: '+cstr(maxcode+1)+' compiled lines)');
 end;
 
@@ -1063,19 +1063,19 @@ begin
          linecount := 0;
 
          {--first pass, compile--}
-         while (not eof(f)) and (s<>'#END') {and (plen<=maxcode)} do
+         while (not eof(f)) and (s <> '#END') {and (plen <= maxcode)} do
             begin
                readln(f,s);
                inc(linecount);
 
-               if locktype<3 then
+               if locktype < 3 then
                   lock_pos := 0;
 
-               if lock_code<>'' then
+               if lock_code <> '' then
                   for i:=1 to length(s) do
                      begin
                         inc(lock_pos);
-                        if lock_pos>length (lock_code) then
+                        if lock_pos > length (lock_code) then
                            lock_pos := 1;
 
                         case locktype of 
@@ -1094,29 +1094,29 @@ begin
                   if s[i] in [#0..#32,',',#128..#255] then
                      s[i] := ' ';
 
-               if show_source and ((lock_code='') or debugging_compiler) then
+               if show_source and ((lock_code = '') or debugging_compiler) then
                   writeln(zero_pad(linecount,3)+':'+zero_pad(plen,3)+' ',s);
 
                if debugging_compiler then
                   begin
-                     if readkey=#27 then
+                     if readkey = #27 then
                         halt;
                   end;
 
                {-remove comments-}
                k := 0;
                for i:=length(s) downto 1 do
-                  if s[i]=';' then
+                  if s[i] = ';' then
                      k := i;
 
-               if k>0 then
+               if k > 0 then
                   s := lstr(s,k-1);
 
                s := btrim(ucase(s));
                for i:=0 to max_op do
                   pp[i] := '';
 
-               if (length(s)>0) and (s[1]<>';') then
+               if (length(s) > 0) and (s[1] <> ';') then
                   begin
                      case s[1] of 
                         '#' : {  Compiler Directives  }
@@ -1126,29 +1126,29 @@ begin
 
                               k := 0;
                               for i:=1 to length(s1) do
-                                 if (k=0) and (s1[i]=' ') then
+                                 if (k = 0) and (s1[i] = ' ') then
                                     k := i;
                               dec(k);
 
-                              if k>1 then
+                              if k > 1 then
                                  begin
                                     s2 := lstr(s1,k);
                                     s3 := ucase(btrim(rstr(s1,length(s1)-k)));
                                     k := 0;
-                                    if numvars>0 then
+                                    if numvars > 0 then
                                        for i:=1 to numvars do
-                                          if s3=varname[i] then
+                                          if s3 = varname[i] then
                                              k := i;
-                                    if (s2='DEF') and (numvars<max_vars) then
+                                    if (s2 = 'DEF') and (numvars < max_vars) then
                                        begin
-                                          if length(s3)>max_var_len then
+                                          if length(s3) > max_var_len then
                                              prog_error(12,s3)
-                                          else if k>0 then
+                                          else if k > 0 then
                                              prog_error(11,s3)
                                           else
                                              begin
                                                 inc(numvars);
-                                                if numvars>max_vars then
+                                                if numvars > max_vars then
                                                    prog_error(14,'')
                                                 else
                                                    begin
@@ -1157,12 +1157,12 @@ begin
                                                    end;
                                              end;
                                        end
-                                    else if (lstr(s2,4)='LOCK') then
+                                    else if (lstr(s2,4) = 'LOCK') then
                                        begin
                                           {FIFI}
                                           is_locked := true; {this robot is locked}
                                           {/FIFI}
-                                          if length(s2)>4 then
+                                          if length(s2) > 4 then
                                              locktype := value(rstr(s2,length(s2)-4));
                                           lock_code := btrim(ucase(s3));
                                           writeln('Robot is of LOCKed format from this point forward. ['
@@ -1171,41 +1171,41 @@ begin
                                           for i:=1 to length(lock_code) do
                                              lock_code[i] := char(ord(lock_code[i])-65);
                                        end
-                                    else if (s2='MSG') then
+                                    else if (s2 = 'MSG') then
                                        name := msg
-                                    else if (s2='TIME') then
+                                    else if (s2 = 'TIME') then
                                        begin
                                           robot_time_limit := value(s3);
-                                          if robot_time_limit<0 then
+                                          if robot_time_limit < 0 then
                                              robot_time_limit := 0;
                                        end
-                                    else if (s2='CONFIG') then
+                                    else if (s2 = 'CONFIG') then
                                        begin
-                                          if (lstr(s3,8)='SCANNER=') then config.scanner:=
+                                          if (lstr(s3,8) = 'SCANNER=') then config.scanner:=
                                                 value(rstr(s3,length(s3)-8))
-                                          else if (lstr(s3,7)='SHIELD=') then config.shield:=
+                                          else if (lstr(s3,7) = 'SHIELD=') then config.shield:=
                                                    value(rstr(s3,length(s3)-7))
-                                          else if (lstr(s3,7)='WEAPON=') then config.weapon:=
+                                          else if (lstr(s3,7) = 'WEAPON=') then config.weapon:=
                                                    value(rstr(s3,length(s3)-7))
-                                          else if (lstr(s3,6)='ARMOR=') then config.armor:=
+                                          else if (lstr(s3,6) = 'ARMOR=') then config.armor:=
                                                    value(rstr(s3,length(s3)-6))
-                                          else if (lstr(s3,7)='ENGINE=') then config.engine:=
+                                          else if (lstr(s3,7) = 'ENGINE=') then config.engine:=
                                                    value(rstr(s3,length(s3)-7))
-                                          else if (lstr(s3,10)='HEATSINKS=') then config.heatsinks:=
+                                          else if (lstr(s3,10) = 'HEATSINKS=') then config.heatsinks:=
                                                    value(rstr(s3,length(s3)-10))
-                                          else if (lstr(s3,6)='MINES=') then config.mines:=
+                                          else if (lstr(s3,6) = 'MINES=') then config.mines:=
                                                    value(rstr(s3,length(s3)-6))
                                           else prog_error(20,s3);
 
                                           with config do
                                              begin
-                                                if scanner<0 then scanner:=0; if scanner>5 then scanner:=5;
-                                                if shield<0 then shield:=0;   if shield>5 then shield:=5;
-                                                if weapon<0 then weapon:=0;   if weapon>5 then weapon:=5;
-                                                if armor<0 then armor:=0;     if armor>5 then armor:=5;
-                                                if engine<0 then engine:=0;   if engine>5 then engine:=5;
-                                                if heatsinks<0 then heatsinks:=0; if heatsinks>5 then heatsinks:=5;
-                                                if mines<0 then mines:=0;     if mines>5 then mines:=5;
+                                                if scanner < 0 then scanner:=0; if scanner > 5 then scanner:=5;
+                                                if shield < 0 then shield:=0;   if shield > 5 then shield:=5;
+                                                if weapon < 0 then weapon:=0;   if weapon > 5 then weapon:=5;
+                                                if armor < 0 then armor:=0;     if armor > 5 then armor:=5;
+                                                if engine < 0 then engine:=0;   if engine > 5 then engine:=5;
+                                                if heatsinks < 0 then heatsinks:=0; if heatsinks > 5 then heatsinks:=5;
+                                                if mines < 0 then mines:=0;     if mines > 5 then mines:=5;
                                              end;
                                        end
                                     else
@@ -1218,15 +1218,15 @@ begin
                               for i:=0 to max_op do
                                  pp[i] := '';
                               for i:=2 to length(s) do
-                                 if s[i]='*' then
+                                 if s[i] = '*' then
                                     prog_error(23,s);
                               k := 0;
                               i := 1;
                               s1 := '';
-                              if length(s)<=2 then
+                              if length(s) <= 2 then
                                  prog_error(22,s);
 
-                              while (i<length(s)) and (k<=max_op) do
+                              while (i < length(s)) and (k <= max_op) do
                                  begin
                                     inc(i);
                                     if ord(s[i]) in [33..41,43..127] then
@@ -1262,20 +1262,20 @@ begin
                               for i:=length(s1) downto 1 do
                                  if s1[i] in [';',#8,#9,#10,' ',','] then
                                     k := i;
-                              if k>0 then
+                              if k > 0 then
                                  s1 := lstr(s1,k-1);
                               k := 0;
                               for i:=1 to numlabels do
-                                 if (labelname[i]=s1) then
+                                 if (labelname[i] = s1) then
                                     begin
-                                       if (labelnum[i]>=0) then
+                                       if (labelnum[i] >= 0) then
                                           prog_error(13,'"!'+s1+'" ('+cstr(labelnum[i])+')');
                                        k := i;
                                     end;
-                              if (k=0) then
+                              if k = 0 then
                                  begin
                                     inc(numlabels);
-                                    if numlabels>max_labels then
+                                    if numlabels > max_labels then
                                        prog_error(15,'');
                                     k := numlabels;
                                  end;
@@ -1289,9 +1289,9 @@ begin
                               {-remove comments-}
                               k := 0;
                               for i:=length(s) downto 1 do
-                                 if s[i]=';' then
+                                 if s[i] = ';' then
                                     k := i;
-                              if k>0 then
+                              if k > 0 then
                                  s := lstr(s,k-1);
                               {-setup variables for parsing-}
                               k := 0;
@@ -1300,7 +1300,7 @@ begin
                               for j:=1 to length(s) do
                                  begin
                                     c := s[j];
-                                    if (not (c in [' ',#8,#9,#10,','])) and (k<=max_op) then
+                                    if (not (c in [' ',#8,#9,#10,','])) and (k <= max_op) then
                                        pp[k] := pp[k]+c
                                     else if not (lc in [' ',#8,#9,#10,',']) then
                                           k := k+1;
@@ -1316,7 +1316,7 @@ begin
 
          {-Add our implied NOP if there's room. This was originally to make sure
            no one tries using an empty robot program, kinda pointless otherwise-}
-         if plen<=maxcode then
+         if plen <= maxcode then
             begin
                for i:=0 to max_op do
                   pp[i] := '';
@@ -1327,18 +1327,18 @@ begin
             dec(plen);
 
    {--second pass, resolving !labels--}
-         if numlabels>0 then
+         if numlabels > 0 then
             for i:=0 to plen do
                for j:=0 to max_op-1 do
-                  if code[i].op[max_op] shr (j*4)=3 {unresolved !label} then
+                  if (code[i].op[max_op] shr (j*4)) = 3 {unresolved !label} then
                      begin
                         k := code[i].op[j];
-                        if (k>0) and (k<=numlabels) then
+                        if (k > 0) and (k <= numlabels) then
                            begin
                               l := labelnum[k];
-                              if (l<0) then
+                              if l < 0 then
                                  prog_error(19,'"!'+labelname[k]+'" ('+cstr(l)+')');
-                              if (l<0) or (l>maxcode) then
+                              if (l < 0) or (l > maxcode) then
                                  prog_error(18,'"!'+labelname[k]+'" ('+cstr(l)+')')
                               else
                                  begin
@@ -1442,9 +1442,9 @@ begin
          end;
 
          shields_up := false;
-         if (config.shield<3) or (config.shield>5) then
+         if (config.shield < 3) or (config.shield > 5) then
             config.shield := 0;
-         if (config.heatsinks<0) or (config.heatsinks>5) then
+         if (config.heatsinks < 0) or (config.heatsinks > 5) then
             config.heatsinks := 0;
       end;
 end;
@@ -1496,23 +1496,23 @@ begin
             dd := 1000;
             for i:=0 to num_robots do
                begin
-                  if robot[i]^.x<0 then
+                  if robot[i]^.x < 0 then
                      robot[i]^.x := 0;
 
-                  if robot[i]^.x>=1000 then
+                  if robot[i]^.x >= 1000 then
                      robot[i]^.x := 999;
 
-                  if robot[i]^.y<0 then
+                  if robot[i]^.y < 0 then
                      robot[i]^.y := 0;
 
-                  if robot[i]^.y>=1000 then
+                  if robot[i]^.y >= 1000 then
                      robot[i]^.y := 999;
 
                   d := distance(x,y,robot[i]^.x,robot[i]^.y);
-                  if (robot[i]^.armor>0) and (i<>n) and (d<dd) then
+                  if (robot[i]^.armor > 0) and (i <> n) and (d < dd) then
                      dd := d;
                end;
-         until dd>32;
+         until dd > 32;
 
          for i:=0 to max_mines do
             with mine[i] do
@@ -1611,7 +1611,7 @@ procedure create_robot(n:integer; filename:string);
 var 
    i,j,k :  integer;
 begin
-   if maxavail<sizeof(robot_rec) then
+   if maxavail < sizeof(robot_rec) then
       prog_error(9,base_name(no_path(filename)));
 
    new(robot[n]);
@@ -1620,15 +1620,15 @@ begin
       begin
          init_robot(n);
          filename := ucase(btrim(filename));
-         if filename=base_name(filename) then
+         if filename = base_name(filename) then
             begin
-               if filename[1]='?' then
+               if filename[1] = '?' then
                   filename := filename+locked_ext
                else
                   filename := filename+robot_ext;
             end;
 
-         if filename[1]='?' then
+         if filename[1] = '?' then
             filename := rstr(filename,length(filename)-1);
 
          fn := base_name(no_path(filename));
@@ -1638,7 +1638,7 @@ begin
          with config do
             begin
                k := scanner+armor+weapon+engine+heatsinks+shield+mines;
-               if (k)>max_config_points then
+               if (k) > max_config_points then
                   prog_error(21,cstr(k)+'/'+cstr(max_config_points));
             end;
       end;
@@ -1716,13 +1716,13 @@ begin
    found := false;
    s := btrim(ucase(s));
 
-   if s='' then
+   if s = '' then
       exit;
 
-   if s[1]='#' then
+   if s[1] = '#' then
       begin
          fn := rstr(s,length(s)-1);
-         if fn=base_name(fn) then
+         if fn = base_name(fn) then
             fn := fn+config_ext;
 
          if not exist(fn) then
@@ -1735,7 +1735,7 @@ begin
             begin
                readln(f,s1);
                s1 := ucase(btrim(s1));
-               if s1[1]='#' then
+               if s1[1] = '#' then
                   prog_error(7,s1)
                else
                   parse_param(s1);
@@ -1750,135 +1750,135 @@ begin
             s1 := rstr(s,length(s)-1);
 
             {FIFI}
-            if s1[1]='X' then
+            if s1[1] = 'X' then
                begin
                   step_mode := value(rstr(s1,length(s1)-1));
                   found := true;
-                  if step_mode=0 then
+                  if step_mode = 0 then
                      step_mode := 1;
-                  if (step_mode<1) or (step_mode>9) then
+                  if (step_mode < 1) or (step_mode > 9) then
                      prog_error(24,rstr(s1,length(s1)-1));
                end;
             {/FIFI}
 
-            if s1[1]='D' then
+            if s1[1] = 'D' then
                begin
                   game_delay := value(rstr(s1,length(s1)-1));
                   found := true;
                end;
 
-            if s1[1]='T' then
+            if s1[1] = 'T' then
                begin
                   time_slice := value(rstr(s1,length(s1)-1));
                   found := true;
                end;
 
-            if s1[1]='L' then
+            if s1[1] = 'L' then
                begin
                   game_limit := value(rstr(s1,length(s1)-1))*1000;
                   found := true;
                end;
 
-            if s1[1]='Q' then
+            if s1[1] = 'Q' then
                begin
                   sound_on := false;
                   found := true;
                end;
 
-            if s1[1]='M' then
+            if s1[1] = 'M' then
                begin
                   matches := value(rstr(s1,length(s1)-1));
                   found := true;
                end;
 
-            if s1[1]='S' then
+            if s1[1] = 'S' then
                begin
                   show_source := false;
                   found := true;
                end;
 
-            if s1[1]='G' then
+            if s1[1] = 'G' then
                begin
                   no_gfx := true;
                   found := true;
                end;
 
-            if s1[1]='R' then
+            if s1[1] = 'R' then
                begin
                   report := true;
                   found := true;
-                  if (length(s1)>1) then
+                  if (length(s1) > 1) then
                      report_type := value(rstr(s1,length(s1)-1));
                end;
 
-            if s1[1]='C' then
+            if s1[1] = 'C' then
                begin
                   compile_only := true;
                   found := true;
                end;
 
-            if s1[1]='^' then
+            if s1[1] = '^' then
                begin
                   show_cnotice := false;
                   found := true;
                end;
 
-            if s1[1]='A' then
+            if s1[1] = 'A' then
                begin
                   show_arcs := true;
                   found := true;
                end;
 
-            if s1[1]='W' then
+            if s1[1] = 'W' then
                begin
                   windoze := false;
                   found := true;
                end;
 
-            if s1[1]='$' then
+            if s1[1] = '$' then
                begin
                   debug_info := true;
                   found := true;
                end;
 
-            if s1[1]='#' then
+            if s1[1] = '#' then
                begin
                   maxcode := value(rstr(s1,length(s1)-1))-1;
                   found := true;
                end;
 
-            if s1[1]='!' then
+            if s1[1] = '!' then
                begin
                   insane_missiles := true;
-                  if (length(s1)>1) then
+                  if (length(s1) > 1) then
                      insanity := value(rstr(s1,length(s1)-1));
                   found := true;
                end;
-            if insanity<0 then
+            if insanity < 0 then
                insanity := 0;
-            if insanity>15 then
+            if insanity > 15 then
                insanity := 15;
 
-            if s1[1]='@' then
+            if s1[1] = '@' then
                begin
                   old_shields := true;
                   found := true;
                end;
 
-            if s1[1]='E' then
+            if s1[1] = 'E' then
                begin
                   logging_errors := true;
                   found := true;
                end;
          end
-   else if s[1]=';' then
+   else if s[1] = ';' then
       found := true
-   else if (num_robots<max_robots) and (s<>'') then
+   else if (num_robots < max_robots) and (s <> '') then
       begin
          inc(num_robots);
          create_robot(num_robots,s);
          found := true;
-         if num_robots=max_robots then
+         if num_robots = max_robots then
             writeln('Maximum number of robots reached.');
       end
    else
@@ -1973,7 +1973,7 @@ begin
    {create_robot(0,'SDUCK');}
 
    delete_compile_report;
-   if paramcount>0 then
+   if paramcount > 0 then
       for i:=1 to paramcount do
          parse_param(btrim(ucase(paramstr(i))))
          else
@@ -1994,36 +1994,36 @@ begin
    if compile_only then
       write_compile_report;
 
-   if num_robots<1 then
+   if num_robots < 1 then
       prog_error(4,'');
 
    if not no_gfx then
       graph_mode(true);
 
    {--fix ups--}
-   if matches>100000 then
+   if matches > 100000 then
       matches := 100000;
-   if matches<1 then
+   if matches < 1 then
       matches := 1;
 
-   if game_delay>1000 then
+   if game_delay > 1000 then
       game_delay := 1000;
-   if game_delay<0 then
+   if game_delay < 0 then
       game_delay := 0;
 
-   if time_slice>100 then
+   if time_slice > 100 then
       time_slice := 100;
-   if time_slice<1 then
+   if time_slice < 1 then
       time_slice := 1;
 
-   if game_limit<0 then
+   if game_limit < 0 then
       game_limit := 0;
-   if game_limit>100000 then
+   if game_limit > 100000 then
       game_limit := 100000;
 
-   if maxcode<1 then
+   if maxcode < 1 then
       maxcode := 1; {0 based, so actually 2 lines}
-   if maxcode>max_code then
+   if maxcode > max_code then
       maxcode := max_code;
 
    {--Just to avoid floating pointers--}
@@ -2049,17 +2049,17 @@ begin
       exit;
    with robot[n]^ do
       begin
-         if x<0 then
+         if x < 0 then
             x := 0;
-         if x>=1000 then
+         if x >= 1000 then
             x := 999;
 
-         if y<0 then
+         if y < 0 then
             y := 0;
-         if y>=1000 then
+         if y >= 1000 then
             y := 999;
 
-         {if (lhd=hd) and (lx=x) and (ly=y) then exit;}
+         {if (lhd = hd) and (lx = x) and (ly = y) then exit;}
 
          {--set up for erase--}
 
@@ -2112,20 +2112,20 @@ begin
                if lshields then
                   circle(ltx[4],lty[4],robot_scale);
 
-               if (arc_count>0) then
+               if (arc_count > 0) then
                   begin
                      line(ltx[4],lty[4],ltx[6],lty[6]);
                      line(ltx[4],lty[4],ltx[7],lty[7]);
-                     if scanrange<1500 then
+                     if scanrange < 1500 then
                         arc(ltx[4],lty[4],lstartarc,lendarc,round(scanrange*screen_scale));
                   end;
 
-               if (sonar_count>0) then
+               if (sonar_count > 0) then
                   begin
                      circle(ltx[4],lty[4],round(max_sonar*screen_scale));
                   end;
 
-               if armor>0 then
+               if armor > 0 then
                   begin {only erase body if still alive, that way we leave a "corpse" when dead}
                      line(ltx[1],lty[1],ltx[2],lty[2]);
                      line(ltx[2],lty[2],ltx[3],lty[3]);
@@ -2134,11 +2134,11 @@ begin
                   end;
             end;
 
-         if armor>0 then {If we're still alive we need to redraw}
+         if armor > 0 then {If we're still alive we need to redraw}
             begin
-               if arc_count>0   then
+               if arc_count > 0   then
                   dec(arc_count);
-               if sonar_count>0 then
+               if sonar_count > 0 then
                   dec(sonar_count);
                if graphix then
                   begin
@@ -2154,15 +2154,15 @@ begin
                      line(tx[4],ty[4],tx[5],ty[5]);
 
                      setcolor(8);
-                     if show_arcs and (arc_count>0) then
+                     if show_arcs and (arc_count > 0) then
                         begin
                            line(tx[4],ty[4],tx[6],ty[6]);
                            line(tx[4],ty[4],tx[7],ty[7]);
-                           if scanrange<1500 then
+                           if scanrange < 1500 then
                               arc(tx[4],ty[4],startarc,endarc,round(scanrange*screen_scale));
                         end;
 
-                     if show_arcs and (sonar_count>0) then
+                     if show_arcs and (sonar_count > 0) then
                         circle(tx[4],ty[4],round(max_sonar*screen_scale));
                   end;
 
@@ -2188,14 +2188,14 @@ var k,l :  integer;
 begin
    with robot[n]^ do
       begin
-         if (i<0) or (i>(max_ram+1)+(((max_code+1) shl 3)-1)) then
+         if (i < 0) or (i > (max_ram+1)+(((max_code+1) shl 3)-1)) then
             begin
                k := 0;
                robot_error(n,4,cstr(i));
             end
          else
             begin
-               if i<=max_ram then
+               if i <= max_ram then
                   k := ram[i]
                else
                   begin
@@ -2217,14 +2217,14 @@ begin
       begin
          j := (code[c].op[max_op] shr (4*o)) and BM_LOW_NYBBLE;
          i := code[c].op[o];
-         if (j and BM_LOW_3)=1 then
+         if (j and BM_LOW_3) = 1 then
             begin
                k := get_from_ram(n,i,j);
             end
          else
             k := i;
 
-         if (j and BM_BIT_3)>0 then
+         if (j and BM_BIT_3) > 0 then
             k := get_from_ram(n,k,j);
       end;
    get_val := k;
@@ -2242,14 +2242,14 @@ begin
       begin
          j := (code[c].op[max_op] shr (4*o)) and BM_LOW_NYBBLE;
          i := code[c].op[o];
-         if (j and BM_LOW_3)=1 then
+         if (j and BM_LOW_3) = 1 then
             begin
-               if (i<0) or (i>max_ram) then
+               if (i < 0) or (i > max_ram) then
                   robot_error(n,4,cstr(i))
-               else if (j and BM_BIT_3)>0 then
+               else if (j and BM_BIT_3) > 0 then
                   begin
                      i := ram[i];
-                     if (i<0) or (i>max_ram) then
+                     if (i < 0) or (i > max_ram) then
                         robot_error(n,4,cstr(i))
                      else
                         ram[i] := v;
@@ -2266,7 +2266,7 @@ procedure push(n,v:integer);
 begin
    with robot[n]^ do
       begin
-         if (ram[M_SP]>=stack_base) and (ram[M_SP]<(stack_base+stack_size)) then
+         if (ram[M_SP] >= stack_base) and (ram[M_SP] < (stack_base+stack_size)) then
             begin
                ram[ram[M_SP]] := v;
                inc(ram[M_SP]);
@@ -2283,7 +2283,7 @@ var
 begin
    with robot[n]^ do
       begin
-         if (ram[M_SP]>stack_base) and (ram[M_SP]<=(stack_base+stack_size)) then
+         if (ram[M_SP] > stack_base) and (ram[M_SP] <= (stack_base+stack_size)) then
             begin
                dec(ram[M_SP]);
                k := ram[ram[M_SP]];
@@ -2302,16 +2302,16 @@ begin
    k := -1;
    with robot[n]^ do
       begin
-         if m=3 then
+         if m = 3 then
             robot_error(n,9,'')
          else
-            if m=4 then
+            if m = 4 then
                k := l
             else
                for i:=plen downto 0 do
                   begin
                      j := code[i].op[max_op] and BM_LOW_NYBBLE;
-                     if (j=2) and (code[i].op[0]=l) then
+                     if (j = 2) and (code[i].op[0] = l) then
                         k := i;
                   end;
       end;
@@ -2328,10 +2328,10 @@ begin
       begin
          k := -1;
          for i:=0 to max_mines do
-            if ((mine[i].x<0) or (mine[i].x>=1000) or (mine[i].y<0) or (mine[i].y>=1000)
-               or (mine[i].yield<=0)) and (k<0) then
+            if ((mine[i].x < 0) or (mine[i].x >= 1000) or (mine[i].y < 0) or (mine[i].y >= 1000)
+               or (mine[i].yield <= 0)) and (k < 0) then
                k := i;
-         if k>=0 then
+         if k >= 0 then
             begin
                mine[k].x := x;
                mine[k].y := y;
@@ -2350,7 +2350,7 @@ var
 begin
    k := 0;
    for i:=0 to max_missiles do
-      if missile[i].a>0 then
+      if missile[i].a > 0 then
          inc(k);
    count_missiles := k;
 end;
@@ -2366,10 +2366,10 @@ begin
    click;
 
    for i:=max_missiles downto 0 do
-      if missile[i].a=0 then
+      if missile[i].a = 0 then
          k := i;
 
-   if k>=0 then
+   if k >= 0 then
       with missile[k] do
          begin
             source := s;
@@ -2384,14 +2384,14 @@ begin
             else
                mult := 1;
 
-            if blast>0 then
+            if blast > 0 then
                begin
                   max_rad := blast;
                   a := 2;
                end
             else
                begin
-                  if (s>=0) and (s<=num_robots) then
+                  if (s >= 0) and (s <= num_robots) then
                      mult := mult*(robot[s]^.shotstrength);
 
                   m := mult;
@@ -2404,7 +2404,7 @@ begin
                   if insane_missiles then
                      mspd := 100+(50*insanity)*mult;
 
-                  if (s>=0) and (s<=num_robots) then
+                  if (s >= 0) and (s <= num_robots) then
                      begin
                         inc(robot[s]^.heat,round(20*m));
                         inc(robot[s]^.shots_fired);
@@ -2445,10 +2445,10 @@ var
    i,k,h,dd :  integer;
    m :  real;
 begin
-   if (n<0) or (n>num_robots) or (robot[n]^.armor<=0) then
+   if (n < 0) or (n > num_robots) or (robot[n]^.armor <= 0) then
       exit;
 
-   if robot[n]^.config.shield<3 then
+   if robot[n]^.config.shield < 3 then
       robot[n]^.shields_up := false;
 
    with robot[n]^ do
@@ -2457,7 +2457,7 @@ begin
          if (shields_up) and (not physical) then
             begin
                dd := d;
-               if (old_shields) and (config.shield>=3) then
+               if (old_shields) and (config.shield >= 3) then
                   begin
                      d := 0;
                      h := 0;
@@ -2467,7 +2467,7 @@ begin
                      3 : 
                           begin
                              d := round(dd*2/3);
-                             if d<1 then
+                             if d < 1 then
                                 d := 1;
                              h := round(dd*2/3);
                           end;
@@ -2479,16 +2479,16 @@ begin
                      5 : 
                           begin
                              d := round(dd*1/3);
-                             if d<1 then
+                             if d < 1 then
                                 d := 1;
                              h := round(dd*1/3);
-                             if h<1 then
+                             if h < 1 then
                                 h := 1;
                           end;
                   end;
             end;
 
-         if d<0 then
+         if d < 0 then
             d := 0;
 
          if debug_info then
@@ -2499,10 +2499,10 @@ begin
                flushkey;
             end;
 
-         if d>0 then
+         if d > 0 then
             begin
                d := round(d*damageadj);
-               if d<1 then
+               if d < 1 then
                   d := 1;
             end;
 
@@ -2510,7 +2510,7 @@ begin
          inc(heat,h);
          last_damage := 0;
 
-         if armor<=0 then
+         if armor <= 0 then
             begin
                armor := 0;
                update_armor(n);
@@ -2535,10 +2535,10 @@ begin
                   m := 1;
 
                for i:=0 to num_robots do
-                  if (i<>n) and (robot[i]^.armor>0) then
+                  if (i <> n) and (robot[i]^.armor > 0) then
                      begin
                         k := round(distance(x,y,robot[i]^.x,robot[i]^.y));
-                        if k<blast_radius then
+                        if k < blast_radius then
                            damage(i,round(abs(blast_radius-k)*m),false);
                      end;
             end;
@@ -2559,7 +2559,7 @@ begin
 
    with robot[n]^ do
       begin
-         if scanarc<0 then
+         if scanarc < 0 then
             scanarc := 0;
 
          accuracy := 0;
@@ -2570,13 +2570,13 @@ begin
             writeln('<SCAN Arc=',scanarc,', Dir=',dir,'>');
 
          for i:=0 to num_robots do
-            if (i<>n) and (robot[i]^.armor>0) then
+            if (i <> n) and (robot[i]^.armor > 0) then
                begin
                   j := find_anglei(x,y,robot[i]^.x,robot[i]^.y);
                   d := distance(x,y,robot[i]^.x,robot[i]^.y);
                   k := round(d);
-                  if (k<range) and (k<=scanrange) and ((abs(j-dir)<=abs(scanarc)) or (abs(j-dir)>=
-                     256-abs(scanarc))) then
+                  if (k < range) and (k <= scanrange) and ((abs(j-dir) <= abs(scanarc))
+                     or (abs(j-dir) >= 256-abs(scanarc))) then
                      begin
                         dir := (dir+1024) and BM_LOW_BYTE;
                         xx := round( sint[dir]*d+x);
@@ -2592,42 +2592,42 @@ begin
                               flushkey;
                            end;
 
-                        if (scanarc>0) or (r<hit_range-2) then
+                        if (scanarc > 0) or (r < hit_range-2) then
                            begin
                               range := k;
                               accuracy := 0;
-                              if scanarc>0 then
+                              if scanarc > 0 then
                                  begin
                                     j := (j+1024) and BM_LOW_BYTE;
                                     dir := (dir+1024) and BM_LOW_BYTE;
 
-                                    if (j<dir) then
+                                    if (j < dir) then
                                        sign := -1;
 
-                                    if (j>dir) then
+                                    if (j > dir) then
                                        sign := 1;
 
-                                    if (j>190) and (dir<66) then
+                                    if (j > 190) and (dir < 66) then
                                        begin
                                           dir := dir+256;
                                           sign := -1;
                                        end;
 
-                                    if (dir>190) and (j<66) then
+                                    if (dir > 190) and (j < 66) then
                                        begin
                                           j :=  j+256;
                                           sign := 1;
                                        end;
                                     acc := abs(j-dir)/scanarc*2;
 
-                                    if sign<0 then
+                                    if sign < 0 then
                                        accuracy := -abs(round(acc))
                                     else
                                        accuracy := abs(round(acc));
 
-                                    if accuracy>2 then
+                                    if accuracy > 2 then
                                        accuracy := 2;
-                                    if accuracy<-2 then
+                                    if accuracy < -2 then
                                        accuracy := -2;
                                  end;
                               nn := i;
@@ -2662,19 +2662,19 @@ var
 begin
    for i:=0 to num_robots do
       with robot[i]^ do
-         if (armor>0) and (i<>n) and (channel=chan) then
+         if (armor > 0) and (i <> n) and (channel = chan) then
             begin
-               if (ram[M_COMBASE]<0) or (ram[M_COMBASE]>max_queue) then
+               if (ram[M_COMBASE] < 0) or (ram[M_COMBASE] > max_queue) then
                   ram[M_COMBASE] := 0;
-               if (ram[M_COMEND]<0) or (ram[M_COMEND]>max_queue) then
+               if (ram[M_COMEND] < 0) or (ram[M_COMEND] > max_queue) then
                   ram[M_COMEND] := 0;
                ram[ram[M_COMEND]+com_queue] := data;
                inc(ram[M_COMEND]);
-               if (ram[M_COMEND]>max_queue) then
+               if (ram[M_COMEND] > max_queue) then
                   ram[M_COMEND] := 0;
-               if (ram[M_COMEND]=ram[M_COMBASE]) then
+               if (ram[M_COMEND] = ram[M_COMBASE]) then
                   inc(ram[M_COMBASE]);
-               if (ram[M_COMBASE]>max_queue) then
+               if (ram[M_COMBASE] > max_queue) then
                   ram[M_COMBASE] := 0;
             end;
 end;
@@ -2687,15 +2687,15 @@ begin
    k := 0;
    with robot[n]^ do
       begin
-         if (ram[M_COMBASE]<>ram[M_COMEND]) then
+         if (ram[M_COMBASE] <> ram[M_COMEND]) then
             begin
-               if (ram[M_COMBASE]<0) or (ram[M_COMBASE]>max_queue) then
+               if (ram[M_COMBASE] < 0) or (ram[M_COMBASE] > max_queue) then
                   ram[M_COMBASE] := 0;
-               if (ram[M_COMEND]<0) or (ram[M_COMEND]>max_queue) then
+               if (ram[M_COMEND] < 0) or (ram[M_COMEND] > max_queue) then
                   ram[M_COMEND] := 0;
                k := ram[ram[M_COMBASE]+com_queue];
                inc(ram[M_COMBASE]);
-               if (ram[M_COMBASE]>max_queue) then
+               if (ram[M_COMBASE] > max_queue) then
                   ram[M_COMBASE] := 0;
             end
          else
@@ -2740,7 +2740,7 @@ begin
                   for i:=0 to num_robots do
                      begin
                         j := round(distance(x,y,robot[i]^.x,robot[i]^.y));
-                        if (n<>i) and (j<k) and (robot[i]^.armor>0) then
+                        if (n <> i) and (j < k) and (robot[i]^.armor > 0) then
                            begin
                               k := j;
                               nn := i;
@@ -2764,7 +2764,7 @@ begin
                   for i:=0 to num_robots do
                      begin
                         j := round(distance(x,y,robot[i]^.x,robot[i]^.y));
-                        if (n<>i) and (j<k) and (j<max_sonar) and (robot[i]^.armor>0) then
+                        if (n <> i) and (j < k) and (j < max_sonar) and (robot[i]^.armor > 0) then
                            begin
                               k := j;
                               l := i;
@@ -2772,7 +2772,7 @@ begin
                            end;
                      end;
 
-                  if l>=0 then
+                  if l >= 0 then
                      v := (round(find_angle(x,y,robot[l]^.x,robot[l]^.y)/pi*128+
                            1024+random(65)-32) and BM_LOW_BYTE)
                   else
@@ -2792,19 +2792,19 @@ begin
             P_CHANNEL :  v := channel;
             P_MINELAYER :  v := mines;
             P_MINETRIGGER :  
-               if config.mines>=0 then
+               if config.mines >= 0 then
                   begin
                      k := 0;
                      for i:=0 to max_mines do
                         with mine[i] do
-                           if (x>=0) and (x<1000) and (y>=0) and (y<1000) and (yield>0) then
+                           if (x >= 0) and (x < 1000) and (y >= 0) and (y < 1000) and (yield > 0) then
                               inc(k);
                      v := k;
                   end
                else
                   v := 0;
             P_SHIELD :  
-               if config.shield>0 then
+               if config.shield > 0 then
                   begin
                      if shields_up then
                         v := 1
@@ -2838,15 +2838,15 @@ begin
             P_WEAPON : 
                begin
                   inc(time_used,3);
-                  if v>4 then
+                  if v > 4 then
                      v := 4;
-                  if v<-4 then
+                  if v < -4 then
                      v := -4;
                   init_missile(x,y,xv,yv,(hd+shift+v) and BM_LOW_BYTE,n,0,overburn);
                end;
             P_SCANARC :  scanarc := v;
             P_OVERBURN :  
-               if v=0 then
+               if v = 0 then
                   overburn := false
                else
                   overburn := true;
@@ -2854,9 +2854,9 @@ begin
             P_SHUTDOWN :  shutdown := v;
             P_CHANNEL :  channel := v;
             P_MINELAYER :  
-               if config.mines>=0 then
+               if config.mines >= 0 then
                   begin
-                     if mines>0 then
+                     if mines > 0 then
                         begin
                            init_mine(n,v,mine_blast);
                            dec(mines);
@@ -2867,7 +2867,7 @@ begin
                else
                   robot_error(n,13,'');
             P_MINETRIGGER :  
-               if config.mines>=0 then
+               if config.mines >= 0 then
                   begin
                      for i:=0 to max_mines do
                         mine[i].detonate := true;
@@ -2875,9 +2875,9 @@ begin
                else
                   robot_error(n,13,'');
             P_SHIELD :  
-               if config.shield>=3 then
+               if config.shield >= 3 then
                   begin
-                     if v=0 then
+                     if v = 0 then
                         shields_up := false
                      else
                         shields_up := true;
@@ -2891,9 +2891,9 @@ begin
                robot_error(n,11,cstr(p));
          end;
 
-         if scanarc>64 then
+         if scanarc > 64 then
             scanarc := 64;
-         if scanarc<0 then
+         if scanarc < 0 then
             scanarc := 0;
       end;
 end;
@@ -2921,7 +2921,7 @@ begin
             I_KEEPSHIFT : 
                begin
                   time_used := 2;
-                  if ram[M_AX]=0 then
+                  if ram[M_AX] = 0 then
                      keepshift := false
                   else
                      keepshift := true;
@@ -2929,7 +2929,7 @@ begin
                end;
             I_OVERBURN : 
                begin
-                  if ram[M_AX]=0 then
+                  if ram[M_AX] = 0 then
                      overburn := false
                   else
                      overburn := true;
@@ -2950,14 +2950,14 @@ begin
                   j := ram[M_EX];
                   k := ram[M_FX];
 
-                  if j<0 then
+                  if j < 0 then
                      j := 0;
-                  if j>=1000 then
+                  if j >= 1000 then
                      j := 999;
 
-                  if k<0 then
+                  if k < 0 then
                      k := 0;
-                  if k>=1000 then
+                  if k >= 1000 then
                      k := 999;
 
                   ram[M_AX] := round(find_angle(round(x),round(y),j,k)/pi*128+256) and BM_LOW_BYTE;
@@ -2978,7 +2978,7 @@ begin
                begin
                   k := 0;
                   for i:=0 to num_robots do
-                     if robot[i]^.armor>0 then
+                     if robot[i]^.armor > 0 then
                         inc(k);
                   ram[M_DX] := k;
                   ram[M_EX] := played;
@@ -3009,7 +3009,7 @@ begin
                end;
             I_RECEIVE : 
                begin
-                  if (ram[M_COMBASE]<>ram[M_COMEND]) then
+                  if (ram[M_COMBASE] <> ram[M_COMEND]) then
                      ram[M_FX] := com_receive(n)
                   else
                      robot_error(n,12,'');
@@ -3018,7 +3018,7 @@ begin
                   end;
             I_DATAREADY : 
                begin
-                  if (ram[M_COMEND]>=ram[M_COMBASE]) then
+                  if (ram[M_COMEND] >= ram[M_COMBASE]) then
                      ram[M_FX] := ram[M_COMEND]-ram[M_COMBASE]
                   else
                      begin
@@ -3058,7 +3058,7 @@ begin
    with robot[n]^ do
       begin
          loc := find_label(n,get_val(n,ip,o),code[ip].op[max_op] shr (o*4));
-         if (loc>=0) and (loc<=plen) then
+         if (loc >= 0) and (loc <= plen) then
             begin
                inc_ip := false;
                ip := loc;
@@ -3071,7 +3071,7 @@ end;
 {FIFI}
 procedure update_debug_bars;
 begin
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       with robot[0]^ do
          begin
             {debugger window}
@@ -3079,18 +3079,18 @@ begin
 
             {armour}
             setfillstyle(1,robot_color(0));
-            if armor>0 then
+            if armor > 0 then
                bar(88,03,87+(armor shr 2),08);
             setfillstyle(1,8);
-            if armor<100 then
+            if armor < 100 then
                bar(88+(armor shr 2),03,111,08);
 
             {heat}
             setfillstyle(1,robot_color(0));
-            if heat>5 then
+            if heat > 5 then
                bar(127,03,126+(heat div 20),08);
             setfillstyle(1,8);
-            if heat<500 then
+            if heat < 500 then
                bar(127+(heat div 20),03,151,08);
          end;
 end;
@@ -3102,7 +3102,7 @@ procedure update_debug_system;
 var 
    i :  integer;
 begin
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       with robot[0]^ do
          begin
             {debugger window}
@@ -3142,7 +3142,7 @@ procedure update_debug_registers;
 var 
    i :  integer;
 begin
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       with robot[0]^ do
          begin
             {debugger window}
@@ -3177,34 +3177,34 @@ procedure update_debug_flags;
 var 
    bin_string :  string;
 begin
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       with robot[0]^ do
          begin
             {debugger window}
             viewport(480,4,635,410);
             bin_string := bin(ram[M_FLAGS]);
-            if bin_string[13]='1' then
+            if bin_string[13] = '1' then
                setcolor(robot_color(0))
             else
                setcolor(robot_color(8));
 
             outtextxy(111,172,'Z');
 
-            if bin_string[14]='1' then
+            if bin_string[14] = '1' then
                setcolor(robot_color(0))
             else
                setcolor(robot_color(8));
 
             outtextxy(119,172,'G');
 
-            if bin_string[15]='1' then
+            if bin_string[15] = '1' then
                setcolor(robot_color(0))
             else
                setcolor(robot_color(8));
 
             outtextxy(127,172,'L');
 
-            if bin_string[16]='1' then
+            if bin_string[16] = '1' then
                setcolor(robot_color(0))
             else
                setcolor(robot_color(8));
@@ -3227,7 +3227,7 @@ procedure update_debug_memory;
 var 
    i :  integer;
 begin
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       with robot[0]^ do
          begin
             {debugger window}
@@ -3240,7 +3240,7 @@ begin
 
             setcolor(robot_color(0));
             for i:=0 to 9 do
-               if ((mem_watch+i)>=0) and ((mem_watch+i)<=1023) then
+               if ((mem_watch+i) >= 0) and ((mem_watch+i) <= 1023) then
                   begin
                      textxy(035,212+(10*i),decimal((mem_watch+i),4) + ' :');
                      textxy(091,212+(10*i),hex(ram[mem_watch+i]));
@@ -3255,7 +3255,7 @@ procedure update_debug_code;
 var 
    i :  integer;
 begin
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       with robot[0]^ do
          begin
             {debugger window}
@@ -3268,9 +3268,9 @@ begin
 
             setcolor(7);
             for i:=0 to 6 do
-               if (ip+i-3)>=0 then
+               if (ip+i-3) >= 0 then
                   begin
-                     if i=3 then
+                     if i = 3 then
                         setcolor(robot_color(0));
 
                      textxy(003,332+(i*10),decimal(ip+i-3,4)+': '
@@ -3278,7 +3278,7 @@ begin
                             +operand(code[ip+i-3].op[1],(code[ip+i-3].op[3] shr 4) and BM_LOW_NYBBLE)+','
                             +operand(code[ip+i-3].op[2],(code[ip+i-3].op[3] shr 8) and BM_LOW_NYBBLE));
 
-                     if i=3 then
+                     if i = 3 then
                         setcolor(7);
                   end;
          end;
@@ -3289,7 +3289,7 @@ end;
 {FIFI}
 procedure update_debug_window;
 begin
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       begin
 
          {armour + heat}
@@ -3412,12 +3412,12 @@ begin
 
          {--robot windows--}
          for i:=0 to max_robots do
-            if i<max_shown then
+            if i < max_shown then
                with robot[i]^ do
                   begin
                      robot_graph(i);
                      hole(0,0,max_gx,max_gy);
-                     if i<=num_robots then
+                     if i <= num_robots then
                         begin
                            setcolor(robot_color(i));
                            outtextxy(003,02,base_name(no_path(fn)));
@@ -3442,13 +3442,13 @@ begin
 
                            setcolor(robot_color(i));
 
-                           if stats_mode<=1 then
+                           if stats_mode <= 1 then
                               begin
                                  outtextxy(080,02,'Wins:');
                                  outtextxy(122,02,zero_pad(wins,4));
                               end;
 
-                           if stats_mode=0 then
+                           if stats_mode = 0 then
                               begin
                                  outtextxy(003,56,' Error:');
                                  setcolor(robot_color(i) and BM_LOW_3);
@@ -3479,20 +3479,20 @@ function gameover :  boolean;
 var 
    n,i,j,k,l :  integer;
 begin
-   if (game_cycle>=game_limit) and (game_limit>0) then
+   if (game_cycle >= game_limit) and (game_limit > 0) then
       begin
          gameover := true;
          exit;
       end;
 
-   if game_cycle and BM_LOW_5=0 then
+   if game_cycle and BM_LOW_5 = 0 then
       begin
          k := 0;
          for n:=0 to num_robots do
-            if robot[n]^.armor>0 then
+            if robot[n]^.armor > 0 then
                inc(k);
 
-         if k<=1 then
+         if k <= 1 then
             gameover := true
          else
             gameover := false;
@@ -3578,7 +3578,7 @@ begin
          inc_ip := true;
          loc := 0;
 
-         if (ip>plen) or (ip<0) then
+         if (ip > plen) or (ip < 0) then
             ip := 0;
 
          if invalid_microcode(n,ip) then
@@ -3589,13 +3589,13 @@ begin
          else
 
             {FIFI}
-            if graphix and (step_mode>0) and (n=0) then  {if stepping enabled...}
+            if graphix and (step_mode > 0) and (n = 0) then  {if stepping enabled...}
                begin
                   inc(step_count);
                   update_cycle_window;
                   update_debug_window;
 
-                  if (step_count mod step_mode)=0 then
+                  if (step_count mod step_mode) = 0 then
                      step_loop := true
                   else
                      step_loop := false;
@@ -3631,7 +3631,7 @@ begin
                                        step_loop := false;
                                     end;
                                  '-','_' :  
-                                    if mem_watch>0 then
+                                    if mem_watch > 0 then
                                        begin
                                           setcolor(0);
                                           for i:=0 to 9 do
@@ -3641,7 +3641,7 @@ begin
                                           update_debug_memory;
                                        end;
                                  '+','=' :  
-                                    if mem_watch<1014 then
+                                    if mem_watch < 1014 then
                                        begin
                                           setcolor(0);
                                           for i:=0 to 9 do
@@ -3651,26 +3651,26 @@ begin
                                           update_debug_memory;
                                        end;
                                  '[','{' :  
-                                    if mem_watch>0 then
+                                    if mem_watch > 0 then
                                        begin
                                           setcolor(0);
                                           for i:=0 to 9 do
                                              outtextxy(035,212+(10*i),decimal((mem_watch+i),
                                              4) + ' :');
                                           dec(mem_watch,10);
-                                          if mem_watch<0 then
+                                          if mem_watch < 0 then
                                              mem_watch := 0;
                                           update_debug_memory;
                                        end;
                                  ']','}' : 
-                                    if mem_watch<1014 then
+                                    if mem_watch < 1014 then
                                        begin
                                           setcolor(0);
                                           for i:=0 to 9 do
                                              outtextxy(035,212+(10*i),decimal((mem_watch+i),
                                              4) + ' :');
                                           inc(mem_watch,10);
-                                          if mem_watch>1014 then
+                                          if mem_watch > 1014 then
                                              mem_watch := 1014;
                                           update_debug_memory;
                                        end;
@@ -3728,26 +3728,26 @@ begin
                   end;
                08:begin (*DIV*)
                   j:=get_val(n,ip,2);
-                  if j<>0 then put_val(n,ip,1,get_val(n,ip,1) div j)
-                           else robot_error(n,8,'');
+                  if j <> 0 then put_val(n,ip,1,get_val(n,ip,1) div j)
+                            else robot_error(n,8,'');
                   time_used:=10;
                   inc(executed);
                   end;
                09:begin (*MOD*)
                   j:=get_val(n,ip,2);
-                  if j<>0 then put_val(n,ip,1,get_val(n,ip,1) mod j)
-                           else robot_error(n,8,'');
+                  if j <> 0 then put_val(n,ip,1,get_val(n,ip,1) mod j)
+                            else robot_error(n,8,'');
                   time_used:=10;
                   inc(executed);
                   end;
                10:begin (*RET*)
                   ip:=pop(n);
-                  if (ip<0) or (ip>plen) then robot_error(n,7,cstr(ip));
+                  if (ip < 0) or (ip > plen) then robot_error(n,7,cstr(ip));
                   inc(executed);
                   end;
                11:begin (*GSB*)
                   loc:=find_label(n,get_val(n,ip,1),code[ip].op[max_op] shr (1*4));
-                  if loc>=0 then begin push(n,ip); inc_ip:=false; ip:=loc; end
+                  if loc >= 0 then begin push(n,ip); inc_ip:=false; ip:=loc; end
                               else robot_error(n,2,cstr(get_val(n,ip,1)));
                   inc(executed);
                   end;
@@ -3756,25 +3756,25 @@ begin
                   inc(executed);
                   end;
                13:begin (*JLS,JB*)
-                  if ram[M_FLAGS] and BM_BIT_1>0 then
+                  if ram[M_FLAGS] and BM_BIT_1 > 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                14:begin (*JGR,JA*)
-                  if ram[M_FLAGS] and BM_BIT_2>0 then
+                  if ram[M_FLAGS] and BM_BIT_2 > 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                15:begin (*JNE*)
-                  if ram[M_FLAGS] and BM_BIT_0=0 then
+                  if ram[M_FLAGS] and BM_BIT_0 = 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                16:begin (*JEQ,JE*)
-                  if ram[M_FLAGS] and BM_BIT_0>0 then
+                  if ram[M_FLAGS] and BM_BIT_0 > 0 then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
@@ -3792,25 +3792,25 @@ begin
                   end;
                19:begin (*LOOP*)
                   dec(ram[M_CX]);
-                  if ram[M_CX]>0 then
+                  if ram[M_CX] > 0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                20:begin (*CMP*)
                   k:=get_val(n,ip,1)-get_val(n,ip,2);
                   ram[M_FLAGS]:=ram[M_FLAGS] and BM_INV_LOW_NIBBLE;
-                  if k=0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_0;
-                  if k<0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_1;
-                  if k>0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_2;
-                  if (get_val(n,ip,2)=0) and (k=0) then
+                  if k = 0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_0;
+                  if k < 0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_1;
+                  if k > 0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_2;
+                  if (get_val(n,ip,2) = 0) and (k = 0) then
                               ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_3;
                   inc(executed);
                   end;
                21:begin (*TEST*)
                   k:=get_val(n,ip,1) and get_val(n,ip,2);
                   ram[M_FLAGS]:=ram[M_FLAGS] and BM_INV_LOW_NIBBLE;
-                  if k=get_val(n,ip,2) then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_0;
-                  if k=0               then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_3;
+                  if k = get_val(n,ip,2) then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_0;
+                  if k = 0               then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_3;
                   inc(executed);
                   end;
                22:begin (*MOV, SET*)
@@ -3824,20 +3824,20 @@ begin
                   end;
                24:begin (*GET*)
                   k:=get_val(n,ip,2);
-                  if (k>=0) and (k<=max_ram) then
-                        put_val(n,ip,1,ram[k])
-                     else if (k>max_ram) and (k<=(Max_ram+1)+(((max_code+1) shl 3)-1)) then
+                  if (k >= 0) and (k <= max_ram) then
+                     put_val(n,ip,1,ram[k])
+                  else if (k > max_ram) and (k <= (Max_ram+1)+(((max_code+1) shl 3)-1)) then
                      begin
                         j:=k-max_ram-1;
                         put_val(n,ip,1,code[j shr 2].op[j and BM_LOW_2]);
                      end
-                     else robot_error(n,4,cstr(k));
+                  else robot_error(n,4,cstr(k));
                   time_used:=2;
                   inc(executed);
                   end;
                25:begin (*PUT*)
                   k:=get_val(n,ip,2);
-                  if (k>=0) and (k<=max_ram) then
+                  if (k >= 0) and (k <= max_ram) then
                         ram[k]:=get_val(n,ip,1)
                      else robot_error(n,4,cstr(k));
                   time_used:=2;
@@ -3900,24 +3900,24 @@ begin
                   end;
                39:begin (*JZ*)
                   time_used:=0;
-                  if ram[M_FLAGS] and BM_BIT_3>0 then
+                  if ram[M_FLAGS] and BM_BIT_3 > 0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                40:begin (*JNZ*)
                   time_used:=0;
-                  if ram[M_FLAGS] and BM_BIT_3=0 then
+                  if ram[M_FLAGS] and BM_BIT_3 = 0 then
                      jump(n,1,inc_ip);
                   inc(executed);
                   end;
                41:begin (*JAE,JGE*)
-                  if (ram[M_FLAGS] and BM_BIT_0>0) or (ram[M_FLAGS] and BM_BIT_2>0) then
+                  if (ram[M_FLAGS] and BM_BIT_0 > 0) or (ram[M_FLAGS] and BM_BIT_2 > 0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
                   end;
                42:begin (*JBE,JLE*)
-                  if (ram[M_FLAGS] and BM_BIT_0>0) or (ram[M_FLAGS] and BM_BIT_1>0) then
+                  if (ram[M_FLAGS] and BM_BIT_0 > 0) or (ram[M_FLAGS] and BM_BIT_1 > 0) then
                      jump(n,1,inc_ip);
                   time_used:=0;
                   inc(executed);
@@ -3936,7 +3936,7 @@ begin
                   end;
                46:begin (*JTL*)
                   loc:=get_val(n,ip,1);
-                  if (loc>=0) and (loc<=plen) then begin inc_ip:=false; ip:=loc; end
+                  if (loc >= 0) and (loc <= plen) then begin inc_ip:=false; ip:=loc; end
                                                 else robot_error(n,2,cstr(loc));
                   end;
                else begin robot_error(n,6,''); end;
@@ -3948,7 +3948,7 @@ begin
             inc(ip);
 
          {FIFI}
-         if graphix and (n=0) and (step_mode>0) then
+         if graphix and (n = 0) and (step_mode > 0) then
             update_debug_window;
          {/FIFI}
       end;
@@ -3960,44 +3960,44 @@ var
    i,j,k,l,tthd :  integer;
    heat_mult,ttx,tty :  real;
 begin
-   if (n<0) or (n>num_robots) then
+   if (n < 0) or (n > num_robots) then
       exit;
 
    with robot[n]^ do
       begin
-         if armor<=0 then
+         if armor <= 0 then
             exit;
 
          {--time slice--}
          time_left := time_slice;
-         if (time_left>robot_time_limit) and (robot_time_limit>0) then
+         if (time_left > robot_time_limit) and (robot_time_limit > 0) then
             time_left := robot_time_limit;
-         if (time_left>max_time) and (max_time>0) then
+         if (time_left > max_time) and (max_time > 0) then
             time_left := max_time;
          executed := 0;
 
          {--execute timeslice--}
-         while (time_left>0) and (not cooling) and (executed<20+time_slice) and (armor>0) do
+         while (time_left > 0) and (not cooling) and (executed < 20+time_slice) and (armor > 0) do
             begin
-               if delay_left<0 then
+               if delay_left < 0 then
                   delay_left := 0;
 
-               if (delay_left>0) then
+               if (delay_left > 0) then
                   begin
                      dec(delay_left);
                      dec(time_left);
                   end;
 
-               if (time_left>=0) and (delay_left=0) then
+               if (time_left >= 0) and (delay_left = 0) then
                   execute_instruction(n);
 
-               if heat>=shutdown then
+               if heat >= shutdown then
                   begin
                      cooling := true;
                      shields_up := false;
                   end;
 
-               if heat>=500 then
+               if heat >= 500 then
                   damage(n,1000,true);
             end;
 
@@ -4006,50 +4006,50 @@ begin
          hd := (hd+1024) and BM_LOW_BYTE;
          shift := (shift+1024) and BM_LOW_BYTE;
 
-         if tspd<-75 then
+         if tspd <- 75 then
             tspd := -75;
-         if tspd>100 then
+         if tspd > 100 then
             tspd := 100;
 
-         if spd<-75 then
+         if spd <- 75 then
             spd := -75;
-         if spd>100 then
+         if spd > 100 then
             spd := 100;
 
-         if heat<0 then
+         if heat < 0 then
             heat := 0;
 
-         if last_damage<maxint then
+         if last_damage < maxint then
             inc(last_damage);
 
-         if last_hit<maxint then
+         if last_hit < maxint then
             inc(last_hit);
 
          {--update heat--}
-         if shields_up and (game_cycle and BM_LOW_2=0) then
+         if shields_up and (game_cycle and BM_LOW_2 = 0) then
             inc(heat);
 
          if not shields_up then
             begin
-               if heat>0 then {--heat adjustments--}
+               if heat > 0 then {--heat adjustments--}
                   case config.heatsinks of 
-                     5: if game_cycle and BM_BIT_0=0 then dec(heat);
-                     4: if game_cycle mod 3=0 then dec(heat);
-                     3: if game_cycle and BM_LOW_2=0 then dec(heat);
-                     2: if game_cycle and BM_LOW_3=0 then dec(heat);
+                     5: if game_cycle and BM_BIT_0 = 0 then dec(heat);
+                     4: if game_cycle mod 3 = 0 then dec(heat);
+                     3: if game_cycle and BM_LOW_2 = 0 then dec(heat);
+                     2: if game_cycle and BM_LOW_3 = 0 then dec(heat);
                      1: begin {Do nothing, no adjustment needed} end;
-                     else if game_cycle and BM_LOW_2=0 then inc(heat);
+                     else if game_cycle and BM_LOW_2 = 0 then inc(heat);
                   end;
 
-               if overburn and (game_cycle mod 3=0) then
+               if overburn and (game_cycle mod 3 = 0) then
                   inc(heat);
 
-               if (heat>0) then
+               if heat > 0 then
                   dec(heat);
-               if (heat>0) and (game_cycle and BM_LOW_3=0) and (abs(tspd)<=25) then
+               if (heat > 0) and (game_cycle and BM_LOW_3 = 0) and (abs(tspd) <= 25) then
                   dec(heat);
 
-               if (heat<=shutdown-50) or (heat<=0) then
+               if (heat <= shutdown-50) or (heat <= 0) then
                   cooling := false;
             end;
 
@@ -4070,24 +4070,24 @@ begin
          if overburn then
             heat_mult := heat_mult*1.30;
 
-         if (heat>=475) and (game_cycle and BM_LOW_2=0) then
+         if (heat >= 475) and (game_cycle and BM_LOW_2 = 0) then
             damage(n,1,true)
-         else if (heat>=450) and (game_cycle and BM_LOW_3=0) then
+         else if (heat >= 450) and (game_cycle and BM_LOW_3 = 0) then
             damage(n,1,true)
-         else if (heat>=400) and (game_cycle and BM_LOW_NYBBLE=0) then
+         else if (heat >= 400) and (game_cycle and BM_LOW_NYBBLE = 0) then
             damage(n,1,true)
-         else if (heat>=350) and (game_cycle and BM_LOW_5=0) then
+         else if (heat >= 350) and (game_cycle and BM_LOW_5 = 0) then
             damage(n,1,true)
-         else if (heat>=300) and (game_cycle and BM_LOW_6=0) then
+         else if (heat >= 300) and (game_cycle and BM_LOW_6 = 0) then
             damage(n,1,true);
 
          {--update robot in physical world--}
          {-acceleration-}
-         if abs(spd-tspd)<=acceleration then
+         if abs(spd-tspd) <= acceleration then
             spd := tspd
          else
             begin
-               if tspd>spd then
+               if tspd > spd then
                   inc(spd,acceleration)
                else
                   dec(spd,acceleration);
@@ -4095,17 +4095,17 @@ begin
 
          {-turning-}
          tthd := hd+shift;
-         if (abs(hd-thd)<=turn_rate) or (abs(hd-thd)>=256-turn_rate) then
+         if (abs(hd-thd) <= turn_rate) or (abs(hd-thd) >= 256-turn_rate) then
             hd := thd
          else
-            if hd<>thd then
+            if hd <> thd then
                begin
                   k := 0;
-                  if ((thd>hd) and (abs(hd-thd)<=128)) or
-                     ((thd<hd) and (abs(hd-thd)>=128)) then
+                  if ((thd > hd) and (abs(hd-thd) <= 128)) or
+                     ((thd < hd) and (abs(hd-thd) >= 128)) then
                         k := 1;
 
-                  if k=1 then
+                  if k = 1 then
                      hd := (hd+turn_rate) and BM_LOW_BYTE
                   else
                      hd := (hd+256-turn_rate) and BM_LOW_BYTE;
@@ -4121,34 +4121,34 @@ begin
          xv := sint[hd]*speed;
          yv := -cost[hd]*speed;
 
-         if (hd=0) or (hd=128) then
+         if (hd = 0) or (hd = 128) then
             xv := 0;
 
-         if (hd=64) or (hd=192) then
+         if (hd = 64) or (hd = 192) then
             yv := 0;
 
-         if xv<>0 then
+         if xv <> 0 then
             ttx := x+xv
          else
             ttx := x;
 
-         if yv<>0 then
+         if yv <> 0 then
             tty := y+yv
          else
             tty := y;
 
-         if (ttx<0) or (tty<0) or (ttx>=1000) or (tty>=1000) then
+         if (ttx < 0) or (tty < 0) or (ttx >= 1000) or (tty >= 1000) then
             begin
                inc(ram[M_COLCNT]);
                tspd := 0;
-               if abs(speed)>=max_vel/2 then
+               if abs(speed) >= max_vel/2 then
                   damage(n,1,true);
                spd := 0; {ttx:=x; tty:=y;}
             end;
 
          for i:=0 to num_robots do
-            if (i<>n) and (robot[i]^.armor>0) and (distance(ttx,tty,robot[i]^.x,robot[i]^.y)<
-               crash_range)
+            if (i <> n) and (robot[i]^.armor > 0)
+               and (distance(ttx,tty,robot[i]^.x,robot[i]^.y) < crash_range)
                then
                begin
                   tspd := 0;
@@ -4159,25 +4159,25 @@ begin
                   robot[i]^.spd := 0;
                   inc(ram[M_COLCNT]);
                   inc(robot[i]^.ram[M_COLCNT]);
-                  if abs(speed)>=max_vel/2 then
+                  if abs(speed) >= max_vel/2 then
                      begin
                         damage(n,1,true);
                         damage(i,1,true);
                      end;
                end;
 
-         if ttx<0 then
+         if ttx < 0 then
             ttx := 0;
-         if ttx>=1000 then
+         if ttx >= 1000 then
             ttx := 999;
 
-         if tty<0 then
+         if tty < 0 then
             tty := 0;
-         if tty>=1000 then
+         if tty >= 1000 then
             tty := 999;
 
          meters := meters+distance(x,y,ttx,tty);
-         if meters>=maxint then
+         if meters >= maxint then
             meters := meters-maxint;
          ram[M_METERS] := trunc(meters);
 
@@ -4185,18 +4185,18 @@ begin
          y := tty;
 
          {--draw robot--}
-         if armor<0 then
+         if armor < 0 then
             armor := 0;
 
-         if heat<0 then
+         if heat < 0 then
             heat := 0;
 
          if graphix then
             begin
-               if armor<>larmor then
+               if armor <> larmor then
                   update_armor(n);
 
-               if heat div 5<>lheat div 5 then
+               if heat div 5 <> lheat div 5 then
                   update_heat(n);
 
                draw_robot(n);
@@ -4218,13 +4218,13 @@ var
    source_alive :  boolean;
 begin
    with robot[n]^.mine[m] do
-      if (x>=0) and (x<1000) and (y>=0) and (y<1000) and (yield>0) then
+      if (x >= 0) and (x < 1000) and (y >= 0) and (y < 1000) and (yield > 0) then
          begin
             for i:=0 to num_robots do
-               if (robot[i]^.armor>0) and (i<>n) then
+               if (robot[i]^.armor > 0) and (i <> n) then
                   begin
                      d := distance(x,y,robot[i]^.x,robot[i]^.y);
-                     if d<=detect then
+                     if d <= detect then
                         detonate := true;
                   end;
 
@@ -4233,28 +4233,28 @@ begin
                   init_missile(x,y,0,0,0,n,mine_circle,false);
                   kill_count := 0;
 
-                  if (robot[n]^.armor>0) then
+                  if robot[n]^.armor > 0 then
                      source_alive := true
                   else
                      source_alive := false;
 
                   for i:=0 to num_robots do
-                     if {(i<>n) and} (robot[i]^.armor>0) then
+                     if {(i <> n) and} (robot[i]^.armor > 0) then
                         begin
                            k := round(distance(x,y,robot[i]^.x,robot[i]^.y));
 
-                           if k<yield then
+                           if k < yield then
                               begin
                                  damage(i,round(abs(yield-k)),false);
-                                 if (n in [0..num_robots]) and (i<>n) then
+                                 if (n in [0..num_robots]) and (i <> n) then
                                     inc(robot[n]^.damage_total,round(abs(yield-k)));
                               end;
                         end;
 
-                  if (kill_count>0) and (source_alive) and (robot[n]^.armor<=0) then
+                  if (kill_count > 0) and (source_alive) and (robot[n]^.armor <= 0) then
                      dec(kill_count);
 
-                  if kill_count>0 then
+                  if kill_count > 0 then
                      begin
                         inc(robot[n]^.kills,kill_count);
                         update_lives(n);
@@ -4270,7 +4270,7 @@ begin
             else
                begin
                   { Draw mine }
-                  if graphix and (game_cycle and BM_BIT_0=0) then
+                  if graphix and (game_cycle and BM_BIT_0 = 0) then
                      begin
                         main_viewport;
                         setcolor(robot_color(n));
@@ -4291,15 +4291,15 @@ var
    source_alive :  boolean;
 begin
    with missile[n] do
-      if a=0 then
+      if a = 0 then
          exit
 
       else
          begin
-            if a=1 then
+            if a = 1 then
                begin
                   {--Look for collision w/ wall--}
-                  if (x<-20) or (x>1020) or (y<-20) or (y>1020) then
+                  if (x < -20) or (x > 1020) or (y < -20) or (y > 1020) then
                      a := 0;
 
                   {--move missile--}
@@ -4308,7 +4308,7 @@ begin
                   lx := x;
                   ly := y;
 
-                  if a>0 then
+                  if a > 0 then
                      begin
                         hd := (hd+256) and BM_LOW_BYTE;
                         xv := sint[hd]*mspd;
@@ -4322,7 +4322,7 @@ begin
                   l := maxint;
 
                   for i:=0 to num_robots do
-                     if (robot[i]^.armor>0) and (i<>source) then
+                     if (robot[i]^.armor > 0) and (i <> source) then
                         begin
                            d := distance(lx,ly,robot[i]^.x,robot[i]^.y);
 
@@ -4334,7 +4334,7 @@ begin
                            yy := round(-cost[hd]*d+ly);
                            r := distance(xx,yy,robot[i]^.x,robot[i]^.y);
 
-                           if (d<=mspd) and (r<hit_range) and (round(d)<=l) then
+                           if (d <= mspd) and (r < hit_range) and (round(d) <= l) then
                               begin
                                  k := i;
                                  l := round(d);
@@ -4344,7 +4344,7 @@ begin
                               end;
                         end;
 
-                  if k>=0 then { *hit a robot! }
+                  if k >= 0 then { *hit a robot! }
                      begin
                         x := tx;
                         y := ty;
@@ -4362,29 +4362,29 @@ begin
                            begin
                               dd := round(distance(x,y,robot[i]^.x,robot[i]^.y));
 
-                              if dd<=hit_range then
+                              if dd <= hit_range then
                                  begin
                                     dam := round(abs(hit_range-dd)*mult);
 
-                                    if dam<=0 then
+                                    if dam <= 0 then
                                        dam := 1;
 
                                     kill_count := 0;
 
-                                    if (robot[source]^.armor>0) then
+                                    if (robot[source]^.armor > 0) then
                                        source_alive := true
                                     else
                                        source_alive := false;
 
                                     damage(i,dam,false);
 
-                                    if (source in [0..num_robots]) and (i<>source) then
+                                    if (source in [0..num_robots]) and (i <> source) then
                                        inc(robot[source]^.damage_total,dam);
 
-                                    if (kill_count>0) and (source_alive) and (robot[source]^.armor<=0) then
+                                    if (kill_count > 0) and (source_alive) and (robot[source]^.armor<=0) then
                                        dec(kill_count);
 
-                                    if kill_count>0 then
+                                    if kill_count > 0 then
                                        begin
                                           inc(robot[source]^.kills,kill_count);
                                           update_lives(source);
@@ -4400,9 +4400,9 @@ begin
                         setcolor(0);
                         line(round(llx*screen_scale)+screen_x,round(lly*screen_scale)+screen_y,
                              round(lx*screen_scale)+screen_x,round(ly*screen_scale)+screen_y);
-                        if a=1 then
+                        if a = 1 then
                            begin
-                              if mult>robot[source]^.shotstrength then
+                              if mult > robot[source]^.shotstrength then
                                  setcolor(14+(game_cycle and BM_BIT_0))
                               else
                                  setcolor(15);
@@ -4412,11 +4412,11 @@ begin
                            end;
                      end;
                end;
-            if (a=2) then
+            if a = 2 then
                begin
                   lrad := rad;
                   inc(rad);
-                  if rad>max_rad then
+                  if rad > max_rad then
                      a := 0;
 
                   if graphix then
@@ -4424,18 +4424,18 @@ begin
                         main_viewport;
                         setcolor(0);
                         circle(round(x*screen_scale)+screen_x,round(y*screen_scale)+screen_y,lrad);
-                        if mult>1 then
+                        if mult > 1 then
                            setcolor(14+(game_cycle and BM_BIT_0))
                         else
                            setcolor(15);
 
-                        if max_rad>=blast_circle then
+                        if max_rad >= blast_circle then
                            setcolor(14);
 
-                        if max_rad>=mine_circle then
+                        if max_rad >= mine_circle then
                            setcolor(11);
 
-                        if a>0 then
+                        if a > 0 then
                            circle(round(x*screen_scale)+screen_x,round(y*screen_scale)+screen_y,rad);
                      end;
                end;
@@ -4449,13 +4449,13 @@ var
 begin
    s := '';
 
-   if k=1 then
+   if k = 1 then
       s := 'Robot #'+cstr(n+1)+' ('+robot[n]^.fn+') wins!';
 
-   if k=0 then
+   if k = 0 then
       s := 'Simultaneous destruction, match is a tie.';
 
-   if k>1 then
+   if k > 1 then
       s := 'No clear victor, match is a tie.';
 
    victor_string := s;
@@ -4490,7 +4490,7 @@ begin
 
          for i:=0 to num_robots do
             with robot[i]^ do
-               if (armor>0) or (won) then
+               if (armor > 0) or (won) then
                   begin
                      inc(k);
                      n := i;
@@ -4500,7 +4500,7 @@ begin
             with robot[i]^ do
                begin
                   setcolor(robot_color(i));
-                  if (k=1) and (n=i) then
+                  if (k = 1) and (n = i) then
                      j := 1
                   else
                      j := 0;
@@ -4535,7 +4535,7 @@ begin
 
          for i:=0 to num_robots do
             with robot[i]^ do
-               if (armor>0) or (won) then
+               if (armor > 0) or (won) then
                   begin
                      inc(k);
                      n := i;
@@ -4545,7 +4545,7 @@ begin
             with robot[i]^ do
                begin
                   textcolor(robot_color(i));
-                  if (k=1) and (n=i) then
+                  if (k = 1) and (n = i) then
                      j := 1
                   else
                      j := 0;
@@ -4574,14 +4574,14 @@ begin
    for i:=0 to num_robots do
       begin
          inc(robot[i]^.trials);
-         if robot[i]^.armor>0 then
+         if robot[i]^.armor > 0 then
             begin
                inc(k);
                n := i;
             end;
       end;
 
-   if (k=1) and (n>=0) then
+   if (k = 1) and (n >= 0) then
       with robot[n]^ do
          begin
             inc(wins);
@@ -4621,7 +4621,7 @@ begin
       setscreen;
 
    {FIFI}
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       init_debug_window;
    {/FIFI}
 
@@ -4667,13 +4667,13 @@ begin
    bout_over := false;
 
    {FIFI}
-   if step_mode=0 then
+   if step_mode = 0 then
       step_loop := false
    else
       step_loop := true; {set/clear loop flag}
    
    step_count := -1; {will be set to 0 at first iteration of REPEAT ;) }
-   if graphix and (step_mode>0) then
+   if graphix and (step_mode > 0) then
       for i:=0 to num_robots do
          draw_robot(i);
    {/FIFI}
@@ -4682,16 +4682,16 @@ begin
       inc(game_cycle);
 
       for i:=0 to num_robots do
-         if robot[i]^.armor>0 then
+         if robot[i]^.armor > 0 then
             do_robot(i);
 
       for i:=0 to max_missiles do
-         if missile[i].a>0 then
+         if missile[i].a > 0 then
             do_missile(i);
 
       for i:=0 to num_robots do
          for k:=0 to max_mines do
-            if robot[i]^.mine[k].yield>0 then
+            if robot[i]^.mine[k].yield > 0 then
                do_mine(i,k);
 
       if graphix and timing then
@@ -4709,9 +4709,9 @@ begin
                begin
                   if not graphix then
                      toggle_graphix;
-                  if robot[0]^.armor>0 then
+                  if robot[0]^.armor > 0 then
                      begin
-                        if temp_mode>0 then
+                        if temp_mode > 0 then
                            step_mode := temp_mode
                         else
                            step_mode := 1;
@@ -4721,7 +4721,7 @@ begin
                end;
          {/FIFI}
          '+','=' :
-            if game_delay<100 then
+            if game_delay < 100 then
                case game_delay of 
                   000..004 :  game_delay := 005;
                   005..009 :  game_delay := 010;
@@ -4735,7 +4735,7 @@ begin
                   075..100 :  game_delay := 100;
                end;
          '-','_' :
-            if game_delay>0 then
+            if game_delay > 0 then
                case game_delay of 
                   000..005 :  game_delay := 000;
                   006..010 :  game_delay := 005;
@@ -4755,9 +4755,9 @@ begin
 
       flushkey;
 
-      if game_delay<0 then
+      if game_delay < 0 then
          game_delay := 0;
-      if game_delay>100 then
+      if game_delay > 100 then
          game_delay := 100;
 
       case game_delay of 
@@ -4777,12 +4777,12 @@ begin
 
       if graphix then
          begin
-            if ((game_cycle mod k)=0) or (game_cycle=10) then
+            if ((game_cycle mod k) = 0) or (game_cycle = 10) then
                update_cycle_window;
          end
       else
          begin
-            if (update_timer<>mem[0:$46C] shr 1) then
+            if (update_timer <> mem[0:$46C] shr 1) then
                update_cycle_window;
             update_timer := mem[0:$46C] shr 1;
          end;
@@ -4851,7 +4851,7 @@ begin
    if graphix then
       begin_window;
 
-   if matches>0 then
+   if matches > 0 then
       for i:=1 to matches do
          bout;
 
@@ -4861,7 +4861,7 @@ begin
    if quit then
       exit;
 
-   if matches>1 then  {--Calculate overall statistics--}
+   if matches > 1 then  {--Calculate overall statistics--}
       begin
          writeln;
          writeln;
@@ -4875,12 +4875,12 @@ begin
          for i:=0 to num_robots do
             with robot[i]^ do
                begin
-                  if wins=w then
+                  if wins = w then
                      begin
                         inc(k);
                      end;
 
-                  if wins>w then
+                  if wins > w then
                      begin
                         k := 1;
                         n := i;
@@ -4902,7 +4902,7 @@ begin
          textcolor(15);
          writeln;
 
-         if k=1 then
+         if k = 1 then
             writeln('Robot #',n+1,' (',robot[n]^.fn,') wins the bout! (score: ',w,'/',matches,')')
          else
             writeln('There is no clear victor!');
@@ -4910,7 +4910,7 @@ begin
       end
    else
       if graphix then
-         begin {matches=1 also}
+         begin {matches = 1 also}
             graph_mode(false);
             show_statistics;
          end;

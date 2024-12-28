@@ -100,9 +100,10 @@ function divide(r1,r2:real):  real;
 var 
    r:  real;
 begin  {divide, checking for division by zero}
-   if (r1=0) or (r2=0) then
+   if (r1 = 0) or (r2 = 0) then
       r := 0
-   else r := r1/r2;
+   else
+      r := r1/r2;
    divide := r;
 end;
 
@@ -141,10 +142,10 @@ begin
          close(f);
          w := 0;
          s := btrim(ucase(reg_name));
-         for i:=1 to length(s) do
+         for i := 1 to length(s) do
             inc(w,ord(s[i]));
          w := w xor $5AA5;
-         if w=reg_num then
+         if w = reg_num then
             registered := true;
       end;
 end;
@@ -156,7 +157,7 @@ begin
       exit;
    write('[PAUSE]');
    flushkey;
-   if readkey=#27 then
+   if readkey = #27 then
       halt;
    write(#13,'        ',#13);
 end;
@@ -214,7 +215,7 @@ begin
 
    tname := '';
    robot_dir := '';
-   if paramcount<1 then
+   if paramcount < 1 then
       begin
          writeln('Usage:  ATRT <tournament name>');
          writeln;
@@ -222,16 +223,16 @@ begin
       end;
    tname := base_name(ucase(btrim(paramstr(1))));
    yes_to_all := false;
-   if paramcount>1 then
-      for i:=2 to paramcount do
+   if paramcount > 1 then
+      for i := 2 to paramcount do
          begin
-            if (ucase(btrim(paramstr(i)))='/Y') or
-               (ucase(btrim(paramstr(i)))='-Y') then
+            if (ucase(btrim(paramstr(i))) = '/Y') or
+               (ucase(btrim(paramstr(i))) = '-Y') then
                yes_to_all := true;
          end;
    sound_on := false;
    report_only := false;
-   if tname[1]='/' then
+   if tname[1] = '/' then
       begin
          report_only := true;
          tname := base_name(rstr(tname,length(tname)-1));
@@ -258,7 +259,7 @@ begin
          readln(f,game_limit);
          readln(f,i);
          readln(f,param_line);
-         if i>0 then
+         if i > 0 then
             begin
                sound_on := true;
                writeln('Chirping is on!');
@@ -266,7 +267,7 @@ begin
             end
          else sound_on := false;
          close(f);
-         if (rstr(robot_dir,1)<>'\') and (robot_dir<>'') then
+         if (rstr(robot_dir,1) <> '\') and (robot_dir <> '') then
             robot_dir := robot_dir+'\';
          fn := robot_dir+no_path(fn);
          if not valid(fn) then
@@ -285,7 +286,7 @@ begin
    if game_limit > 16000 then game_limit := 16000;
 
 
-   for i:=1 to max_robots do
+   for i := 1 to max_robots do
       with robot[i] do
          begin
             name := '';
@@ -323,21 +324,21 @@ var
 begin
    k := 0;
    findfirst(robot_dir+'*'+robot_ext,archive,sr);
-   while doserror=0 do
+   while doserror = 0 do
       begin
          inc(k);
          findnext(sr);
       end;
    findfirst(robot_dir+'*'+robot_ext2,archive,sr);
-   while doserror=0 do
+   while doserror = 0 do
       begin
          inc(k);
          findnext(sr);
       end;
    j := 0;
-   for i:=k-1 downto 1 do
+   for i := k-1 downto 1 do
       j := j+i;
-   if k<=1 then
+   if k <= 1 then
       begin
          writeln('Robots found: ',k);
          writeln('There must be at least 2 robots to compete!');
@@ -360,7 +361,7 @@ begin
       until c in ['Y','N'];
    writeln(c);
    writeln;
-   if c='N' then
+   if c = 'N' then
       shutdown;
 end;
 
@@ -390,7 +391,7 @@ begin
    num_robots := 0;
    k := 0;
    findfirst(robot_dir+'*'+robot_ext,archive,sr);
-   while doserror=0 do
+   while doserror = 0 do
       begin
          if test_compile(robot_dir+base_name(sr.name)) then
             begin
@@ -410,7 +411,7 @@ begin
          findnext(sr);
       end;
    findfirst(robot_dir+'*'+robot_ext2,archive,sr);
-   while doserror=0 do
+   while doserror = 0 do
       begin
          if test_compile('?'+robot_dir+base_name(sr.name)) then
             begin
@@ -432,7 +433,7 @@ begin
    assign(f,tname+list_ext);
    rewrite(f);
    writeln(f,num_robots);
-   for i:=1 to num_robots do
+   for i := 1 to num_robots do
       if robot[i].locked then
          writeln(f,robot[i].name+robot_ext2)
       else
@@ -451,11 +452,11 @@ begin
    assign(f,tname+list_ext);
    reset(f);
    readln(f,num_robots);
-   for i:=1 to num_robots do
+   for i := 1 to num_robots do
       begin
          readln(f,s);
          robot[i].name := btrim(base_name(ucase(s)));
-         if ucase(btrim(exten(s)))=robot_ext2 then
+         if ucase(btrim(exten(s))) = robot_ext2 then
             robot[i].locked := true
          else robot[i].locked := false;
          robot[i].wins := 0;
@@ -490,46 +491,46 @@ var
 begin
    needswap := false;
 
-   if robot[i].matches=0 then
+   if robot[i].matches = 0 then
       score1 := 0
    else score1 := robot[i].wins/robot[i].matches;
-   if robot[k].matches=0 then
+   if robot[k].matches = 0 then
       score2 := 0
    else score2 := robot[k].wins/robot[k].matches;
  (* Sort first by score, then kills, deaths, damage, longevity, errors, then name *)
-   if (score1<score2) then
+   if (score1 < score2) then
       needswap := true;
-   if (score1=score2) and (robot[i].matches>0) and (robot[k].matches>0) then
+   if (score1 = score2) and (robot[i].matches > 0) and (robot[k].matches > 0) then
       begin
-         if (divide(robot[i].kills,robot[i].matches)<divide(robot[k].kills,robot[k].matches)) then
+         if (divide(robot[i].kills,robot[i].matches) < divide(robot[k].kills,robot[k].matches)) then
             needswap := true;
-         if (divide(robot[i].kills,robot[i].matches)=divide(robot[k].kills,robot[k].matches)) then
+         if (divide(robot[i].kills,robot[i].matches) = divide(robot[k].kills,robot[k].matches)) then
             begin
-               if (divide(robot[i].deaths,robot[i].matches)>divide(robot[k].deaths,robot[k].matches)
+               if (divide(robot[i].deaths,robot[i].matches) > divide(robot[k].deaths,robot[k].matches)
                   ) then
                   needswap := true;
-               if (divide(robot[i].deaths,robot[i].matches)=divide(robot[k].deaths,robot[k].matches)
+               if (divide(robot[i].deaths,robot[i].matches) = divide(robot[k].deaths,robot[k].matches)
                   ) then
                   begin
-                     if (divide(robot[i].damage,robot[i].matches)<divide(robot[k].damage,robot[k].
+                     if (divide(robot[i].damage,robot[i].matches) < divide(robot[k].damage,robot[k].
                         matches)) then
                         needswap := true;
-                     if (divide(robot[i].damage,robot[i].matches)=divide(robot[k].damage,robot[k].
+                     if (divide(robot[i].damage,robot[i].matches) = divide(robot[k].damage,robot[k].
                         matches)) then
                         begin
-                           if (divide(robot[i].cycles,robot[i].matches)<divide(robot[k].cycles,robot
+                           if (divide(robot[i].cycles,robot[i].matches) < divide(robot[k].cycles,robot
                               [k].matches)) then
                               needswap := true;
-                           if (divide(robot[i].cycles,robot[i].matches)=divide(robot[k].cycles,robot
+                           if (divide(robot[i].cycles,robot[i].matches) = divide(robot[k].cycles,robot
                               [k].matches)) then
                               begin
-                                 if (divide(robot[i].errors,robot[i].matches)>divide(robot[k].errors
+                                 if (divide(robot[i].errors,robot[i].matches) > divide(robot[k].errors
                                     ,robot[k].matches)) then
                                     needswap := true;
-                                 if (divide(robot[i].errors,robot[i].matches)=divide(robot[k].errors
+                                 if (divide(robot[i].errors,robot[i].matches) = divide(robot[k].errors
                                     ,robot[k].matches)) then
                                     begin
-                                       if (robot[i].name<robot[k].name) then
+                                       if (robot[i].name < robot[k].name) then
                                           needswap := true;
                                     end;
                               end;
@@ -545,10 +546,10 @@ procedure rank_robots;
 var 
    i,k:  integer;
 begin
-   for i:=1 to num_robots do
-      for k:=i to num_robots do
+   for i := 1 to num_robots do
+      for k := i to num_robots do
          begin
-            if (i<>k) then
+            if i <> k then
                begin
                   if (higher_score(i,k)) then
                      swap_robots(i,k);
@@ -572,7 +573,7 @@ begin
    longestreign := 1;
    unequal_matches := false;
 
-   for i:=1 to num_robots do
+   for i := 1 to num_robots do
       with robot[i] do
          begin
             if divide(wins,matches) > divide(robot[bestsurvivor].wins,robot[bestsurvivor].matches) then
@@ -596,7 +597,7 @@ begin
             if divide(hits,shots) > divide(robot[bestmarksman].hits,robot[bestmarksman].shots) then
                bestmarksman := i;
 
-            if (divide(hits,shots) <= divide(robot[haphazard].hits,robot[haphazard].shots)) and (shots>0) then
+            if (divide(hits,shots) <= divide(robot[haphazard].hits,robot[haphazard].shots)) and (shots > 0) then
                haphazard := i;
 
             if divide(damage,matches) > divide(robot[mostdestructive].damage,robot[mostdestructive].matches) then
@@ -620,7 +621,7 @@ begin
                   unequal_matches := true;
                end;
 
-            if matches<robot[newestcontender].matches then
+            if matches < robot[newestcontender].matches then
                begin
                   newestcontender := i;
                   unequal_matches := true;
@@ -640,7 +641,7 @@ begin
    fn := tname+result_ext;
    fn2 := tname+'.HTM';
    pairings := 0;
-   for i:=num_robots-1 downto 1 do
+   for i := num_robots-1 downto 1 do
       pairings := pairings+i;
    assign(f,fn);
    rewrite(f);
@@ -721,7 +722,7 @@ begin
              '(',cstrr(divide(robot[conservative].shots,robot[conservative].matches),2),' shots/match)');
    writeln(f,'Best Marksman:      ',addrear(base_name(robot[bestmarksman].name),9),
              '(',cstrr(divide(robot[bestmarksman].hits,robot[bestmarksman].shots)*100,2),'% hit)');
-   if robot[haphazard].shots>0 then
+   if robot[haphazard].shots > 0 then
       writeln(f,'Most Haphazard:     ',addrear(base_name(robot[haphazard].name),9),
                 '(',cstrr(divide(robot[haphazard].hits,robot[haphazard].shots)*100,2),'% hit)');
    writeln(f,'Most Destructive:   ',addrear(base_name(robot[mostdestructive].name),9),
@@ -740,7 +741,7 @@ begin
          writeln(f,'Newest Contender:   ',addrear(base_name(robot[newestcontender].name),9),
                    '(',cstr(robot[newestcontender].matches),' matches)');
       end;
-   if robot[mosterrors].errors>0 then
+   if robot[mosterrors].errors > 0 then
       writeln(f,'Most Error-Prone:   ',addrear(base_name(robot[mosterrors].name),9),
                 '(',cstrr(divide(robot[mosterrors].errors,robot[mosterrors].matches),3),' errors/match)');
  {--HTML best/worst list--} {err}
@@ -790,7 +791,7 @@ begin
          writeln(f2,'<TR><TD>Newset Contender:    </TD><TD align=right>',base_name(robot[newestcontender].name),'    </TD>',
                     '<TD>[',cstr(robot[newestcontender].matches),' matches]</TD></TR>');
       end;
-   if robot[mosterrors].errors>0 then
+   if robot[mosterrors].errors > 0 then
       writeln(f2,'<TR><TD>Most Error-Prone:   </TD><TD align=right>',base_name(robot[mosterrors].name),'      </TD>',
                  '<TD>[',cstrr(divide(robot[mosterrors].errors,robot[mosterrors].matches),3),
                  ' errors/match]</TD></TR>');
@@ -811,13 +812,13 @@ begin
 
    k := 0;
    score := 0;
-   for i:=1 to num_robots do
+   for i := 1 to num_robots do
       with robot[i] do
          begin
-            if matches>0 then
+            if matches > 0 then
                r := wins/matches*100
             else r := 0;
-            if score<>r then
+            if score <> r then
                begin
                   score := r;
                   inc(k);
@@ -889,7 +890,7 @@ begin {err}
    assign(f,fn);
    reset(f);
    readln(f,num_robots);
-   for i:=1 to num_robots do
+   for i := 1 to num_robots do
       with robot[i] do
          begin
             read(f,wins);
@@ -925,7 +926,7 @@ begin
    assign(f,fn);
    reset(f);
    readln(f,k);
-   for i:=1 to k do
+   for i := 1 to k do
       with r do
          begin
             read(f,wins);
@@ -942,10 +943,10 @@ begin
             readln(f,s);
             name := btrim(ucase(s));
             n := 0;
-            for j:=1 to num_robots do
-               if ucase(btrim(robot[j].name))=ucase(btrim(name)) then
+            for j := 1 to num_robots do
+               if ucase(btrim(robot[j].name)) = ucase(btrim(name)) then
                   n := j;
-            if n>0 then
+            if n > 0 then
                begin
                   inc(robot[n].wins,wins);
                   inc(robot[n].matches,matches);
@@ -959,7 +960,7 @@ begin
                   writeln(log_file,addrear(name,9),': ',wins,'/',matches,'   [Kills: ',kills,
                   ',  Deaths: ',deaths,',  Shots: ',shots,']');
                end;
-            if n=0 then
+            if n = 0 then
                writeln(name,' not found!');
          end;
    close(f);
@@ -977,7 +978,7 @@ var
 begin
    n1 := 1;
    n2 := 1;
-   for i:=1 to num_robots do
+   for i := 1 to num_robots do
       with robot[i] do
          begin
             wins := 0;
@@ -988,7 +989,7 @@ begin
       writeln('Incomplete tournament found! Tournament will resume!');
 
    pairings := 0;
-   for i:=num_robots-1 downto 1 do
+   for i := num_robots-1 downto 1 do
       pairings := pairings+i;
 
    writeln;
@@ -1005,7 +1006,7 @@ begin
       until c in ['Y','N'];
    writeln(c);
    writeln;
-   if c='N' then
+   if c = 'N' then
       shutdown;
 
    delete_file(tname+list_ext);
@@ -1018,7 +1019,7 @@ begin
          readln(f,n1);
          readln(f,n2);
          readln(f,num_robots);
-         for i:=1 to num_robots do
+         for i := 1 to num_robots do
             with robot[i] do
                begin
                   read(f,wins);
@@ -1042,11 +1043,11 @@ begin
    writeln(log_file);
 
    abort := false;
-   while (n1<num_robots) and (not abort) do
+   while (n1 < num_robots) and (not abort) do
       begin
-         while (n2<=num_robots) and (not abort) do
+         while (n2 <= num_robots) and (not abort) do
             begin
-               if n1<>n2 then
+               if n1 <> n2 then
                   begin
                      writeln(repchar('-',79));
                      writeln(robot[n1].name,' vs ',robot[n2].name,':');
@@ -1093,7 +1094,7 @@ begin
          writeln(f,n1);
          writeln(f,n2);
          writeln(f,num_robots);
-         for i:=1 to num_robots do
+         for i := 1 to num_robots do
             with robot[i] do
                writeln(f,wins,' ',matches,' ',name);
          close(f);
@@ -1104,7 +1105,7 @@ begin
    GetDate(year, month, day, day_of_week);
    writeln(log_file,'Tournament stopped: ', hour, ':', minute, ', ', month, '/', day, '/', year);
    close(log_file);
-   if (n1>=num_robots) or (n2>num_robots) then
+   if (n1 >= num_robots) or (n2>num_robots) then
       complete := true
    else complete := false;
    if complete then

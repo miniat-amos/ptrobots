@@ -76,7 +76,7 @@ function lstr(s1:string; l:integer):  string;
 function rstr(s1:string; l:integer):  string;
 procedure FlushKey;
 procedure calibrate_timing;
-procedure time_delay(n:integer); {n=milliseconds}
+procedure time_delay(n:integer); {n = milliseconds}
 procedure check_registration;
 function rol(n,k:integer):  integer;
 function ror(n,k:integer):  integer;
@@ -157,7 +157,7 @@ var
    n:  integer;
 begin
    val(i,s,n);
-   if (n>0) then
+   if (n > 0) then
       s := 0;
    valuer := s;
 end;
@@ -169,7 +169,7 @@ var
    n:  integer;
 begin
    val(i,s,n);
-   if (n>0) then
+   if (n > 0) then
       s := 0;
    value := s;
 end;
@@ -198,7 +198,7 @@ var
    s:  string;
 begin
    s := cstr(n);
-   while length(s)<l do
+   while length(s) < l do
       s := '0'+s;
    zero_pad := s;
 end;
@@ -209,7 +209,7 @@ var
    s1:  string;
 begin
    s1 := s;
-   while length(s1)<l do
+   while length(s1) < l do
       s1 := '0'+s1;
    zero_pads := s1;
 end;
@@ -217,14 +217,14 @@ end;
 
 function addfront(b:string;l:integer):  string;
 begin
-   while length(b)< l do
+   while length(b) < l do
       b := ' '+b;
    addfront := b;
 end;
 
 function addrear(b:string;l:integer):  string;
 begin
-   while length(b)< l do
+   while length(b) < l do
       b := b+' ';
    addrear := b;
 end;
@@ -234,9 +234,9 @@ function ucase(s:string):  string;
 var 
    i:  integer;
 begin
-   if length(s)>=1 then
+   if length(s) >= 1 then
       begin
-         for i:=1 to length(s) do
+         for i := 1 to length(s) do
             s[i] := upcase(s[i]);
       end;
    ucase := s;
@@ -247,10 +247,10 @@ function lcase(s:string):  string;
 var 
    i:  integer;
 begin
-   if length(s)>=1 then
+   if length(s) >= 1 then
       begin
-         for i:=1 to length(s) do
-            if (ord(s[i])>=65) and (ord(s[i])<=90) then
+         for i := 1 to length(s) do
+            if (ord(s[i]) >= 65) and (ord(s[i]) <= 90) then
                s[i] := chr(ord(s[i])+32);
       end;
    lcase := s;
@@ -264,8 +264,8 @@ var
    k:  integer;
 begin
    s := '';
-   if i>0 then
-      for k:=1 to i do
+   if i > 0 then
+      for k:= 1 to i do
          s := s+' ';
    space := s;
 end;
@@ -277,8 +277,8 @@ var
    k:  integer;
 begin
    s := '';
-   if i>0 then
-      for k:=1 to i do
+   if i > 0 then
+      for k := 1 to i do
          begin
             s := s+c;
          end;
@@ -291,7 +291,7 @@ function ltrim(s1:string):  string;
 var 
    i:  integer;
 begin
-   while (length(s1)>0) and ((copy(s1,1,1)=' ') or (copy(s1,1,1)=#8) or (copy(s1,1,1)=#9)) do
+   while (length(s1) > 0) and ((copy(s1,1,1) = ' ') or (copy(s1,1,1) = #8) or (copy(s1,1,1) = #9)) do
       begin
          s1 := copy(s1,2,length(s1)-1);
       end;
@@ -303,8 +303,8 @@ function rtrim(s1:string):  string;
 var 
    i:  integer;
 begin
-   while (length(s1)>0) and ((copy(s1,length(s1),1)=' ') or (copy(s1,length(s1),1)=#8)
-         or (copy(s1,length(s1),1)=#9)) do
+   while (length(s1) > 0) and ((copy(s1,length(s1),1) = ' ') or (copy(s1,length(s1),1) = #8)
+         or (copy(s1,length(s1),1) = #9)) do
       begin
          s1 := copy(s1,1,length(s1)-1);
       end;
@@ -318,14 +318,14 @@ end;
 
 function lstr(s1:string; l:integer):  string;
 begin
-   if length(s1)<=l then
+   if length(s1) <= l then
       lstr := s1
    else lstr := copy(s1,1,l);
 end;
 
 function rstr(s1:string; l:integer):  string;
 begin
-   if length(s1)<=l then
+   if length(s1) <= l then
       rstr := s1
    else rstr := copy(s1,length(s1)-l+1,l);
 end;
@@ -337,7 +337,7 @@ var
    Regs :  Registers;
 
 begin
-   Regs.AH := $01;  { AH=1: Check for keystroke }
+   Regs.AH := $01;  { AH = 1: Check for keystroke }
    Intr($16,regs); { Interupt $16: Keyboard services}
    if (regs.Flags and $0040) = 0 then { if chars in buffer }
       repeat
@@ -357,24 +357,24 @@ begin
    delay_per_sec := 0;
    k := mem[0:$46C];
    repeat
-   until k<>mem[0:$46C];
+   until k <> mem[0:$46C];
    k := mem[0:$46C];
    repeat
       delay(1);
       inc(delay_per_sec);
-   until k<>mem[0:$46C];
+   until k <> mem[0:$46C];
    delay_per_sec := round(delay_per_sec*18.2);
 end;
 
-procedure time_delay(n:integer); {n=milliseconds}
+procedure time_delay(n:integer); {n = milliseconds}
 
 var 
    i,l:  longint;
 begin
-   if delay_per_sec=0 then
+   if delay_per_sec = 0 then
       calibrate_timing;
    l := round(n/1000*delay_per_sec);
-   for i:=1 to l do
+   for i := 1 to l do
       delay(1);
 end;
 
@@ -396,10 +396,10 @@ begin
          close(f);
          w := 0;
          s := btrim(ucase(reg_name));
-         for i:=1 to length(s) do
+         for i := 1 to length(s) do
             inc(w,ord(s[i]));
          w := w xor $5AA5;
-         if w=reg_num then
+         if w = reg_num then
             registered := true;
       end;
 end;
@@ -472,7 +472,7 @@ procedure make_tables;
 var 
    i,j,k:  integer;
 begin
-   for i:=0 to 255 do
+   for i := 0 to 255 do
       begin
          sint[i] := sin(i/128*pi);
          cost[i] := cos(i/128*pi);
@@ -513,13 +513,13 @@ var
 begin
    if not graphix then
       exit;
-   if x2<x1 then
+   if x2 < x1 then
       begin
          i := x1;
          x1 := x2;
          x2 := i;
       end;
-   if y2<y1 then
+   if y2 < y1 then
       begin
          i := y1;
          y1 := y2;
@@ -543,13 +543,13 @@ var
 begin
    if not graphix then
       exit;
-   if x2<x1 then
+   if x2 < x1 then
       begin
          i := x1;
          x1 := x2;
          x2 := i;
       end;
-   if y2<y1 then
+   if y2 < y1 then
       begin
          i := y1;
          y1 := y2;
@@ -604,26 +604,26 @@ var
 begin
    i := 0;
    w := 0;
-   while i<length(s) do
+   while i < length(s) do
       begin
          inc(i);
          case s[i] of 
-            '0':begin w:=(w shl 4) or $0; end;
-            '1':begin w:=(w shl 4) or $1; end;
-            '2':begin w:=(w shl 4) or $2; end;
-            '3':begin w:=(w shl 4) or $3; end;
-            '4':begin w:=(w shl 4) or $4; end;
-            '5':begin w:=(w shl 4) or $5; end;
-            '6':begin w:=(w shl 4) or $6; end;
-            '7':begin w:=(w shl 4) or $7; end;
-            '8':begin w:=(w shl 4) or $8; end;
-            '9':begin w:=(w shl 4) or $9; end;
-            'A':begin w:=(w shl 4) or $A; end;
-            'B':begin w:=(w shl 4) or $B; end;
-            'C':begin w:=(w shl 4) or $C; end;
-            'D':begin w:=(w shl 4) or $D; end;
-            'E':begin w:=(w shl 4) or $E; end;
-            'F':begin w:=(w shl 4) or $F; end;
+            '0':begin w := (w shl 4) or $0; end;
+            '1':begin w := (w shl 4) or $1; end;
+            '2':begin w := (w shl 4) or $2; end;
+            '3':begin w := (w shl 4) or $3; end;
+            '4':begin w := (w shl 4) or $4; end;
+            '5':begin w := (w shl 4) or $5; end;
+            '6':begin w := (w shl 4) or $6; end;
+            '7':begin w := (w shl 4) or $7; end;
+            '8':begin w := (w shl 4) or $8; end;
+            '9':begin w := (w shl 4) or $9; end;
+            'A':begin w := (w shl 4) or $A; end;
+            'B':begin w := (w shl 4) or $B; end;
+            'C':begin w := (w shl 4) or $C; end;
+            'D':begin w := (w shl 4) or $D; end;
+            'E':begin w := (w shl 4) or $E; end;
+            'F':begin w := (w shl 4) or $F; end;
             else i := length(s);
          end;
       end;
@@ -638,19 +638,19 @@ var
 begin
    neg := false;
    s := btrim(ucase(s));
-   if s='' then
+   if s = '' then
       k := 0
    else
       begin
-         if s[1]='-' then
+         if s[1] = '-' then
             begin
                neg := true;
                s := rstr(s,length(s)-1);
             end;
          k := 0;
-         if lstr(s,2)='0X' then
+         if lstr(s,2) = '0X' then
             k := hex2int(rstr(s,length(s)-2))
-         else if rstr(s,1)='H' then
+         else if rstr(s,1) = 'H' then
                  k := hex2int(lstr(s,length(s)-1))
          else k := value(s);
          if neg then
@@ -672,23 +672,23 @@ var
 begin
    q := 0;
    v := abs(round(tx-xx));
-   if v=0 then      {v:=0.001;}
+   if v = 0 then      {v := 0.001;}
       begin
-         if (tx=xx) and (ty>yy) then q:=pi;
-         if (tx=xx) and (ty<yy) then q:=0;
+         if (tx = xx) and (ty > yy) then q :=pi;
+         if (tx = xx) and (ty < yy) then q := 0;
       end
    else
       begin
          z := abs(round(ty-yy));
          q := abs(arctan(z/v));
-         if (tx>xx) and (ty>yy) then q:=pi/2+q;
-         if (tx>xx) and (ty<yy) then q:=pi/2-q;
-         if (tx<xx) and (ty<yy) then q:=pi+pi/2+q;
-         if (tx<xx) and (ty>yy) then q:=pi+pi/2-q;
-         if (tx=xx) and (ty>yy) then q:=pi/2;
-         if (tx=xx) and (ty<yy) then q:=0;
-         if (tx<xx) and (ty=yy) then q:=pi+pi/2;
-         if (tx>xx) and (ty=yy) then q:=pi/2;
+         if (tx > xx) and (ty > yy) then q := pi/2+q;
+         if (tx > xx) and (ty < yy) then q := pi/2-q;
+         if (tx < xx) and (ty < yy) then q := pi+pi/2+q;
+         if (tx < xx) and (ty > yy) then q := pi+pi/2-q;
+         if (tx = xx) and (ty > yy) then q := pi/2;
+         if (tx = xx) and (ty < yy) then q := 0;
+         if (tx < xx) and (ty = yy) then q := pi+pi/2;
+         if (tx > xx) and (ty = yy) then q := pi/2;
       end;
    find_angle := q;
 end;
@@ -699,7 +699,7 @@ var
    i:  integer;
 begin
    i := round(find_angle(xx,yy,tx,ty)/pi*128+256);
-   while (i<0) do
+   while (i < 0) do
       inc(i,256);
    i := i and 255;
    find_anglei := i;
@@ -713,7 +713,7 @@ var
    bin_string:  string;
 begin
    bin_string := '';
-   for i:=0 to 15 do
+   for i := 0 to 15 do
       begin
          if (n mod 2) = 0 then
             bin_string := '0' + bin_string
@@ -733,7 +733,7 @@ var
    i:  integer;
 begin
    dec_string := '';
-   for i:=1 to length do
+   for i := 1 to length do
       begin
          dec_string := chr((num mod 10)+48) + dec_string;
          num := num div 10;
