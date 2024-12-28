@@ -3803,7 +3803,7 @@ begin
                   if k < 0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_1;
                   if k > 0 then ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_2;
                   if (get_val(n,ip,2) = 0) and (k = 0) then
-                              ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_3;
+                     ram[M_FLAGS]:=ram[M_FLAGS] or BM_BIT_3;
                   inc(executed);
                   end;
                21:begin (*TEST*)
