@@ -3130,8 +3130,11 @@ begin
             textxy(110,52,hex(ram[M_METERS]));
             textxy(110,62,hex(ram[M_COMBASE]));
             textxy(110,72,hex(ram[M_COMEND]));
-            textxy(110,82,hex(ram[12]));  { What is ram[12]??? }
             textxy(110,92,hex(ram[M_TRVEL]));
+
+            { ram[12] really isn't anything, so darken it }
+            setcolor(robot_color(8));
+            textxy(110,82,hex(ram[12]));
          end;
 end;
 {/FIFI}
@@ -3351,8 +3354,12 @@ begin
                outtextxy(015,52,'02:      09:');
                outtextxy(015,62,'03:      10:');
                outtextxy(015,72,'04:      11:');
-               outtextxy(015,82,'05:      12:');
+               outtextxy(015,82,'05:');
                outtextxy(015,92,'06:      13:');
+
+               { ram[12] really isn't anything, so darken it }
+               setcolor(robot_color(8));
+               outtextxy(87,82,'12:');
 
                {registers}
                setcolor(robot_color(8));
