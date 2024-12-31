@@ -53,7 +53,6 @@ var
    sint,cost:  array[0..255] of real;
 
 procedure textxy(x,y:integer; s:string);
-procedure coltextxy(x,y:integer; s:string; c:byte);
 function hexnum(num:byte):  char;
 function hexb(num:byte):  string;
 function hex(num:word):  string;
@@ -108,12 +107,6 @@ begin
    setfillstyle(1,0);
    bar(x,y,x+length(s)*8,y+7);
    outtextxy(x,y,s);
-end;
-
-procedure coltextxy(x,y:integer; s:string; c:byte);
-begin
-   setcolor(c);
-   textxy(x,y,s);
 end;
 
 function hexnum(num:byte):  char;
