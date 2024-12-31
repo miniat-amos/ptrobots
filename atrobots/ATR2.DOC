@@ -1256,6 +1256,7 @@ Memory map:
     9        Meters      Meters travelled. 15 bits used.. (32767+1)=0
    10        ComBase     Current base of the communications queue
    11        ComEnd      Current end-point of the communications queue
+   12        Err         Most recent error encountered.  0 if no errors yet
    13        tr-vel      Absolute speed (cm/cycle) of last target scanned
  14-63       res         reserved
    64        flags       flags register

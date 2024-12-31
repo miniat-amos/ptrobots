@@ -543,6 +543,7 @@ begin
                log_error(n,i,ov);
 
             inc(error_count);
+            ram[M_ERR] := i;
          end;
 end;
 
@@ -652,8 +653,16 @@ begin
                            outtextxy(003,56,' Error:');
                            setcolor(robot_color(i) and BM_LOW_3);
                            outtextxy(003,12,name);
-                           setcolor(8);
-                           outtextxy(66,56,'None');
+                           if ram[M_ERR] = 0 then
+                              begin
+                                 setcolor(8);
+                                 outtextxy(66,56,'None');
+                              end
+                           else
+                              begin
+                                 setcolor(robot_color(i));
+                                 outtextxy(66,56,addrear(cstr(ram[M_ERR]),7)+hex(ram[M_ERR]));
+                              end;
                         end;
 
                      lx := 1000-x;
@@ -3130,11 +3139,8 @@ begin
             textxy(110,52,hex(ram[M_METERS]));
             textxy(110,62,hex(ram[M_COMBASE]));
             textxy(110,72,hex(ram[M_COMEND]));
+            textxy(110,82,hex(ram[M_ERR]));
             textxy(110,92,hex(ram[M_TRVEL]));
-
-            { ram[12] really isn't anything, so darken it }
-            setcolor(robot_color(8));
-            textxy(110,82,hex(ram[12]));
          end;
 end;
 {/FIFI}
@@ -3354,12 +3360,8 @@ begin
                outtextxy(015,52,'02:      09:');
                outtextxy(015,62,'03:      10:');
                outtextxy(015,72,'04:      11:');
-               outtextxy(015,82,'05:');
+               outtextxy(015,82,'05:      12:');
                outtextxy(015,92,'06:      13:');
-
-               { ram[12] really isn't anything, so darken it }
-               setcolor(robot_color(8));
-               outtextxy(87,82,'12:');
 
                {registers}
                setcolor(robot_color(8));
@@ -3460,8 +3462,16 @@ begin
                                  outtextxy(003,56,' Error:');
                                  setcolor(robot_color(i) and BM_LOW_3);
                                  outtextxy(003,12,name);
-                                 setcolor(8);
-                                 outtextxy(66,56,'None');
+                                 if ram[M_ERR] = 0 then
+                                    begin
+                                       setcolor(8);
+                                       outtextxy(66,56,'None');
+                                    end
+                                 else
+                                    begin
+                                       setcolor(robot_color(i));
+                                       outtextxy(66,56,addrear(cstr(ram[M_ERR]),7)+hex(ram[M_ERR]));
+                                    end;
                               end;
 
                            lx := 1000-x;

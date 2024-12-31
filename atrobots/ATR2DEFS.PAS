@@ -106,7 +106,7 @@ const
    M_METERS  =  9;  { Meters travelled. 15 bits used.. (32767+1)=0 }
    M_COMBASE = 10;  { Current base of the communications queue }
    M_COMEND  = 11;  { Current end-point of the communications queue }
-   { 12     What is this, if anything?  It's printed in ATR2.PAS }
+   M_ERR     = 12;  { Last error code encountered.  0 if no errors yet }
    M_TRVEL   = 13;  { Absolute speed (cm/cycle) of last target scanned }
    { 14-63       res         reserved }
    M_FLAGS   = 64;  { flags register }
