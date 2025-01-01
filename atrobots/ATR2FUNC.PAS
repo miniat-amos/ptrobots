@@ -56,7 +56,6 @@ procedure textxy(x,y:integer; s:string);
 function hexnum(num:byte):  char;
 function hexb(num:byte):  string;
 function hex(num:word):  string;
-function valuer(i:string):  real;
 function value(i:string):  longint;
 function cstrr(i:real):  string;
 function cstr(i:longint):  string;
@@ -142,18 +141,6 @@ begin
    hex := hexb(num shr 8)+hexb(num and 255);
 end;
 
-
-function valuer(i:string):  real;
-
-var 
-   s:  real;
-   n:  integer;
-begin
-   val(i,s,n);
-   if (n > 0) then
-      s := 0;
-   valuer := s;
-end;
 
 function value(i:string):  longint;
 
