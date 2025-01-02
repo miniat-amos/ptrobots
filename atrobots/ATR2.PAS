@@ -1488,7 +1488,7 @@ procedure reset_hardware(n:integer);
 
 var 
    i :  integer;
-   d,dd :  real;
+   d,closest_robot_dist :  real;
 begin
    with robot[n]^ do
       begin
@@ -1502,14 +1502,14 @@ begin
          repeat
             x := random(1000);
             y := random(1000);
-            dd := 1000;
+            closest_robot_dist := 1000;
             for i:=0 to num_robots do
                begin
                   d := distance(x,y,robot[i]^.x,robot[i]^.y);
-                  if (robot[i]^.armor > 0) and (i <> n) and (d < dd) then
-                     dd := d;
+                  if (robot[i]^.armor > 0) and (i <> n) and (d < closest_robot_dist) then
+                     closest_robot_dist := d;
                end;
-         until dd > 32;
+         until closest_robot_dist > 32;
 
          for i:=0 to max_mines do
             with mine[i] do
