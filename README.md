@@ -47,7 +47,7 @@ writing (December 2024), the official last version was still available for
 download at the [AT-Robots website](http://necrobones.com/atrobots/).  That
 version (2.10) had a few flaws discovered in the decades since its release,
 so in the first few commits of this project, modifications will be made and
-documented to resolve them and make the updated sources compilable with
+documented to resolve them and make the updated sources compilable with the
 Turbo Pascal compiler [Embarcadero](https://www.embarcadero.com/) once
 released as antique software (we couldn't find it any longer, though).
 To be clear, this is **NOT** an official
