@@ -404,7 +404,7 @@ function robot_color(n:integer):  integer;
 var 
    k:  integer;
 begin
-   k := 7;
+   k := 15;
    case n mod 14 of 
        0:  k := 10;
        1:  k := 12;
@@ -420,7 +420,6 @@ begin
       11:  k :=  3;
       12:  k :=  5;
       13:  k := 15;
-      else k := 15;
    end;
    robot_color := k;
 end;
