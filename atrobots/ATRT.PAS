@@ -124,33 +124,6 @@ end;
 
 
 
-procedure check_registration;
-
-var 
-   w:  word;
-   i:  integer;
-   f:  text;
-   s:  String;
-begin
-   registered := false;
-   if exist('ATR2.REG') then
-      begin
-         assign(f,'ATR2.REG');
-         reset(f);
-         readln(f,reg_name);
-         readln(f,reg_num);
-         close(f);
-         w := 0;
-         s := btrim(ucase(reg_name));
-         for i := 1 to length(s) do
-            inc(w,ord(s[i]));
-         w := w xor $5AA5;
-         if w = reg_num then
-            registered := true;
-      end;
-end;
-
-
 procedure pause;
 begin
    if yes_to_all then
