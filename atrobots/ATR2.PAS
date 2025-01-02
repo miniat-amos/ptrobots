@@ -1505,18 +1505,6 @@ begin
             dd := 1000;
             for i:=0 to num_robots do
                begin
-                  if robot[i]^.x < 0 then
-                     robot[i]^.x := 0;
-
-                  if robot[i]^.x >= 1000 then
-                     robot[i]^.x := 999;
-
-                  if robot[i]^.y < 0 then
-                     robot[i]^.y := 0;
-
-                  if robot[i]^.y >= 1000 then
-                     robot[i]^.y := 999;
-
                   d := distance(x,y,robot[i]^.x,robot[i]^.y);
                   if (robot[i]^.armor > 0) and (i <> n) and (d < dd) then
                      dd := d;
