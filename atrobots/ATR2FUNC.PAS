@@ -63,7 +63,6 @@ function zero_pad(n,l:longint):  string;
 function addfront(b:string;l:integer):  string;
 function addrear(b:string;l:integer):  string;
 function ucase(s:string):  string;
-function space(i:byte):  string;
 function repchar(c:char; i:byte):  string;
 function ltrim(s1:string):  string;
 function rtrim(s1:string):  string;
@@ -206,19 +205,6 @@ begin
             s[i] := upcase(s[i]);
       end;
    ucase := s;
-end;
-
-function space(i:byte):  string;
-
-var 
-   s:  string[255];
-   k:  integer;
-begin
-   s := '';
-   if i > 0 then
-      for k:= 1 to i do
-         s := s+' ';
-   space := s;
 end;
 
 function repchar(c:char; i:byte):  string;

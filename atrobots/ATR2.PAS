@@ -4541,7 +4541,8 @@ begin
    else
       begin
          textcolor(15);
-         write(#13+space(79)+#13);
+         delline;
+         write(#13);
          writeln('Match ',played,'/',matches,' results:');
          writeln;
          writeln('Robot            Scored   Wins  Matches  Armor  Kills  Deaths    Shots');
