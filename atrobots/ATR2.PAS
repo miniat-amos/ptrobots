@@ -4256,7 +4256,7 @@ begin
                      source_alive := false;
 
                   for i:=0 to num_robots do
-                     if {(i <> n) and} (robot[i]^.armor > 0) then
+                     if robot[i]^.armor > 0 then
                         begin
                            k := round(distance(x,y,robot[i]^.x,robot[i]^.y));
 
