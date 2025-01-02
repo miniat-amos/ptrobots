@@ -858,7 +858,7 @@ begin
    writeln(f2,'<BR>');
    writeln(f2,'<CENTER><P align=center>');
    if not report_only then
-      writeln(f2,'<A href="',lcase(no_path(base_name(tname))),
+      writeln(f2,'<A href="',no_path(base_name(tname)),
                  '.log">Click here for log</A>');
    writeln(f2,'</P></CENTER>');
    writeln(f2);

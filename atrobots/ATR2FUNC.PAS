@@ -63,7 +63,6 @@ function zero_pad(n,l:longint):  string;
 function addfront(b:string;l:integer):  string;
 function addrear(b:string;l:integer):  string;
 function ucase(s:string):  string;
-function lcase(s:string):  string;
 function space(i:byte):  string;
 function repchar(c:char; i:byte):  string;
 function ltrim(s1:string):  string;
@@ -208,21 +207,6 @@ begin
       end;
    ucase := s;
 end;
-
-function lcase(s:string):  string;
-
-var 
-   i:  integer;
-begin
-   if length(s) >= 1 then
-      begin
-         for i := 1 to length(s) do
-            if (ord(s[i]) >= 65) and (ord(s[i]) <= 90) then
-               s[i] := chr(ord(s[i])+32);
-      end;
-   lcase := s;
-end;
-
 
 function space(i:byte):  string;
 
