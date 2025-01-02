@@ -60,7 +60,6 @@ function value(i:string):  longint;
 function cstrr(i:real):  string;
 function cstr(i:longint):  string;
 function zero_pad(n,l:longint):  string;
-function zero_pads(s:string; l:longint):  string;
 function addfront(b:string;l:integer):  string;
 function addrear(b:string;l:integer):  string;
 function ucase(s:string):  string;
@@ -182,18 +181,6 @@ begin
       s := '0'+s;
    zero_pad := s;
 end;
-
-function zero_pads(s:string;l:longint):  string;
-
-var 
-   s1:  string;
-begin
-   s1 := s;
-   while length(s1) < l do
-      s1 := '0'+s1;
-   zero_pads := s1;
-end;
-
 
 function addfront(b:string;l:integer):  string;
 begin
