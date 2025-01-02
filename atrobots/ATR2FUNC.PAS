@@ -404,22 +404,22 @@ function robot_color(n:integer):  integer;
 var 
    k:  integer;
 begin
-   k := 15;
+   k := White;
    case n mod 14 of 
-       0:  k := 10;
-       1:  k := 12;
-       2:  k := 09;
-       3:  k := 11;
-       4:  k := 13;
-       5:  k := 14;
-       6:  k :=  7;
-       7:  k :=  6;
-       8:  k :=  2;
-       9:  k :=  4;
-      10:  k :=  1;
-      11:  k :=  3;
-      12:  k :=  5;
-      13:  k := 15;
+       0:  k := LightGreen;
+       1:  k := LightRed;
+       2:  k := LightBlue;
+       3:  k := LightCyan;
+       4:  k := LightMagenta;
+       5:  k := Yellow;
+       6:  k :=  LightGray;
+       7:  k :=  Brown;
+       8:  k :=  Green;
+       9:  k :=  Red;
+      10:  k :=  Blue;
+      11:  k :=  Cyan;
+      12:  k :=  Magenta;
+      13:  k := White;
    end;
    robot_color := k;
 end;
