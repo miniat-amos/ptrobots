@@ -52,6 +52,7 @@ var
    reg_num:  word;
    sint,cost:  array[0..255] of real;
 
+function constrain(n,low, high: integer):  integer;
 procedure textxy(x,y:integer; s:string);
 function hexnum(num:byte):  char;
 function hexb(num:byte):  string;
@@ -96,6 +97,21 @@ function decimal(num,length:integer):  string;
 
 
 implementation
+
+function constrain(n,low, high: integer):  integer;
+
+var
+   val:  integer;
+begin
+   if n < low then
+      val := low
+   else if n > high then
+      val := high
+   else
+      val := n;
+   constrain := val;
+end;
+
 
 procedure textxy(x,y:integer; s:string);
 begin
