@@ -1049,7 +1049,9 @@ begin
             begin
                if n1 <> n2 then
                   begin
-                     writeln(repchar('-',79));
+                     for i := 1 to 79 do
+                        write('-');
+                     writeln;
                      writeln(robot[n1].name,' vs ',robot[n2].name,':');
                      {pause;}
                      delete_file(main_filename+report_ext);
