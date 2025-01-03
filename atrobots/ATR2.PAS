@@ -1851,10 +1851,7 @@ begin
                      insanity := value(rstr(s1,length(s1)-1));
                   found := true;
                end;
-            if insanity < 0 then
-               insanity := 0;
-            if insanity > 15 then
-               insanity := 15;
+            insanity := constrain(insanity, 0, 15);
 
             if s1[1] = '@' then
                begin
@@ -1998,30 +1995,11 @@ begin
       graph_mode(true);
 
    {--fix ups--}
-   if matches > 100000 then
-      matches := 100000;
-   if matches < 1 then
-      matches := 1;
-
-   if game_delay > 1000 then
-      game_delay := 1000;
-   if game_delay < 0 then
-      game_delay := 0;
-
-   if time_slice > 100 then
-      time_slice := 100;
-   if time_slice < 1 then
-      time_slice := 1;
-
-   if game_limit < 0 then
-      game_limit := 0;
-   if game_limit > 100000 then
-      game_limit := 100000;
-
-   if maxcode < 1 then
-      maxcode := 1; {0 based, so actually 2 lines}
-   if maxcode > max_code then
-      maxcode := max_code;
+   matches := constrain_long(matches, 1, 100000);
+   game_delay := constrain(game_delay, 0, 1000);
+   time_slice:= constrain(time_slice, 1, 100);
+   game_limit := constrain_long(game_limit, 0, 100000);
+   maxcode := constrain(maxcode, 1, max_code); {0 based, so actually 2 lines}
 
    {--Just to avoid floating pointers--}
    for i:=num_robots+1 to max_robots+2 do
@@ -2046,15 +2024,8 @@ begin
       exit;
    with robot[n]^ do
       begin
-         if x < 0 then
-            x := 0;
-         if x >= 1000 then
-            x := 999;
-
-         if y < 0 then
-            y := 0;
-         if y >= 1000 then
-            y := 999;
+         x := constrain_real(x, 0, 999);
+         y := constrain_real(y, 0, 999);
 
          {if (lhd = hd) and (lx = x) and (ly = y) then exit;}
 
@@ -2622,10 +2593,7 @@ begin
                                     else
                                        accuracy := abs(round(acc));
 
-                                    if accuracy > 2 then
-                                       accuracy := 2;
-                                    if accuracy < -2 then
-                                       accuracy := -2;
+                                    accuracy := constrain(accuracy, -2, 2);
                                  end;
                               nn := i;
                               if debug_info then
@@ -2835,10 +2803,7 @@ begin
             P_WEAPON : 
                begin
                   inc(time_used,3);
-                  if v > 4 then
-                     v := 4;
-                  if v < -4 then
-                     v := -4;
+                  v := constrain(v, -4, 4);
                   init_missile(x,y,xv,yv,(hd+shift+v) and BM_LOW_BYTE,n,0,overburn);
                end;
             P_SCANARC :  scanarc := v;
@@ -2947,15 +2912,8 @@ begin
                   j := ram[M_EX];
                   k := ram[M_FX];
 
-                  if j < 0 then
-                     j := 0;
-                  if j >= 1000 then
-                     j := 999;
-
-                  if k < 0 then
-                     k := 0;
-                  if k >= 1000 then
-                     k := 999;
+                  j := constrain(j, 0, 999);
+                  k := constrain(k, 0, 999);
 
                   ram[M_AX] := round(find_angle(round(x),round(y),j,k)/pi*128+256) and BM_LOW_BYTE;
                   time_used := 32;
@@ -4011,15 +3969,8 @@ begin
          hd := (hd+1024) and BM_LOW_BYTE;
          shift := (shift+1024) and BM_LOW_BYTE;
 
-         if tspd <- 75 then
-            tspd := -75;
-         if tspd > 100 then
-            tspd := 100;
-
-         if spd <- 75 then
-            spd := -75;
-         if spd > 100 then
-            spd := 100;
+         tspd := constrain(tspd, -75, 100);
+         spd := constrain(spd, -75, 100);
 
          if heat < 0 then
             heat := 0;
@@ -4171,15 +4122,8 @@ begin
                      end;
                end;
 
-         if ttx < 0 then
-            ttx := 0;
-         if ttx >= 1000 then
-            ttx := 999;
-
-         if tty < 0 then
-            tty := 0;
-         if tty >= 1000 then
-            tty := 999;
+         ttx := constrain_real(ttx, 0, 999);
+         tty := constrain_real(tty, 0, 999);
 
          meters := meters+distance(x,y,ttx,tty);
          if meters >= maxint then

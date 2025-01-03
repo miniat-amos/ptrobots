@@ -53,6 +53,8 @@ var
    sint,cost:  array[0..255] of real;
 
 function constrain(n,low, high: integer):  integer;
+function constrain_long(n,low, high: longint):  longint;
+function constrain_real(n,low, high: real):  real;
 procedure textxy(x,y:integer; s:string);
 function hexnum(num:byte):  char;
 function hexb(num:byte):  string;
@@ -110,6 +112,36 @@ begin
    else
       val := n;
    constrain := val;
+end;
+
+
+function constrain_long(n,low, high: longint):  longint;
+
+var
+   val:  longint;
+begin
+   if n < low then
+      val := low
+   else if n > high then
+      val := high
+   else
+      val := n;
+   constrain_long := val;
+end;
+
+
+function constrain_real(n,low, high: real):  real;
+
+var
+   val:  real;
+begin
+   if n < low then
+      val := low
+   else if n > high then
+      val := high
+   else
+      val := n;
+   constrain_real := val;
 end;
 
 
