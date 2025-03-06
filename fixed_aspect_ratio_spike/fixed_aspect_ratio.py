@@ -31,10 +31,15 @@ def main():
                 window_width, window_height = event.w, event.h
 
                 # Force min window size to constant WIDTH, HEIGHT
-                new_w = max(event.w, const.WIDTH)
-                new_h = max(event.h, const.HEIGHT)
-                window = pygame.display.set_mode((new_w, new_h), pygame.RESIZABLE)
-                window_width, window_height = new_w, new_h
+                force_base_size = False
+                if event.w < const.WIDTH:
+                    window_width = const.WIDTH
+                    force_base_size = True
+                if event.h < const.HEIGHT:
+                    window_height = const.HEIGHT
+                    force_base_size = True
+                if force_base_size:                    
+                    window = pygame.display.set_mode((window_width, window_height), pygame.RESIZABLE)
 
                 if window_width / window_height > const.ASPECT_RATIO:
                     # Window too wide
